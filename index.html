@@ -49,13 +49,13 @@ canvas#game{display:block;width:100%!important;height:100%!important;position:fi
 .stam-bar-out{width:80px;height:3px;background:rgba(0,0,0,.5);border-radius:2px;overflow:hidden}
 .stam-bar-in{height:100%;width:100%;background:linear-gradient(90deg,#ffcc00,#ff8800);border-radius:2px;transition:width .15s}
 .stam-label{color:#998800;font-size:8px;letter-spacing:1px}
-#medkitBtn{position:fixed;bottom:130px;left:18px;z-index:60;width:50px;height:50px;border-radius:10px;background:rgba(0,180,80,.15);border:1.5px solid rgba(0,200,80,.4);display:none;flex-direction:column;align-items:center;justify-content:center;pointer-events:auto;color:#00cc55;font-size:18px;line-height:1}
-#medkitBtn .cd-text{font-size:8px;color:#aaa;letter-spacing:1px;margin-top:1px}
-#medkitBtn.ready{border-color:rgba(0,255,100,.6);background:rgba(0,180,80,.25)}
+#medkitBtn{position:fixed;bottom:140px;left:16px;z-index:60;width:60px;height:60px;border-radius:12px;background:rgba(0,180,80,.2);border:2px solid rgba(0,200,80,.5);display:none;flex-direction:column;align-items:center;justify-content:center;pointer-events:auto;color:#00dd66;font-size:22px;line-height:1;box-shadow:0 0 10px rgba(0,200,80,.15)}
+#medkitBtn .cd-text{font-size:9px;color:#aaa;letter-spacing:1px;margin-top:2px}
+#medkitBtn.ready{border-color:rgba(0,255,100,.6);background:rgba(0,180,80,.3)}
 #medkitBtn.cooldown{opacity:.5;border-color:rgba(100,100,100,.3)}
-#grenadeBtn{position:fixed;bottom:70px;left:18px;z-index:60;width:50px;height:50px;border-radius:10px;background:rgba(200,120,0,.15);border:1.5px solid rgba(255,150,0,.4);display:none;flex-direction:column;align-items:center;justify-content:center;pointer-events:auto;color:#ff9900;font-size:16px;line-height:1}
-#grenadeBtn .cd-text{font-size:8px;color:#aaa;letter-spacing:1px;margin-top:1px}
-#grenadeBtn.ready{border-color:rgba(255,180,0,.6);background:rgba(200,120,0,.25)}
+#grenadeBtn{position:fixed;bottom:72px;left:16px;z-index:60;width:60px;height:60px;border-radius:12px;background:rgba(200,120,0,.2);border:2px solid rgba(255,150,0,.5);display:none;flex-direction:column;align-items:center;justify-content:center;pointer-events:auto;color:#ffaa00;font-size:20px;line-height:1;box-shadow:0 0 10px rgba(255,150,0,.15)}
+#grenadeBtn .cd-text{font-size:9px;color:#aaa;letter-spacing:1px;margin-top:2px}
+#grenadeBtn.ready{border-color:rgba(255,180,0,.6);background:rgba(200,120,0,.3)}
 #grenadeBtn.cooldown{opacity:.5;border-color:rgba(100,100,100,.3)}
 .hw{color:#888;font-size:10px;letter-spacing:3px}.hw b{color:#ff6633;font-size:14px}
 .hs{color:#fff;font-size:11px;letter-spacing:2px}.hs b{color:#ff4400;font-size:16px}
@@ -72,10 +72,10 @@ canvas#game{display:block;width:100%!important;height:100%!important;position:fi
 .jz{position:fixed;bottom:0;z-index:60;width:50%;height:50%;pointer-events:auto}.jz.l{left:0}.jz.r{right:0}
 .jb{position:absolute;width:100px;height:100px;border-radius:50%;border:1.5px solid rgba(255,255,255,.12);background:rgba(255,255,255,.03);display:none}
 .jt{position:absolute;width:40px;height:40px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.25),rgba(255,255,255,.08));border:1.5px solid rgba(255,255,255,.2);display:none}
-#fireBtn{position:fixed;bottom:130px;right:18px;z-index:60;width:66px;height:66px;border-radius:50%;background:radial-gradient(circle at 40% 40%,rgba(255,80,20,.45),rgba(255,40,0,.15));border:2px solid rgba(255,80,20,.5);display:none;align-items:center;justify-content:center;pointer-events:auto}
-#fireBtn::after{content:'';display:block;width:0;height:0;border-left:12px solid rgba(255,255,255,.65);border-top:8px solid transparent;border-bottom:8px solid transparent;margin-left:3px}
-#reloadBtn{position:fixed;bottom:80px;right:92px;z-index:60;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);color:#999;font-size:9px;display:none;align-items:center;justify-content:center;pointer-events:auto}
-#jumpBtn{position:fixed;bottom:65px;left:50%;transform:translateX(-50%);z-index:60;width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);color:#777;font-size:14px;display:none;align-items:center;justify-content:center;pointer-events:auto}
+#fireBtn{position:fixed;bottom:140px;right:16px;z-index:60;width:80px;height:80px;border-radius:50%;background:radial-gradient(circle at 40% 40%,rgba(255,80,20,.5),rgba(255,40,0,.2));border:2.5px solid rgba(255,80,20,.6);display:none;align-items:center;justify-content:center;pointer-events:auto;box-shadow:0 0 15px rgba(255,68,0,.2)}
+#fireBtn::after{content:'';display:block;width:0;height:0;border-left:14px solid rgba(255,255,255,.7);border-top:10px solid transparent;border-bottom:10px solid transparent;margin-left:3px}
+#reloadBtn{position:fixed;bottom:80px;right:104px;z-index:60;width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.25);color:#ccc;font-size:11px;font-weight:bold;display:none;align-items:center;justify-content:center;pointer-events:auto}
+#jumpBtn{position:fixed;bottom:70px;left:50%;transform:translateX(-50%);z-index:60;width:50px;height:50px;border-radius:50%;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.2);color:#aaa;font-size:16px;display:none;align-items:center;justify-content:center;pointer-events:auto}
 #minimap{position:fixed;top:44px;right:8px;z-index:50;width:80px;height:80px;border:1px solid rgba(255,255,255,.15);border-radius:4px;background:rgba(0,0,0,.5);pointer-events:none}
 #hitMarker{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:55;pointer-events:none;opacity:0}
 .hl{position:absolute;width:14px;height:2px;background:#fff}
@@ -99,8 +99,7 @@ canvas#game{display:block;width:100%!important;height:100%!important;position:fi
 @keyframes df{0%{opacity:1;transform:translateY(0) scale(1.2)}50%{opacity:1}100%{opacity:0;transform:translateY(-60px) scale(.7)}}
 .pm{position:fixed;bottom:35%;left:50%;transform:translateX(-50%);z-index:55;pointer-events:none;color:#fff;font-size:12px;letter-spacing:2px;text-shadow:0 1px 4px #000;animation:pf 1.5s forwards}
 @keyframes pf{0%{opacity:0;transform:translateX(-50%) translateY(10px)}15%{opacity:1;transform:translateX(-50%) translateY(0)}75%{opacity:1}100%{opacity:0;transform:translateX(-50%) translateY(-15px)}}
-#settingsBtn{position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:60;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:#999;font-size:16px;display:none;align-items:center;justify-content:center;pointer-events:auto;line-height:1}
-#swapBtn{position:fixed;bottom:130px;right:92px;z-index:60;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);color:#ccc;font-size:11px;display:none;align-items:center;justify-content:center;pointer-events:auto;letter-spacing:0}
+#settingsBtn{position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:60;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);color:#bbb;font-size:18px;display:none;align-items:center;justify-content:center;pointer-events:auto;line-height:1}
 #settingsOverlay{position:fixed;inset:0;z-index:105;background:rgba(0,0,0,.5);display:none}
 #settingsPanel{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:110;background:rgba(10,10,18,.95);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:20px 24px;display:none;flex-direction:column;gap:14px;min-width:250px;pointer-events:auto}
 .spt{color:#ff5500;font-size:13px;letter-spacing:4px;text-align:center;margin-bottom:4px}
@@ -115,6 +114,18 @@ canvas#game{display:block;width:100%!important;height:100%!important;position:fi
 .gos{color:#666;font-size:10px;letter-spacing:4px}
 .gost{color:#aaa;font-size:12px;line-height:2.2;text-align:center;margin:10px 0}.gost b{color:#fff}
 #restartBtn{padding:14px 50px;background:linear-gradient(180deg,#ff5511,#cc3300);color:#fff;font-size:14px;font-weight:bold;border:2px solid #ff7744;border-radius:3px;letter-spacing:4px;cursor:pointer}
+/* Boss HP */
+#bossHud{position:fixed;top:38px;left:50%;transform:translateX(-50%);z-index:55;pointer-events:none;text-align:center;display:none;width:200px}
+.boss-name{color:#ff2200;font-size:10px;letter-spacing:3px;font-weight:bold;margin-bottom:3px}
+.boss-bar-out{width:100%;height:8px;background:rgba(0,0,0,.7);border:1px solid rgba(255,0,0,.3);border-radius:4px;overflow:hidden}
+.boss-bar-in{height:100%;width:100%;background:linear-gradient(90deg,#ff2200,#ff6600);border-radius:4px;transition:width .2s}
+/* Victory */
+#victoryScreen{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.9);display:none;flex-direction:column;align-items:center;justify-content:center;gap:10px}
+.vic-title{color:#ffcc00;font-size:38px;font-family:Impact,sans-serif;letter-spacing:8px;text-shadow:0 0 30px rgba(255,200,0,.5)}
+.vic-sub{color:#ffaa00;font-size:11px;letter-spacing:5px}
+.vic-stats{color:#ccc;font-size:12px;line-height:2;text-align:center;margin:10px 0}.vic-stats b{color:#ffcc00}
+/* Wave modifier banner */
+.wmod{color:#ffaa44;font-size:9px;letter-spacing:3px;margin-top:4px;opacity:.8}
 #aiHud{position:fixed;bottom:50px;left:14px;z-index:50;pointer-events:none;display:none}
 .ai-label{color:#8844ff;font-size:8px;letter-spacing:2px;opacity:.6}
 .ai-gen{color:#aa66ff;font-size:11px;font-weight:bold;text-shadow:0 0 8px rgba(136,68,255,.4)}
@@ -142,7 +153,7 @@ canvas#game{display:block;width:100%!important;height:100%!important;position:fi
 <canvas id="minimap" style="display:none" width="160" height="160"></canvas>
 <div id="hitMarker"><div class="hl"></div><div class="hl"></div><div class="hl"></div><div class="hl"></div></div>
 <div id="damageOverlay"></div><div id="vignetteOverlay"></div><div id="killFeed"></div>
-<div id="waveBanner"><div class="wbs">INCOMING</div><div class="wbm" id="wbText">WAVE 1</div></div>
+<div id="waveBanner"><div class="wbs">INCOMING</div><div class="wbm" id="wbText">WAVE 1</div><div class="wmod" id="wbMod"></div></div>
 <div id="muzzleFlash"></div>
 <div id="aiHud"><div class="ai-label">NEURAL AI</div><div class="ai-gen" id="aiGen">GEN 0</div></div>
 <div class="wave-stats" id="waveStats"><div class="ws-title">WAVE COMPLETE</div><div class="ws-row">Accuracy: <b id="wsAcc">0%</b></div><div class="ws-row">Damage Taken: <b id="wsDmg">0</b></div><div class="ws-adapt" id="wsAdapt">ADAPTING...</div></div>
@@ -155,6 +166,8 @@ canvas#game{display:block;width:100%!important;height:100%!important;position:fi
 <div id="settingsBtn">&#9881;</div><div id="settingsOverlay"></div>
 <div id="settingsPanel"><div class="spt">SETTINGS</div><div class="spr"><span class="spl">Look Sensitivity</span><span class="spv" id="sensVal">6.0</span></div><input type="range" class="sps" id="sensSlider" min="1" max="15" step="0.5" value="6.0"><div class="spr"><span class="spl">Aim Sensitivity</span><span class="spv" id="aimVal">6</span></div><input type="range" class="sps" id="aimSlider" min="1" max="15" step="1" value="6"><button id="settingsClose">DONE</button></div>
 <div id="gameOver"><div class="got">MISSION FAILED</div><div class="gos">ALL UNITS LOST</div><div class="gost">Eliminated: <b id="finalKills">0</b><br>Headshots: <b id="finalHS">0</b><br>Best Streak: <b id="finalStreak">0</b><br>Waves: <b id="finalWaves">0</b><br>Score: <b id="finalScore">0</b></div><button id="restartBtn">REDEPLOY</button></div>
+<div id="bossHud"><div class="boss-name" id="bossName">BOSS</div><div class="boss-bar-out"><div class="boss-bar-in" id="bossBar"></div></div></div>
+<div id="victoryScreen"><div class="vic-title">MISSION COMPLETE</div><div class="vic-sub">ALL HOSTILES ELIMINATED</div><div class="vic-stats">Final Score: <b id="vicScore">0</b><br>Enemies Eliminated: <b id="vicKills">0</b><br>Headshots: <b id="vicHS">0</b><br>Best Streak: <b id="vicStreak">0</b><br>AI Generation: <b id="vicGen">0</b></div><button id="vicBtn" style="padding:14px 50px;background:linear-gradient(180deg,#ddaa00,#aa8800);color:#fff;font-size:14px;font-weight:bold;border:2px solid #ffcc44;border-radius:3px;letter-spacing:4px;cursor:pointer">DEBRIEF</button></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 "use strict";
@@ -187,7 +200,7 @@ var G={
   medkitCD:0,grenadeCD:0,sprintStam:100,sprinting:false,
   shotsFired:0,shotsHit:0,dmgTaken:0,waveDmgTaken:0,waveKills:0,waveTime:0,
   ai:{aggression:1,accuracy:1,flanking:1,speed:1,count:1,gen:0},
-  alive:0,toSpawn:0,fireRate:120,lastFire:0,reloading:false,
+  alive:0,toSpawn:0,fireRate:120,lastFire:0,reloading:false,_waveEnding:false,
   spd:8.5,pH:1.7,grav:-22,jv:8.5,vy:0,gnd:true,
   mrx:0,mry:0,mx:0,my:0,yaw:0,pitch:0,
   enemies:[],bullets:[],particles:[],pickups:[],
@@ -353,13 +366,13 @@ function createEnemy(pos,type){
   body.add(mk(new THREE.BoxGeometry(.28*sc,.3*sc,.12*sc),grM,0,.48*sc,.2*sc));
 
   // ── HEAD GROUP (pivot at neck base) ──
-  var headGrp=new THREE.Group();headGrp.position.set(0,.8*sc,0);body.add(headGrp);
-  headGrp.add(mk(new THREE.CylinderGeometry(.07*sc,.09*sc,.12*sc,8),skM,0,.06*sc,0));// neck
-  headGrp.add(mk(new THREE.SphereGeometry(.17*sc,12,12),skM,0,.22*sc,0,true));// head
-  headGrp.add(mk(new THREE.SphereGeometry(.2*sc,12,10,0,Math.PI*2,0,Math.PI*.58),hmM,0,.27*sc,0));// helmet
-  var hrim=mk(new THREE.TorusGeometry(.19*sc,.015*sc,6,16),hmM,0,.2*sc,0);hrim.rotation.x=Math.PI/2;headGrp.add(hrim);
-  headGrp.add(mk(new THREE.BoxGeometry(.28*sc,.05*sc,.04*sc),new THREE.MeshStandardMaterial({color:type==='heavy'?0x881111:0x111118,roughness:.2,metalness:.6}),0,.22*sc,-.17*sc));// goggles
-  if(type==='heavy')headGrp.add(mk(new THREE.BoxGeometry(.24*sc,.1*sc,.06*sc),hmM,0,.14*sc,-.18*sc));// face guard
+  var headGrp=new THREE.Group();headGrp.position.set(0,.72*sc,0);body.add(headGrp);
+  headGrp.add(mk(new THREE.CylinderGeometry(.07*sc,.09*sc,.1*sc,8),skM,0,.05*sc,0));// neck
+  headGrp.add(mk(new THREE.SphereGeometry(.16*sc,12,12),skM,0,.2*sc,0,true));// head
+  headGrp.add(mk(new THREE.SphereGeometry(.19*sc,12,10,0,Math.PI*2,0,Math.PI*.55),hmM,0,.25*sc,0));// helmet
+  var hrim=mk(new THREE.TorusGeometry(.18*sc,.014*sc,6,16),hmM,0,.18*sc,0);hrim.rotation.x=Math.PI/2;headGrp.add(hrim);
+  headGrp.add(mk(new THREE.BoxGeometry(.26*sc,.045*sc,.04*sc),new THREE.MeshStandardMaterial({color:type==='heavy'?0x881111:0x111118,roughness:.2,metalness:.6}),0,.2*sc,-.16*sc));// goggles
+  if(type==='heavy')headGrp.add(mk(new THREE.BoxGeometry(.22*sc,.08*sc,.05*sc),hmM,0,.12*sc,-.17*sc));// face guard
 
   // ── LEFT ARM (pivot at shoulder) ──
   var armL=new THREE.Group();armL.position.set(-.28*sc,.63*sc,0);body.add(armL);
@@ -382,11 +395,11 @@ function createEnemy(pos,type){
   elbowR.add(mk(new THREE.SphereGeometry(.04*sc,6,6),uM,0,0,0));// elbow
   elbowR.add(mk(new THREE.CylinderGeometry(.04*sc,.035*sc,.25*sc,8),uM,0,-.14*sc,-.02*sc));// forearm
   elbowR.add(mk(new THREE.SphereGeometry(.04*sc,6,6),skM,0,-.27*sc,-.04*sc));// hand
-  // Weapon attached to right hand
-  elbowR.add(mk(new THREE.BoxGeometry(.035*sc,.04*sc,.4*sc),mtM,.02*sc,-.22*sc,-.2*sc));// gun body
-  var gbrl=mk(new THREE.CylinderGeometry(.01*sc,.01*sc,.18*sc,6),mtM,.02*sc,-.21*sc,-.46*sc);gbrl.rotation.x=Math.PI/2;elbowR.add(gbrl);// barrel
-  elbowR.add(mk(new THREE.BoxGeometry(.03*sc,.05*sc,.12*sc),new THREE.MeshStandardMaterial({color:0x2a2a2a,roughness:.7}),.02*sc,-.2*sc,0));// stock
-  elbowR.add(mk(new THREE.BoxGeometry(.025*sc,.08*sc,.03*sc),mtM,.02*sc,-.28*sc,-.16*sc));// magazine
+  // Weapon — barrel along -Y so when arm rotates PI/2, gun points forward
+  elbowR.add(mk(new THREE.BoxGeometry(.035*sc,.4*sc,.04*sc),mtM,.02*sc,-.4*sc,0));// gun body
+  elbowR.add(mk(new THREE.CylinderGeometry(.01*sc,.01*sc,.2*sc,6),mtM,.02*sc,-.62*sc,0));// barrel
+  elbowR.add(mk(new THREE.BoxGeometry(.03*sc,.12*sc,.05*sc),new THREE.MeshStandardMaterial({color:0x2a2a2a,roughness:.7}),.02*sc,-.18*sc,0));// stock
+  elbowR.add(mk(new THREE.BoxGeometry(.025*sc,.03*sc,.06*sc),mtM,.02*sc,-.35*sc,.04*sc));// magazine
 
   // ── LEFT LEG (pivot at hip) ──
   var legL=new THREE.Group();legL.position.set(-.11*sc,.82*sc,0);root.add(legL);
@@ -460,19 +473,181 @@ function updateScore(){document.getElementById('scoreText').textContent=G.score}
 function showHit(h){var hm=document.getElementById('hitMarker');hm.querySelectorAll('.hl').forEach(function(l){l.style.background=h?'#ffcc00':'#fff'});hm.style.opacity='1';setTimeout(function(){hm.style.opacity='0'},h?200:120)}
 function showDmg(){var d=document.getElementById('damageOverlay');d.style.background='radial-gradient(ellipse at center,transparent 30%,rgba(180,0,0,0.45) 100%)';d.style.opacity='1';G.shake=.025;setTimeout(function(){d.style.opacity='0'},250)}
 function addKF(name,h){var f=document.getElementById('killFeed');var e=document.createElement('div');e.className='kf'+(h?' hd':'');e.innerHTML='<span class="kn">You</span> '+(h?'&#9733;':'&#9658;')+' <span class="vn">'+name+'</span>';f.appendChild(e);setTimeout(function(){e.remove()},4000)}
-function showWave(w){var b=document.getElementById('waveBanner');document.getElementById('wbText').textContent='WAVE '+w;document.getElementById('waveText').textContent=w;b.style.opacity='1';setTimeout(function(){b.style.opacity='0'},2500)}
+function showWave(w){var b=document.getElementById('waveBanner');document.getElementById('wbText').textContent='WAVE '+w+' / 20';document.getElementById('waveText').textContent=w;b.style.opacity='1';setTimeout(function(){b.style.opacity='0'},2500)}
 function showStreak(c){if(c<2)return;var names=['','','DOUBLE KILL','TRIPLE KILL','MULTI KILL','MEGA KILL','ULTRA KILL','UNSTOPPABLE'];var el=document.getElementById('streakHud');document.getElementById('streakText').textContent=names[Math.min(c,7)]||'GODLIKE';document.getElementById('streakSub').textContent='x'+c+' STREAK';el.style.opacity='1';setTimeout(function(){el.style.opacity='0'},1500)}
-function showPM(t){var el=document.createElement('div');el.className='pm';var msgs={health:'+ HEALTH RESTORED',ammo:'+ AMMO RESUPPLIED',armor:'+ ARMOR PLATED',medkit:'+ MEDKIT USED (+50 HP)',flash:'&#9788; FLASH DEPLOYED',weapon:'&#9658; '+WEAPONS[curWeapon].name};el.innerHTML=msgs[t]||'+ PICKUP';document.body.appendChild(el);setTimeout(function(){el.remove()},1500)}
+function showPM(t){var el=document.createElement('div');el.className='pm';var msgs={health:'+ HEALTH RESTORED',ammo:'+ AMMO RESUPPLIED',armor:'+ ARMOR PLATED',medkit:'+ MEDKIT USED (+50 HP)',flash:'&#9788; FLASH DEPLOYED',weapon:'&#9658; '+WEAPONS[curWeapon].name,summon:'&#9888; REINFORCEMENTS INCOMING',stomp:'&#9888; GROUND SLAM',boss_rage:'&#9888; BOSS ENRAGED'};el.innerHTML=msgs[t]||'+ PICKUP';document.body.appendChild(el);setTimeout(function(){el.remove()},1500)}
 function reload(){var W2=WEAPONS[curWeapon];if(G.reloading||G.ammo===W2.mag)return;G.reloading=true;document.getElementById('weaponName').textContent='RELOADING...';var rTime=W2.reload*(G.perkReloadMult||1);setTimeout(function(){G.ammo=W2.mag;G.reloading=false;updateAmmo();document.getElementById('weaponName').textContent=W2.name},rTime)}
 function drawMM(){var cv=document.getElementById('minimap');var ctx=cv.getContext('2d');var w=cv.width;var h=cv.height;ctx.clearRect(0,0,w,h);var s=w/(G.sz*2.4);var cx=w/2;var cy=h/2;ctx.fillStyle='rgba(10,10,20,0.7)';ctx.fillRect(0,0,w,h);ctx.fillStyle='rgba(120,120,130,0.4)';for(var i=0;i<W.length;i++){var wl=W[i];var wx=cx+(wl.x-camera.position.x)*s;var wz=cy+(wl.z-camera.position.z)*s;ctx.fillRect(wx-wl.hw*s,wz-wl.hd*s,wl.hw*2*s,wl.hd*2*s)}for(var j=0;j<G.enemies.length;j++){var e=G.enemies[j];if(e.hp<=0)continue;var ex=cx+(e.mesh.position.x-camera.position.x)*s;var ez=cy+(e.mesh.position.z-camera.position.z)*s;if(ex>2&&ex<w-2&&ez>2&&ez<h-2){ctx.fillStyle=e.type==='heavy'?'#ff0000':e.type==='scout'?'#ffaa00':'#ff3300';ctx.beginPath();ctx.arc(ex,ez,e.type==='heavy'?4:2.5,0,Math.PI*2);ctx.fill()}}ctx.save();ctx.translate(cx,cy);ctx.rotate(-G.yaw);ctx.fillStyle='#00ff88';ctx.beginPath();ctx.moveTo(0,-5);ctx.lineTo(-3.5,4);ctx.lineTo(3.5,4);ctx.closePath();ctx.fill();ctx.restore()}
 
-// ══════ WAVES ══════
-function startWave(){G.wave++;var c=Math.round((3+G.wave*2)*G.ai.count);G.toSpawn=c;G.alive=c;showWave(G.wave);var init=Math.min(c,5);spawnBatch(init);G.toSpawn-=init;if(G.wave%2===0){var a=Math.random()*Math.PI*2;var d=10+Math.random()*25;spawnPickup(Math.cos(a)*d,Math.sin(a)*d,'health');spawnPickup(Math.cos(a+2)*d,Math.sin(a+2)*d,'ammo')}}
-function spawnBatch(n){for(var i=0;i<n;i++){var sp=spawns[Math.random()*spawns.length|0];
-  var px,pz,tries=0;
-  do{px=sp.x+(Math.random()-.5)*10;pz=sp.z+(Math.random()-.5)*10;tries++}while(checkWall(px,pz,1.0)&&tries<15);
-  if(tries>=15){px=sp.x;pz=sp.z}// fallback to spawn center
-  var pos=new THREE.Vector3(px,0,pz);var type='soldier';var r=Math.random();if(G.wave>=2&&r<.3)type='scout';if(G.wave>=3&&r>.85)type='heavy';G.enemies.push(createEnemy(pos,type))}}
+// ══════ WAVE CONTENT ══════
+var WAVE_DATA=[
+  null,// wave 0 unused
+  {name:'FIRST CONTACT',desc:'Basic patrol',types:['soldier'],count:5},
+  {name:'RECON TEAM',desc:'Scouts deployed',types:['soldier','scout'],count:6},
+  {name:'REINFORCEMENTS',desc:'Heavy armor arrives',types:['soldier','scout','heavy'],count:7},
+  {name:'NIGHT OPS',desc:'Reduced visibility',types:['scout','scout','soldier'],count:8,mod:'fog'},
+  {name:'BOSS: COMMANDER',desc:'Eliminate the Commander',boss:'commander',count:3},
+  {name:'SANDSTORM',desc:'Low visibility, close quarters',types:['soldier','soldier','scout'],count:9,mod:'fog'},
+  {name:'RAPID ASSAULT',desc:'Fast attack wave',types:['scout','scout','scout'],count:12},
+  {name:'SNIPERS',desc:'Long range engagement',types:['soldier','heavy'],count:6,mod:'accurate'},
+  {name:'SWARM',desc:'Overwhelming numbers',types:['scout','scout','scout','scout'],count:16},
+  {name:'BOSS: TITAN',desc:'Destroy the Titan',boss:'titan',count:4},
+  {name:'EMP STRIKE',desc:'Electronics jammed',types:['soldier','heavy','scout'],count:10,mod:'nomap'},
+  {name:'ELITE SQUAD',desc:'Trained operatives',types:['soldier','soldier','heavy'],count:10,mod:'elite'},
+  {name:'FLANKERS',desc:'Surrounded on all sides',types:['scout','scout','soldier'],count:12,mod:'flank'},
+  {name:'FULL ASSAULT',desc:'Everything they have',types:['soldier','heavy','scout','heavy'],count:14},
+  {name:'BOSS: PHANTOM',desc:'Hunt the Phantom',boss:'phantom',count:4},
+  {name:'LAST STAND',desc:'Hold your ground',types:['soldier','soldier','soldier','heavy'],count:14,mod:'elite'},
+  {name:'HEAVY ASSAULT',desc:'Armored division',types:['heavy','heavy','soldier'],count:12},
+  {name:'DARKNESS',desc:'Total blackout',types:['scout','soldier','heavy','scout'],count:14,mod:'dark'},
+  {name:'FINAL PUSH',desc:'All hostiles inbound',types:['soldier','heavy','scout','heavy','scout'],count:18,mod:'elite'},
+  {name:'BOSS: WARLORD',desc:'End this war',boss:'warlord',count:5},
+];
+
+// Boss definitions
+var BOSSES={
+  commander:{name:'COMMANDER VOSS',hp:800,spd:2.5,sc:1.5,si:500,acc:.04,dmg:15,bs:55,color:0x882200,
+    attacks:['burst','summon'],summonCD:8000,lastSummon:0,phase:1},
+  titan:{name:'TITAN MK-II',hp:1500,spd:1.5,sc:2.0,si:300,acc:.06,dmg:20,bs:45,color:0x444466,
+    attacks:['barrage','stomp'],stompCD:6000,lastStomp:0,phase:1},
+  phantom:{name:'THE PHANTOM',hp:600,spd:6,sc:1.0,si:400,acc:.03,dmg:12,bs:65,color:0x222244,
+    attacks:['teleport','rapidfire'],teleCD:5000,lastTele:0,phase:1},
+  warlord:{name:'WARLORD KAINE',hp:2000,spd:2,sc:1.8,si:400,acc:.04,dmg:18,bs:50,color:0x660000,
+    attacks:['rockets','summon','rage'],summonCD:10000,lastSummon:0,rageCD:15000,lastRage:0,phase:1},
+};
+
+function createBoss(type){
+  var B=BOSSES[type];
+  var sp=spawns[Math.random()*spawns.length|0];
+  var pos=new THREE.Vector3(sp.x,0,sp.z);
+  // Use createEnemy with custom overrides
+  var bossData={col:B.color,hp:B.hp,spd:B.spd,sc:B.sc,si:B.si,acc:B.acc,dmg:B.dmg,bs:B.bs};
+  ET._boss=bossData;
+  var e=createEnemy(pos,'_boss');
+  delete ET._boss;
+  e.isBoss=true;e.bossType=type;e.maxHp=B.hp;e.hp=B.hp;
+  e.bossData=JSON.parse(JSON.stringify(B));e.bossData.lastSummon=performance.now();
+  e.bossData.lastStomp=performance.now();e.bossData.lastTele=performance.now();e.bossData.lastRage=performance.now();
+  // Show boss HUD
+  document.getElementById('bossHud').style.display='block';
+  document.getElementById('bossName').textContent=B.name;
+  document.getElementById('bossBar').style.width='100%';
+  return e;
+}
+
+function updateBossHUD(){
+  var boss=null;
+  for(var i=0;i<G.enemies.length;i++){if(G.enemies[i].isBoss&&G.enemies[i].hp>0){boss=G.enemies[i];break}}
+  if(boss){document.getElementById('bossBar').style.width=Math.max(0,boss.hp/boss.maxHp*100)+'%'}
+  else{document.getElementById('bossHud').style.display='none'}
+}
+
+function doBossAttack(e,now){
+  if(!e.isBoss||!e.bossData)return;
+  var B=e.bossData;var dp2=camera.position.distanceTo(e.mesh.position);
+  // Phase transitions
+  var hpPct=e.hp/e.maxHp;
+  if(hpPct<.5&&B.phase===1){B.phase=2;e.si=Math.max(200,e.si*.7);e.spd*=1.3;showPM('boss_rage')}
+  if(hpPct<.2&&B.phase===2){B.phase=3;e.si=Math.max(150,e.si*.7);e.spd*=1.2}
+
+  var bt=e.bossType;
+  // Commander: burst fire + summon troops
+  if(bt==='commander'){
+    if(now-B.lastSummon>B.summonCD/B.phase){B.lastSummon=now;
+      for(var si=0;si<B.phase+1;si++){var sa=Math.random()*6.28;var sd=8+Math.random()*5;
+        var spos=new THREE.Vector3(e.mesh.position.x+Math.cos(sa)*sd,0,e.mesh.position.z+Math.sin(sa)*sd);
+        if(!checkWall(spos.x,spos.z,1)){var re=createEnemy(spos,'soldier');G.enemies.push(re);G.alive++}}
+      showPM('summon')}}
+  // Titan: barrage + ground stomp
+  if(bt==='titan'){
+    if(now-B.lastStomp>(B.stompCD/B.phase)&&dp2<12){B.lastStomp=now;G.shake=.08;
+      // AOE damage to player if close
+      if(dp2<8){takeDamage(25*B.phase);showPM('stomp')}
+      spawnP(e.mesh.position.clone().setY(.5),0xff4400,30)}}
+  // Phantom: teleport + rapid fire
+  if(bt==='phantom'){
+    if(now-B.lastTele>(B.teleCD/B.phase)){B.lastTele=now;
+      var ta=Math.random()*6.28;var td=8+Math.random()*12;
+      var tx=camera.position.x+Math.cos(ta)*td;var tz=camera.position.z+Math.sin(ta)*td;
+      if(!checkWall(tx,tz,1)){e.mesh.position.set(tx,0,tz);spawnP(e.mesh.position.clone().setY(1),0x4444ff,15)}}}
+  // Warlord: rockets + summon + rage mode
+  if(bt==='warlord'){
+    if(now-B.lastSummon>(B.summonCD/B.phase)){B.lastSummon=now;
+      var types2=['soldier','scout','heavy'];
+      for(var wi=0;wi<B.phase+1;wi++){var wa2=Math.random()*6.28;var wd=10+Math.random()*8;
+        var wpos=new THREE.Vector3(e.mesh.position.x+Math.cos(wa2)*wd,0,e.mesh.position.z+Math.sin(wa2)*wd);
+        if(!checkWall(wpos.x,wpos.z,1)){var we=createEnemy(wpos,types2[wi%3]);G.enemies.push(we);G.alive++}}
+      showPM('summon')}
+    if(now-B.lastRage>(B.rageCD/B.phase)&&B.phase>=2){B.lastRage=now;
+      // Fire in all directions
+      for(var ri=0;ri<8;ri++){var ra=ri*Math.PI/4;var rd=new THREE.Vector3(Math.sin(ra),0,Math.cos(ra));
+        var rb=new THREE.Mesh(bGeo2,new THREE.MeshBasicMaterial({color:0xff0000}));
+        rb.position.copy(e.mesh.position);rb.position.y=1.3*e.sc;scene.add(rb);
+        G.bullets.push({m:rb,d:rd,s:40,l:4,p:false,dmg:20})}
+      G.shake=.05;spawnP(e.mesh.position.clone().setY(1),0xff0000,20)}}
+}
+
+function startWave(){
+  G.wave++;
+  if(G.wave>20){victory();return}
+  var wd=WAVE_DATA[G.wave]||{name:'WAVE '+G.wave,types:['soldier','heavy','scout'],count:10+G.wave};
+  // Apply wave modifier
+  G.waveMod=wd.mod||null;
+  if(G.waveMod==='fog'){scene.fog=new THREE.FogExp2(0x0a0a14,0.04)}
+  else if(G.waveMod==='dark'){scene.fog=new THREE.FogExp2(0x020204,0.06)}
+  else{scene.fog=new THREE.FogExp2(0x0a0a14,0.016)}
+  if(G.waveMod==='nomap'){document.getElementById('minimap').style.display='none'}
+  else{document.getElementById('minimap').style.display='block'}
+  // Determine enemy count
+  var c=Math.round(wd.count*(G.ai.count||1));
+  G.toSpawn=c;G.alive=c;
+  // Show wave info
+  showWave(G.wave);
+  setTimeout(function(){
+    var b=document.getElementById('waveBanner');
+    b.querySelector('.wbs').textContent=wd.name;
+    b.querySelector('.wbm').textContent=wd.desc;
+    b.style.opacity='1';setTimeout(function(){b.style.opacity='0'},2500);
+  },2600);
+  // Spawn boss or regular enemies
+  if(wd.boss){
+    var boss=createBoss(wd.boss);G.enemies.push(boss);G.alive++;
+    var init=Math.min(c,3);spawnBatchTyped(init,wd.types||['soldier']);G.toSpawn-=init;
+  }else{
+    var init2=Math.min(c,5);spawnBatchTyped(init2,wd.types||['soldier']);G.toSpawn-=init2;
+  }
+  // Pickups every wave
+  var pa=Math.random()*6.28;var pd=10+Math.random()*25;
+  spawnPickup(Math.cos(pa)*pd,Math.sin(pa)*pd,'health');
+  if(G.wave%2===0)spawnPickup(Math.cos(pa+2)*pd,Math.sin(pa+2)*pd,'ammo');
+  if(G.wave%3===0)spawnPickup(Math.cos(pa+4)*pd,Math.sin(pa+4)*pd,'armor');
+}
+
+function spawnBatchTyped(n,types){
+  for(var i=0;i<n;i++){var sp=spawns[Math.random()*spawns.length|0];
+    var px,pz,tries=0;
+    do{px=sp.x+(Math.random()-.5)*10;pz=sp.z+(Math.random()-.5)*10;tries++}while(checkWall(px,pz,1.0)&&tries<15);
+    if(tries>=15){px=sp.x;pz=sp.z}
+    var type=types[Math.random()*types.length|0];
+    var e=createEnemy(new THREE.Vector3(px,0,pz),type);
+    // Apply wave modifiers to spawned enemies
+    if(G.waveMod==='elite'){e.hp*=1.5;e.maxHp*=1.5;e.acc*=.7}
+    if(G.waveMod==='accurate'){e.acc*=.5;e.si*=1.5}
+    if(G.waveMod==='flank'){e.flankMult=2;e.spd*=1.2}
+    G.enemies.push(e);
+  }
+}
+
+function victory(){
+  G.on=false;
+  document.getElementById('vicScore').textContent=G.score;
+  document.getElementById('vicKills').textContent=G.kills;
+  document.getElementById('vicHS').textContent=G.hs;
+  document.getElementById('vicStreak').textContent=G.bestStreak;
+  document.getElementById('vicGen').textContent=G.ai.gen;
+  document.getElementById('victoryScreen').style.display='flex';
+  scene.fog=new THREE.FogExp2(0x0a0a14,0.016);
+}
 
 // ══════ CONTROLS ══════
 var AT={};
@@ -567,7 +742,7 @@ function loop(){
 
   // Cooldowns
   if(G.medkitCD>0){G.medkitCD-=dt;var mb=document.getElementById('medkitBtn');if(G.medkitCD<=0){G.medkitCD=0;mb.className='ready';mb.querySelector('.cd-text').textContent='HEAL'}else{mb.className='cooldown';mb.querySelector('.cd-text').textContent=Math.ceil(G.medkitCD)+'s'}}
-  if(G.grenadeCD>0){G.grenadeCD-=dt;var gb2=document.getElementById('grenadeBtn');if(G.grenadeCD<=0){G.grenadeCD=0;gb2.className='ready';gb2.querySelector('.cd-text').textContent='FRAG'}else{gb2.className='cooldown';gb2.querySelector('.cd-text').textContent=Math.ceil(G.grenadeCD)+'s'}}
+  if(G.grenadeCD>0){G.grenadeCD-=dt;var gb2=document.getElementById('grenadeBtn');var tacName=TACTICALS[curTactical].name;if(G.grenadeCD<=0){G.grenadeCD=0;gb2.className='ready';gb2.querySelector('.cd-text').textContent=tacName}else{gb2.className='cooldown';gb2.querySelector('.cd-text').textContent=Math.ceil(G.grenadeCD)+'s'}}
   // Bullets
   for(var i=G.bullets.length-1;i>=0;i--){var b=G.bullets[i];b.m.position.addScaledVector(b.d,b.s*dt);if(b.p)b.m.lookAt(b.m.position.clone().add(b.d));b.l-=dt;
     // Wall collision for all bullets
@@ -588,7 +763,13 @@ function loop(){
   // Enemies
   for(var ei=0;ei<G.enemies.length;ei++){var e2=G.enemies[ei];if(e2.hp<=0)continue;
     _v.subVectors(camera.position,e2.mesh.position);var dp2=_v.length();_v.normalize();
-    var ty=Math.atan2(_v.x,_v.z);var yd=ty-e2.mesh.rotation.y;while(yd>Math.PI)yd-=Math.PI*2;while(yd<-Math.PI)yd+=Math.PI*2;e2.mesh.rotation.y+=yd*Math.min(1,5*dt);
+    // Face player — model front is -Z, so add PI to atan2
+    var fdx=camera.position.x-e2.mesh.position.x;
+    var fdz=camera.position.z-e2.mesh.position.z;
+    var ty=Math.atan2(fdx,fdz)+Math.PI;
+    var yd=ty-e2.mesh.rotation.y;
+    while(yd>Math.PI)yd-=6.2832;while(yd<-Math.PI)yd+=6.2832;
+    e2.mesh.rotation.y+=yd*Math.min(1,8*dt);
     // Flinch
     if(e2.ft>0){e2.ft-=dt;if(e2.jBody)e2.jBody.position.z=Math.sin(e2.ft*40)*.05*e2.sc}else{if(e2.jBody)e2.jBody.position.z=0}
     e2.bp+=dt*2;
@@ -695,16 +876,16 @@ function loop(){
     e2.mesh.position.y=isMoving?Math.abs(sinP)*.04:0;
 
     // Head
-    if(e2.jHead){e2.jHead.rotation.x=isMoving?Math.sin(ph2*2)*.04:Math.sin(e2.bp)*.02;if(dp2<20&&canSee){e2.jHead.rotation.x+=Math.atan2(camera.position.y-1.78*e2.sc,dp2)*.3}}
+    if(e2.jHead){e2.jHead.rotation.x=isMoving?Math.sin(ph2*2)*.04:Math.sin(e2.bp)*.02;if(dp2<25&&canSee){e2.jHead.rotation.x+=Math.atan2(camera.position.y-(0.82+0.72+0.2)*e2.sc,dp2)*.3}}
 
     // Arms — right arm ALWAYS in weapon-ready position
-    var shoulderY=e2.mesh.position.y+(.82+.63)*e2.sc;
+    var shoulderY=e2.mesh.position.y+(.82+.63)*e2.sc;// hip + arm offset in body
     var aimPitch=Math.atan2(camera.position.y-shoulderY,Math.max(dp2,1));
     // PI/2 = arm forward horizontal, + aimPitch adjusts for height
     var aimArmAngle=(Math.PI/2)+aimPitch;
     aimArmAngle=Math.max(.3,Math.min(2.2,aimArmAngle));
-    var aimTarget=(canSee&&dp2<45)?1:0.4;
-    e2.aimLerp+=(aimTarget-e2.aimLerp)*Math.min(1,6*dt);
+    var aimTarget=(canSee&&dp2<45)?1:0.5;// 0.5 = weapon at hip-ready, 1 = full aim
+    e2.aimLerp+=(aimTarget-e2.aimLerp)*Math.min(1,8*dt);// faster aim transition
     // Left arm
     if(e2.jArmL){e2.jArmL.rotation.x=sinP2*wa*.6;e2.jElbowL.rotation.x=isMoving?Math.max(0,-sinP2*.4)*wa:.15+Math.sin(e2.bp)*.02}
     // Right arm — blend walk↔aim
@@ -719,8 +900,12 @@ function loop(){
     // Shoot recoil
     if(e2.shootFlash>0){e2.shootFlash-=dt*5;if(e2.jArmR)e2.jArmR.rotation.x+=e2.shootFlash*.2;if(e2.jElbowR)e2.jElbowR.rotation.x-=e2.shootFlash*.15}
   }// end enemy loop
-  if(G.toSpawn>0&&G.enemies.filter(function(e3){return e3.hp>0}).length<6){var b2=Math.min(G.toSpawn,2);spawnBatch(b2);G.toSpawn-=b2}
-  if(G.alive<=0&&G.toSpawn<=0){G.alive=-1;
+  // Boss attacks
+  for(var bi=0;bi<G.enemies.length;bi++){if(G.enemies[bi].isBoss&&G.enemies[bi].hp>0)doBossAttack(G.enemies[bi],now)}
+  updateBossHUD();
+  // Reinforcements
+  if(G.toSpawn>0&&G.enemies.filter(function(e3){return e3.hp>0}).length<6){var wd2=WAVE_DATA[G.wave];var b2=Math.min(G.toSpawn,2);spawnBatchTyped(b2,wd2&&wd2.types?wd2.types:['soldier']);G.toSpawn-=b2}
+  if(G.alive<=0&&G.toSpawn<=0&&!G._waveEnding){G._waveEnding=true;
     // ── ADAPTIVE AI: Analyze player performance and evolve ──
     var acc=G.shotsFired>0?(G.shotsHit/G.shotsFired):0;
     var survived=G.waveDmgTaken<40;
@@ -728,13 +913,11 @@ function loop(){
     var struggling=G.hp<30||G.waveDmgTaken>80;
     var ai=G.ai;
     ai.gen++;
-    // Evolve based on player performance
-    if(acc>.5){ai.speed=Math.min(2,ai.speed+.08);ai.flanking=Math.min(2,ai.flanking+.1)}// player aims well → enemies move faster & flank more
-    if(acc<.25){ai.speed=Math.max(.7,ai.speed-.05)}// player struggles to aim → slow down a bit
-    if(survived){ai.aggression=Math.min(2.5,ai.aggression+.12);ai.accuracy=Math.min(1.8,ai.accuracy+.06)}// player barely scratched → push harder
-    if(dominated){ai.count=Math.min(2,ai.count+.15);ai.aggression=Math.min(2.5,ai.aggression+.15)}// player dominating → more enemies, more aggressive
-    if(struggling){ai.aggression=Math.max(.5,ai.aggression-.1);ai.accuracy=Math.max(.5,ai.accuracy-.08)}// player struggling → ease off
-    // Show wave stats
+    if(acc>.5){ai.speed=Math.min(1.6,ai.speed+.06);ai.flanking=Math.min(1.6,ai.flanking+.08)}
+    if(acc<.25){ai.speed=Math.max(.7,ai.speed-.05)}
+    if(survived){ai.aggression=Math.min(2,ai.aggression+.1);ai.accuracy=Math.min(1.5,ai.accuracy+.05)}
+    if(dominated){ai.count=Math.min(1.5,ai.count+.1);ai.aggression=Math.min(2,ai.aggression+.1)}
+    if(struggling){ai.aggression=Math.max(.5,ai.aggression-.1);ai.accuracy=Math.max(.5,ai.accuracy-.08)}
     var wsEl=document.getElementById('waveStats');
     document.getElementById('wsAcc').textContent=Math.round(acc*100)+'%';
     document.getElementById('wsDmg').textContent=Math.round(G.waveDmgTaken);
@@ -747,10 +930,9 @@ function loop(){
     document.getElementById('wsAdapt').textContent=adaptMsgs.length>0?'NEURAL EVOLVED: '+adaptMsgs.join(', '):'BASELINE MAINTAINED';
     document.getElementById('aiGen').textContent='GEN '+ai.gen;
     wsEl.style.opacity='1';
-    // Reset wave tracking
     G.waveDmgTaken=0;G.waveKills=0;G.shotsFired=0;G.shotsHit=0;G.waveTime=now;
     setTimeout(function(){wsEl.style.opacity='0'},3000);
-    setTimeout(function(){if(G.on){G.hp=Math.min(G.maxHP||100,G.hp+30);G.armor=Math.min(G.maxArmor,G.armor+15);updateHP();updateArmor();startWave()}},3500);
+    setTimeout(function(){G._waveEnding=false;if(G.on){G.hp=Math.min(G.maxHP||100,G.hp+30);G.armor=Math.min(G.maxArmor,G.armor+15);updateHP();updateArmor();startWave()}},3500);
   }
   drawMM();renderer.render(scene,camera)}
 
@@ -820,11 +1002,12 @@ function useTactical(){
   }
 }
 
-function gameOver(){G.on=false;document.getElementById('finalKills').textContent=G.kills;document.getElementById('finalHS').textContent=G.hs;document.getElementById('finalStreak').textContent=G.bestStreak;document.getElementById('finalWaves').textContent=G.wave;document.getElementById('finalScore').textContent=G.score;document.getElementById('gameOver').style.display='flex';document.getElementById('waveStats').style.opacity='0'}
+function gameOver(){G.on=false;scene.fog=new THREE.FogExp2(0x0a0a14,0.016);document.getElementById('bossHud').style.display='none';document.getElementById('finalKills').textContent=G.kills;document.getElementById('finalHS').textContent=G.hs;document.getElementById('finalStreak').textContent=G.bestStreak;document.getElementById('finalWaves').textContent=G.wave;document.getElementById('finalScore').textContent=G.score;document.getElementById('gameOver').style.display='flex';document.getElementById('waveStats').style.opacity='0'}
 
 var jsInit=false;
 function startGame(){
-  document.getElementById('startScreen').style.display='none';document.getElementById('gameOver').style.display='none';
+  document.getElementById('startScreen').style.display='none';document.getElementById('gameOver').style.display='none';document.getElementById('victoryScreen').style.display='none';document.getElementById('bossHud').style.display='none';
+  scene.fog=new THREE.FogExp2(0x0a0a14,0.016);G.waveMod=null;
   ['hud','ammoHud','crosshair','minimap','aiHud'].forEach(function(id){document.getElementById(id).style.display='block'});
   ['fireBtn','reloadBtn','jumpBtn','settingsBtn','medkitBtn','grenadeBtn'].forEach(function(id){document.getElementById(id).style.display='flex'});
   var W2=WEAPONS[curWeapon];var perk=PERKS[curPerk];var tac=TACTICALS[curTactical];
@@ -838,7 +1021,7 @@ function startGame(){
   G.armor=0;G.medkitCD=0;G.grenadeCD=0;G.sprintStam=100;G.sprinting=false;G.lastDmgTime=0;
   G.shotsFired=0;G.shotsHit=0;G.waveDmgTaken=0;G.waveKills=0;G.waveTime=0;
   G.ai={aggression:1,accuracy:1,flanking:1,speed:1,count:1,gen:0};
-  G.reloading=false;G.vy=0;G.gnd=true;G.yaw=0;G.pitch=0;G.shake=0;G.lean=0;
+  G.reloading=false;G.vy=0;G.gnd=true;G.yaw=0;G.pitch=0;G.shake=0;G.lean=0;G._waveEnding=false;
   G.mrx=0;G.mry=0;G.mx=0;G.my=0;
   camera.position.set(0,G.pH,28);
   G.enemies.forEach(function(e){scene.remove(e.mesh)});G.enemies=[];
@@ -848,11 +1031,12 @@ function startGame(){
   updateHP();updateAmmo();updateScore();updateArmor();updateStam();
   document.getElementById('weaponName').textContent=W2.name;
   document.querySelector('.an .sl').textContent=' / '+W2.mag;
-  // Set tactical button label
-  document.getElementById('grenadeBtn').querySelector('.cd-text').textContent=tac.name;
+  // Set tactical button label and icon
+  var tacBtn=document.getElementById('grenadeBtn');
+  tacBtn.innerHTML=tac.icon+'<span class="cd-text">'+tac.name+'</span>';
+  tacBtn.className='ready';
   document.getElementById('medkitBtn').className='ready';document.getElementById('grenadeBtn').className='ready';
   document.getElementById('medkitBtn').querySelector('.cd-text').textContent='HEAL';
-  document.getElementById('grenadeBtn').querySelector('.cd-text').textContent='FRAG';
   if(!jsInit){initMoveJS();initLookJS();jsInit=true}
   G.on=true;clock.start();requestAnimationFrame(loop);startWave()}
 
@@ -867,6 +1051,11 @@ document.getElementById('deployBtn').addEventListener('click',function(){
 });
 document.getElementById('restartBtn').addEventListener('click',function(){
   document.getElementById('gameOver').style.display='none';
+  document.getElementById('loadoutScreen').style.display='flex';
+  buildLoadout();
+});
+document.getElementById('vicBtn').addEventListener('click',function(){
+  document.getElementById('victoryScreen').style.display='none';
   document.getElementById('loadoutScreen').style.display='flex';
   buildLoadout();
 });
