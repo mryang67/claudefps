@@ -505,10 +505,11 @@ var bGeo2=new THREE.SphereGeometry(.04,4,4);
 var tGeo=new THREE.CylinderGeometry(.008,.008,.3,4);tGeo.rotateX(Math.PI/2);
 function fireBullet(){if(G.ammo<=0||G.reloading)return;var now=performance.now();var W2=WEAPONS[curWeapon];var rate=W2.rate*(G.perkRateMult||1)*Math.max(.3,1-G.buffs.rate);if(now-G.lastFire<rate)return;G.lastFire=now;G.ammo--;G.shotsFired++;updateAmmo();G.weapRec=.025;G.pitch=Math.min(G.pitch+.005,Math.PI/2);G.shake=.004;mzL.intensity=4;setTimeout(function(){mzL.intensity=0},40);var mf=document.getElementById('muzzleFlash');mf.style.opacity='1';setTimeout(function(){mf.style.opacity='0'},40);
   var pellets=W2.pellets||1;var spreadMult=Math.max(.3,1-G.buffs.spread);
-  for(var pi2=0;pi2<pellets;pi2++){var dir=new THREE.Vector3(0,0,-1);dir.applyQuaternion(camera.quaternion);dir.x+=(Math.random()-.5)*W2.spread*spreadMult;dir.y+=(Math.random()-.5)*W2.spread*spreadMult;dir.normalize();var b=new THREE.Mesh(tGeo,new THREE.MeshBasicMaterial({color:0xffcc44}));b.position.copy(camera.position);b.quaternion.copy(camera.quaternion);scene.add(b);G.bullets.push({m:b,d:dir.clone(),s:90,l:2,p:true,wDmg:W2.dmg*(1+G.buffs.dmg)})}
+  for(var pi2=0;pi2<pellets;pi2++){var dir=new THREE.Vector3(0,0,-1);dir.applyQuaternion(camera.quaternion);dir.x+=(Math.random()-.5)*W2.spread*spreadMult;dir.y+=(Math.random()-.5)*W2.spread*spreadMult;dir.normalize();var b=new THREE.Mesh(tGeo,pbMat);b.position.copy(camera.position);b.quaternion.copy(camera.quaternion);scene.add(b);G.bullets.push({m:b,d:dir.clone(),s:90,l:2,p:true,wDmg:W2.dmg*(1+G.buffs.dmg)})}
   spawnShell();if(navigator.vibrate)navigator.vibrate(12);sfx('shoot');if(G.ammo<=0)reload()}
 
-function fireEnemyBullet(e){var shootOne=function(){if(e.hp<=0)return;var sp=e.mesh.position.clone();sp.y=1.3*e.sc;var dir=new THREE.Vector3();dir.subVectors(camera.position,sp).normalize();dir.x+=(Math.random()-.5)*e.acc;dir.y+=(Math.random()-.5)*e.acc*.7;dir.normalize();var b=new THREE.Mesh(bGeo2,new THREE.MeshBasicMaterial({color:e.type==='heavy'?0xff4400:0xff2200}));b.position.copy(sp);scene.add(b);G.bullets.push({m:b,d:dir,s:e.bs,l:3,p:false,dmg:e.dmg})};shootOne();if(e.type==='heavy')setTimeout(shootOne,120)}
+var ebMatR=new THREE.MeshBasicMaterial({color:0xff2200});var ebMatO=new THREE.MeshBasicMaterial({color:0xff4400});var pbMat=new THREE.MeshBasicMaterial({color:0xffcc44});
+function fireEnemyBullet(e){var shootOne=function(){if(e.hp<=0)return;var sp=e.mesh.position.clone();sp.y=1.3*e.sc;var dir=new THREE.Vector3();dir.subVectors(camera.position,sp).normalize();dir.x+=(Math.random()-.5)*e.acc;dir.y+=(Math.random()-.5)*e.acc*.7;dir.normalize();var b=new THREE.Mesh(bGeo2,e.type==='heavy'?ebMatO:ebMatR);b.position.copy(sp);scene.add(b);G.bullets.push({m:b,d:dir,s:e.bs,l:3,p:false,dmg:e.dmg})};shootOne();if(e.type==='heavy')setTimeout(shootOne,120)}
 
 var pGeo2=new THREE.BoxGeometry(.04,.04,.04);
 var pMatCache={};function getPMat(col){if(!pMatCache[col])pMatCache[col]=new THREE.MeshBasicMaterial({color:col,transparent:true});return pMatCache[col]}
@@ -560,7 +561,7 @@ function showWave(w){var b=document.getElementById('waveBanner');var total=G.mod
   document.getElementById('bossHud').style.display='none';
   b.style.opacity='1';setTimeout(function(){b.style.opacity='0'},2500)}
 function showStreak(c){if(c<2)return;var names=['','','DOUBLE KILL','TRIPLE KILL','MULTI KILL','MEGA KILL','ULTRA KILL','UNSTOPPABLE'];var el=document.getElementById('streakHud');document.getElementById('streakText').textContent=names[Math.min(c,7)]||'GODLIKE';document.getElementById('streakSub').textContent='x'+c+' STREAK';el.style.opacity='1';setTimeout(function(){el.style.opacity='0'},1500)}
-function showPM(t){var el=document.createElement('div');el.className='pm';var msgs={health:'+ HEALTH RESTORED',ammo:'+ AMMO RESUPPLIED',armor:'+ ARMOR PLATED',medkit:'+ MEDKIT USED (+50 HP)',flash:'&#9788; FLASH DEPLOYED',weapon:'&#9658; '+WEAPONS[curWeapon].name,summon:'&#9888; REINFORCEMENTS INCOMING',stomp:'&#9888; GROUND SLAM',boss_rage:'&#9888; BOSS ENRAGED'};el.innerHTML=msgs[t]||'+ PICKUP';document.body.appendChild(el);setTimeout(function(){el.remove()},1500)}
+function showPM(t){var el=document.createElement('div');el.className='pm';var msgs={health:'+ HEALTH RESTORED',ammo:'+ AMMO RESUPPLIED',armor:'+ ARMOR PLATED',medkit:'+ MEDKIT USED (+35 HP)',flash:'&#9788; FLASH DEPLOYED',weapon:'&#9658; '+WEAPONS[curWeapon].name,summon:'&#9888; REINFORCEMENTS INCOMING',stomp:'&#9888; GROUND SLAM — JUMP!',boss_rage:'&#9888; BOSS ENRAGED'};el.innerHTML=msgs[t]||'+ PICKUP';document.body.appendChild(el);setTimeout(function(){el.remove()},1500)}
 function reload(){var W2=WEAPONS[curWeapon];if(G.reloading||G.ammo===W2.mag)return;G.reloading=true;sfx('reload');document.getElementById('weaponName').textContent='RELOADING...';var rTime=W2.reload*(G.perkReloadMult||1)*Math.max(.3,1-G.buffs.reload);setTimeout(function(){G.ammo=W2.mag;G.reloading=false;updateAmmo();document.getElementById('weaponName').textContent=W2.name},rTime)}
 function drawMM(){var cv=document.getElementById('minimap');var ctx=cv.getContext('2d');var w=cv.width;var h=cv.height;ctx.clearRect(0,0,w,h);var s=w/(G.sz*2.4);var cx=w/2;var cy=h/2;ctx.fillStyle='rgba(10,10,20,0.7)';ctx.fillRect(0,0,w,h);ctx.fillStyle='rgba(120,120,130,0.4)';for(var i=0;i<W.length;i++){var wl=W[i];var wx=cx+(wl.x-camera.position.x)*s;var wz=cy+(wl.z-camera.position.z)*s;ctx.fillRect(wx-wl.hw*s,wz-wl.hd*s,wl.hw*2*s,wl.hd*2*s)}for(var j=0;j<G.enemies.length;j++){var e=G.enemies[j];if(e.hp<=0)continue;var ex=cx+(e.mesh.position.x-camera.position.x)*s;var ez=cy+(e.mesh.position.z-camera.position.z)*s;if(ex>2&&ex<w-2&&ez>2&&ez<h-2){if(e.isBoss){
   // Boss — pulsing diamond with unique color
@@ -745,7 +746,7 @@ function updateBossHUD(){
   else{document.getElementById('bossHud').style.display='none'}
 }
 
-function doBossAttack(e,now){
+function doBossAttack(e,now,dt){
   if(!e.isBoss||!e.bossData)return;
   var B=e.bossData;var dp2=camera.position.distanceTo(e.mesh.position);
   // Phase transitions
@@ -785,7 +786,7 @@ function doBossAttack(e,now){
       showPM('summon')}
     if(now-B.lastRage>(B.rageCD/B.phase)&&B.phase>=2){B.lastRage=now;
       for(var ri=0;ri<8;ri++){var ra=ri*Math.PI/4;var rd=new THREE.Vector3(Math.sin(ra),0,Math.cos(ra));
-        var rb=new THREE.Mesh(bGeo2,new THREE.MeshBasicMaterial({color:0xff0000}));
+        var rb=new THREE.Mesh(bGeo2,getPMat(0xff0000));
         rb.position.copy(e.mesh.position);rb.position.y=1.3*e.sc;scene.add(rb);
         G.bullets.push({m:rb,d:rd,s:40,l:4,p:false,dmg:20})}
       G.shake=.05;sfx('explode');spawnP(e.mesh.position.clone().setY(1),0xff0000,10);spawnRing(e.mesh.position,0xff2200,10,600)}}
@@ -864,7 +865,7 @@ function doBossAttack(e,now){
       if(!checkWall(otx,otz,1)){e.mesh.position.set(otx,0,otz);spawnP(e.mesh.position.clone().setY(1),0xaa44ff,8)}}
     if(now-B.lastRage>(B.rageCD/B.phase)&&B.phase>=2){B.lastRage=now;
       for(var ori=0;ori<12;ori++){var ora=ori*Math.PI/6;var ord=new THREE.Vector3(Math.sin(ora),0,Math.cos(ora));
-        var orb=new THREE.Mesh(bGeo2,new THREE.MeshBasicMaterial({color:0xaa00ff}));
+        var orb=new THREE.Mesh(bGeo2,getPMat(0xaa00ff));
         orb.position.copy(e.mesh.position);orb.position.y=1.3*e.sc;scene.add(orb);
         G.bullets.push({m:orb,d:ord,s:35,l:4,p:false,dmg:15})}
       G.shake=.06;sfx('explode');spawnP(e.mesh.position.clone().setY(1),0xaa00ff,10);spawnRing(e.mesh.position,0xaa44ff,12,700)}}
@@ -969,8 +970,10 @@ function startWave(){
     G.toSpawn=0;G.alive=totalCount;
     // Spawn boss
     var boss=createBoss(br.boss);G.enemies.push(boss);
-    // Spawn twin if needed
-    if(br.spawnTwin){var twin=createBoss(br.boss);G.enemies.push(twin)}
+    // Spawn twin at opposite spawn point
+    if(br.spawnTwin){var twin=createBoss(br.boss);G.enemies.push(twin);
+      var opSp=spawns[(spawns.length/2|0)+Math.random()*4|0];
+      twin.mesh.position.set(opSp.x,0,opSp.z)}
     // Spawn adds
     if(br.adds>0){spawnBatchTyped(br.adds,['soldier','scout','heavy'])}
     // Pickups
@@ -1336,10 +1339,10 @@ function loop(){
     if(e2.shootFlash>0){e2.shootFlash-=dt*5;if(e2.jArmR)e2.jArmR.rotation.x+=e2.shootFlash*.2;if(e2.jElbowR)e2.jElbowR.rotation.x-=e2.shootFlash*.15}
   }// end enemy loop
   // Boss attacks
-  for(var bi=0;bi<G.enemies.length;bi++){if(G.enemies[bi].isBoss&&G.enemies[bi].hp>0)doBossAttack(G.enemies[bi],now)}
+  for(var bi=0;bi<G.enemies.length;bi++){if(G.enemies[bi].isBoss&&G.enemies[bi].hp>0)doBossAttack(G.enemies[bi],now,dt)}
   updateBossHUD();
   // Reinforcements
-  if(G.toSpawn>0&&G.enemies.filter(function(e3){return e3.hp>0}).length<6){var wd2=WAVE_DATA[G.wave];var b2=Math.min(G.toSpawn,2);spawnBatchTyped(b2,wd2&&wd2.types?wd2.types:['soldier']);G.toSpawn-=b2}
+  if(G.toSpawn>0&&G.enemies.filter(function(e3){return e3.hp>0}).length<6){var wd2=G.mode==='bossrush'?null:WAVE_DATA[G.wave];var b2=Math.min(G.toSpawn,2);spawnBatchTyped(b2,wd2&&wd2.types?wd2.types:['soldier','scout','heavy']);G.toSpawn-=b2}
   if(G.alive<=0&&G.toSpawn<=0&&!G._waveEnding){G._waveEnding=true;
     // ── ADAPTIVE AI: Analyze player performance and evolve ──
     var acc=G.shotsFired>0?(G.shotsHit/G.shotsFired):0;
@@ -1375,8 +1378,11 @@ function loop(){
     setTimeout(function(){wsEl.style.opacity='0'},3000);
     var healAmt=G.mode==='bossrush'?50:25;var armorAmt=G.mode==='bossrush'?25:10;
     setTimeout(function(){G._waveEnding=false;if(G.on){
-      // Clean up dead enemies from previous wave
+      // Clean up dead enemies and old pickups from previous wave
       for(var ci3=G.enemies.length-1;ci3>=0;ci3--){if(G.enemies[ci3].hp<=0){scene.remove(G.enemies[ci3].mesh);G.enemies.splice(ci3,1)}}
+      for(var ci4=G.pickups.length-1;ci4>=0;ci4--){scene.remove(G.pickups[ci4].mesh);G.pickups.splice(ci4,1)}
+      for(var ci5=G.bullets.length-1;ci5>=0;ci5--){scene.remove(G.bullets[ci5].m);G.bullets.splice(ci5,1)}
+      G.shockwaves=[];
       G.hp=Math.min(G.maxHP||100,G.hp+healAmt);G.armor=Math.min(G.maxArmor,G.armor+armorAmt);updateHP();updateArmor();startWave()}},3500);
   }
   if(!G._mmFrame)G._mmFrame=0;G._mmFrame++;if(G._mmFrame%3===0)drawMM();renderer.render(scene,camera)}
