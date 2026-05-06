@@ -774,8 +774,8 @@ function doBossAttack(e,now,dt){
     if(now-B.lastStomp>(B.stompCD/B.phase)){B.lastStomp=now;G.shake=.08;
       sfx('explode');
       spawnP(e.mesh.position.clone().setY(.5),0xff4400,12);
-      spawnRing(e.mesh.position,0xff6600,25,800);
-      G.shockwaves.push({x:e.mesh.position.x,z:e.mesh.position.z,start:now,speed:28,maxR:45,dmg:25*B.phase,hit:false})}}
+      spawnRing(e.mesh.position,0xff6600,20,1000);
+      G.shockwaves.push({x:e.mesh.position.x,z:e.mesh.position.z,start:now,speed:20,maxR:30,dmg:25*B.phase,hit:false})}}
   // Phantom: teleport + rapid fire
   if(bt==='phantom'){
     if(now-B.lastTele>(B.teleCD/B.phase)){B.lastTele=now;
