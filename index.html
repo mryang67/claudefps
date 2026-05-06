@@ -49,12 +49,12 @@ canvas#game{display:block;width:100%!important;height:100%!important;position:fi
 .stam-bar-out{width:80px;height:3px;background:rgba(0,0,0,.5);border-radius:2px;overflow:hidden}
 .stam-bar-in{height:100%;width:100%;background:linear-gradient(90deg,#ffcc00,#ff8800);border-radius:2px;transition:width .15s}
 .stam-label{color:#998800;font-size:8px;letter-spacing:1px}
-#medkitBtn{position:fixed;bottom:150px;left:30px;z-index:60;width:72px;height:72px;border-radius:14px;background:rgba(0,180,80,.2);border:2.5px solid rgba(0,200,80,.5);display:none;flex-direction:column;align-items:center;justify-content:center;pointer-events:auto;color:#00dd66;font-size:26px;line-height:1;box-shadow:0 0 12px rgba(0,200,80,.15)}
-#medkitBtn .cd-text{font-size:10px;color:#bbb;letter-spacing:1px;margin-top:2px}
+#medkitBtn{position:fixed;bottom:245px;right:30px;z-index:60;width:62px;height:62px;border-radius:12px;background:rgba(0,180,80,.2);border:2.5px solid rgba(0,200,80,.5);display:none;flex-direction:column;align-items:center;justify-content:center;pointer-events:auto;color:#00dd66;font-size:22px;line-height:1;box-shadow:0 0 12px rgba(0,200,80,.15)}
+#medkitBtn .cd-text{font-size:9px;color:#bbb;letter-spacing:1px;margin-top:2px}
 #medkitBtn.ready{border-color:rgba(0,255,100,.6);background:rgba(0,180,80,.3)}
 #medkitBtn.cooldown{opacity:.5;border-color:rgba(100,100,100,.3)}
-#grenadeBtn{position:fixed;bottom:70px;left:30px;z-index:60;width:72px;height:72px;border-radius:14px;background:rgba(200,120,0,.2);border:2.5px solid rgba(255,150,0,.5);display:none;flex-direction:column;align-items:center;justify-content:center;pointer-events:auto;color:#ffaa00;font-size:24px;line-height:1;box-shadow:0 0 12px rgba(255,150,0,.15)}
-#grenadeBtn .cd-text{font-size:10px;color:#bbb;letter-spacing:1px;margin-top:2px}
+#grenadeBtn{position:fixed;bottom:245px;right:100px;z-index:60;width:62px;height:62px;border-radius:12px;background:rgba(200,120,0,.2);border:2.5px solid rgba(255,150,0,.5);display:none;flex-direction:column;align-items:center;justify-content:center;pointer-events:auto;color:#ffaa00;font-size:20px;line-height:1;box-shadow:0 0 12px rgba(255,150,0,.15)}
+#grenadeBtn .cd-text{font-size:9px;color:#bbb;letter-spacing:1px;margin-top:2px}
 #grenadeBtn.ready{border-color:rgba(255,180,0,.6);background:rgba(200,120,0,.3)}
 #grenadeBtn.cooldown{opacity:.5;border-color:rgba(100,100,100,.3)}
 .hw{color:#888;font-size:10px;letter-spacing:3px}.hw b{color:#ff6633;font-size:14px}
@@ -72,10 +72,10 @@ canvas#game{display:block;width:100%!important;height:100%!important;position:fi
 .jz{position:fixed;bottom:0;z-index:60;width:50%;height:50%;pointer-events:auto}.jz.l{left:0}.jz.r{right:0}
 .jb{position:absolute;width:100px;height:100px;border-radius:50%;border:1.5px solid rgba(255,255,255,.12);background:rgba(255,255,255,.03);display:none}
 .jt{position:absolute;width:40px;height:40px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.25),rgba(255,255,255,.08));border:1.5px solid rgba(255,255,255,.2);display:none}
-#fireBtn{position:fixed;bottom:140px;right:30px;z-index:60;width:100px;height:100px;border-radius:50%;background:radial-gradient(circle at 40% 40%,rgba(255,80,20,.5),rgba(255,40,0,.2));border:3px solid rgba(255,80,20,.6);display:none;align-items:center;justify-content:center;pointer-events:auto;box-shadow:0 0 18px rgba(255,68,0,.25)}
+#fireBtn{position:fixed;bottom:130px;right:30px;z-index:60;width:100px;height:100px;border-radius:50%;background:radial-gradient(circle at 40% 40%,rgba(255,80,20,.5),rgba(255,40,0,.2));border:3px solid rgba(255,80,20,.6);display:none;align-items:center;justify-content:center;pointer-events:auto;box-shadow:0 0 18px rgba(255,68,0,.25)}
 #fireBtn::after{content:'';display:block;width:0;height:0;border-left:18px solid rgba(255,255,255,.7);border-top:13px solid transparent;border-bottom:13px solid transparent;margin-left:4px}
-#reloadBtn{position:fixed;bottom:85px;right:135px;z-index:60;width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.12);border:2px solid rgba(255,255,255,.3);color:#ddd;font-size:13px;font-weight:bold;display:none;align-items:center;justify-content:center;pointer-events:auto}
-#jumpBtn{position:fixed;bottom:72px;left:50%;transform:translateX(-50%);z-index:60;width:58px;height:58px;border-radius:50%;background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.25);color:#bbb;font-size:20px;display:none;align-items:center;justify-content:center;pointer-events:auto}
+#reloadBtn{position:fixed;bottom:72px;right:130px;z-index:60;width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.12);border:2px solid rgba(255,255,255,.3);color:#ddd;font-size:12px;font-weight:bold;display:none;align-items:center;justify-content:center;pointer-events:auto}
+#jumpBtn{position:fixed;bottom:240px;left:30px;z-index:60;width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.25);color:#bbb;font-size:20px;display:none;align-items:center;justify-content:center;pointer-events:auto}
 #minimap{position:fixed;top:44px;right:8px;z-index:50;width:80px;height:80px;border:1px solid rgba(255,255,255,.15);border-radius:4px;background:rgba(0,0,0,.5);pointer-events:none}
 #hitMarker{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:55;pointer-events:none;opacity:0}
 .hl{position:absolute;width:14px;height:2px;background:#fff}
@@ -511,6 +511,21 @@ function fireEnemyBullet(e){var shootOne=function(){if(e.hp<=0)return;var sp=e.m
 
 var pGeo2=new THREE.BoxGeometry(.04,.04,.04);
 var pMatCache={};function getPMat(col){if(!pMatCache[col])pMatCache[col]=new THREE.MeshBasicMaterial({color:col,transparent:true});return pMatCache[col]}
+// Expanding shockwave ring VFX
+function spawnRing(pos,col,maxR,dur){
+  var ringGeo=new THREE.RingGeometry(0.5,0.8,24);
+  var ringMat=new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:.8,side:THREE.DoubleSide});
+  var ring=new THREE.Mesh(ringGeo,ringMat);
+  ring.position.copy(pos);ring.position.y=0.1;ring.rotation.x=-Math.PI/2;
+  scene.add(ring);
+  var start=performance.now();
+  var expandRing=function(){
+    var t=(performance.now()-start)/dur;
+    if(t>=1){scene.remove(ring);return}
+    var s=t*maxR;ring.scale.set(s,s,1);ringMat.opacity=.8*(1-t);
+    requestAnimationFrame(expandRing);
+  };expandRing();
+}
 function spawnP(pos,col,n){var mat=getPMat(col);for(var i=0;i<n;i++){var m=new THREE.Mesh(pGeo2,mat);m.position.copy(pos);scene.add(m);G.particles.push({m:m,v:new THREE.Vector3((Math.random()-.5)*10,Math.random()*8,(Math.random()-.5)*10),l:.4+Math.random()*.5})}}
 var shellGeo=new THREE.CylinderGeometry(.006,.006,.04,4);var shellMat=new THREE.MeshBasicMaterial({color:0xddaa44});
 function spawnShell(){var s=new THREE.Mesh(shellGeo,shellMat);s.position.copy(camera.position);s.position.y-=.1;scene.add(s);var r=new THREE.Vector3(1,0,0).applyQuaternion(camera.quaternion);G.particles.push({m:s,v:r.multiplyScalar(3).add(new THREE.Vector3(0,2+Math.random()*2,0)),l:.8+Math.random()*.4,spin:true})}
@@ -617,6 +632,86 @@ function createBoss(type){
   e.bossData.lastSummon=nt;e.bossData.lastStomp=nt;e.bossData.lastTele=nt;e.bossData.lastRage=nt;
   e.bossData.lastSync=nt;e.bossData.lastSwarm=nt;e.bossData.lastBurrow=nt;
   e.bossData.lastReflect=nt;e.bossData.lastPulse=nt;
+  // ── Boss-specific visuals ──
+  var bsc=B.sc;var bRoot=e.mesh;var bBody=e.jBody;
+  var glowMat=function(c,ei){return new THREE.MeshBasicMaterial({color:c,transparent:true,opacity:ei||.8})};
+  if(type==='commander'){
+    // Red cape/cloak behind body
+    bBody.add(mk(new THREE.BoxGeometry(.5*bsc,.6*bsc,.05*bsc),new THREE.MeshStandardMaterial({color:0x881111,roughness:.8}),0,.2*bsc,.22*bsc));
+    // Gold insignia on chest
+    bBody.add(mk(new THREE.BoxGeometry(.15*bsc,.15*bsc,.02*bsc),glowMat(0xffcc00),0,.55*bsc,-.2*bsc));
+  }
+  if(type==='titan'){
+    // Heavy plated shoulders
+    var plateMat=new THREE.MeshStandardMaterial({color:0x556677,metalness:.9,roughness:.2});
+    bBody.add(mk(new THREE.BoxGeometry(.2*bsc,.12*bsc,.2*bsc),plateMat,-.35*bsc,.7*bsc,0));
+    bBody.add(mk(new THREE.BoxGeometry(.2*bsc,.12*bsc,.2*bsc),plateMat,.35*bsc,.7*bsc,0));
+    // Glowing exhaust vents on back
+    bBody.add(mk(new THREE.CylinderGeometry(.06*bsc,.06*bsc,.15*bsc,6),glowMat(0xff4400),-.12*bsc,.55*bsc,.22*bsc));
+    bBody.add(mk(new THREE.CylinderGeometry(.06*bsc,.06*bsc,.15*bsc,6),glowMat(0xff4400),.12*bsc,.55*bsc,.22*bsc));
+  }
+  if(type==='phantom'){
+    // Sleek visor glow
+    if(e.jHead)e.jHead.add(mk(new THREE.BoxGeometry(.3*bsc,.04*bsc,.02*bsc),glowMat(0x4488ff),0,.2*bsc,-.2*bsc));
+    // Cloak/stealth panels
+    bBody.add(mk(new THREE.BoxGeometry(.12*bsc,.4*bsc,.02*bsc),new THREE.MeshStandardMaterial({color:0x222244,transparent:true,opacity:.5}),-.3*bsc,.3*bsc,.12*bsc));
+    bBody.add(mk(new THREE.BoxGeometry(.12*bsc,.4*bsc,.02*bsc),new THREE.MeshStandardMaterial({color:0x222244,transparent:true,opacity:.5}),.3*bsc,.3*bsc,.12*bsc));
+  }
+  if(type==='warlord'){
+    // Spiked shoulders
+    var spikeMat=new THREE.MeshStandardMaterial({color:0x880000,metalness:.7,roughness:.3});
+    bBody.add(mk(new THREE.CylinderGeometry(0,.08*bsc,.25*bsc,4),spikeMat,-.38*bsc,.8*bsc,0));
+    bBody.add(mk(new THREE.CylinderGeometry(0,.08*bsc,.25*bsc,4),spikeMat,.38*bsc,.8*bsc,0));
+    // Red glow core
+    bBody.add(mk(new THREE.SphereGeometry(.08*bsc,6,6),glowMat(0xff2200),0,.45*bsc,-.18*bsc));
+  }
+  if(type==='twins'){
+    // Green camo markings
+    bBody.add(mk(new THREE.BoxGeometry(.1*bsc,.1*bsc,.02*bsc),glowMat(0x44ff44,.5),-.18*bsc,.5*bsc,-.18*bsc));
+    bBody.add(mk(new THREE.BoxGeometry(.1*bsc,.1*bsc,.02*bsc),glowMat(0x44ff44,.5),.18*bsc,.5*bsc,-.18*bsc));
+  }
+  if(type==='hivemind'){
+    // Golden crown
+    if(e.jHead){
+      for(var ci2=0;ci2<5;ci2++){var ca=ci2*Math.PI*2/5;
+        e.jHead.add(mk(new THREE.CylinderGeometry(0,.03*bsc,.12*bsc,3),glowMat(0xffcc00),Math.sin(ca)*.16*bsc,.35*bsc,Math.cos(ca)*.16*bsc))}
+    }
+    // Wing-like protrusions
+    bBody.add(mk(new THREE.BoxGeometry(.04*bsc,.25*bsc,.15*bsc),new THREE.MeshStandardMaterial({color:0xaaaa44,transparent:true,opacity:.4}),-.35*bsc,.55*bsc,.1*bsc));
+    bBody.add(mk(new THREE.BoxGeometry(.04*bsc,.25*bsc,.15*bsc),new THREE.MeshStandardMaterial({color:0xaaaa44,transparent:true,opacity:.4}),.35*bsc,.55*bsc,.1*bsc));
+  }
+  if(type==='shield'){
+    // Blue energy shield ring around body
+    var shieldRing=mk(new THREE.TorusGeometry(.4*bsc,.03*bsc,6,16),glowMat(0x4488ff,.6),0,.4*bsc,0);
+    shieldRing.rotation.x=Math.PI/2;bBody.add(shieldRing);
+    // Glowing core
+    bBody.add(mk(new THREE.SphereGeometry(.1*bsc,6,6),glowMat(0x44aaff),0,.45*bsc,-.15*bsc));
+  }
+  if(type==='omega'){
+    // Purple glowing core
+    bBody.add(mk(new THREE.SphereGeometry(.12*bsc,6,6),glowMat(0xaa44ff),0,.45*bsc,-.16*bsc));
+    // Tech antenna
+    bBody.add(mk(new THREE.CylinderGeometry(.01*bsc,.01*bsc,.3*bsc,4),glowMat(0xaa44ff),0,.95*bsc,0));
+    bBody.add(mk(new THREE.SphereGeometry(.03*bsc,4,4),glowMat(0xff44ff),0,1.1*bsc,0));
+  }
+  if(type==='architect'){
+    // Towering dark entity — purple glowing eyes, energy tendrils, aura
+    if(e.jHead){
+      e.jHead.add(mk(new THREE.SphereGeometry(.06*bsc,4,4),glowMat(0xaa00ff),-.08*bsc,.22*bsc,-.18*bsc));// left eye
+      e.jHead.add(mk(new THREE.SphereGeometry(.06*bsc,4,4),glowMat(0xaa00ff),.08*bsc,.22*bsc,-.18*bsc));// right eye
+    }
+    // Energy tendrils from shoulders
+    var tMat=glowMat(0x6600aa,.5);
+    bBody.add(mk(new THREE.CylinderGeometry(.02*bsc,.01*bsc,.8*bsc,4),tMat,-.4*bsc,.7*bsc,.15*bsc));
+    bBody.add(mk(new THREE.CylinderGeometry(.02*bsc,.01*bsc,.8*bsc,4),tMat,.4*bsc,.7*bsc,.15*bsc));
+    // Floating rings
+    var archRing=mk(new THREE.TorusGeometry(.6*bsc,.02*bsc,6,16),glowMat(0x8800ff,.4),0,.6*bsc,0);
+    archRing.rotation.x=Math.PI/2;bBody.add(archRing);
+    var archRing2=mk(new THREE.TorusGeometry(.45*bsc,.015*bsc,6,12),glowMat(0xaa44ff,.3),0,.3*bsc,0);
+    archRing2.rotation.x=Math.PI/2;archRing2.rotation.z=.3;bBody.add(archRing2);
+    // Dark aura core
+    bBody.add(mk(new THREE.SphereGeometry(.15*bsc,6,6),glowMat(0x440088,.7),0,.45*bsc,0));
+  }
   // Show boss HUD
   document.getElementById('bossHud').style.display='block';
   document.getElementById('bossName').textContent=B.name;
@@ -653,13 +748,15 @@ function doBossAttack(e,now){
     if(now-B.lastStomp>(B.stompCD/B.phase)&&dp2<15){B.lastStomp=now;G.shake=.08;
       // AOE damage to player if close
       if(dp2<10){takeDamage(22*B.phase);showPM('stomp')}
-      spawnP(e.mesh.position.clone().setY(.5),0xff4400,12)}}
+      spawnP(e.mesh.position.clone().setY(.5),0xff4400,12);
+      spawnRing(e.mesh.position,0xff6600,15,800)}}
   // Phantom: teleport + rapid fire
   if(bt==='phantom'){
     if(now-B.lastTele>(B.teleCD/B.phase)){B.lastTele=now;
+      spawnP(e.mesh.position.clone().setY(1),0x4444ff,6);spawnRing(e.mesh.position,0x4444ff,6,500);// departure
       var ta=Math.random()*6.28;var td=8+Math.random()*12;
       var tx=camera.position.x+Math.cos(ta)*td;var tz=camera.position.z+Math.sin(ta)*td;
-      if(!checkWall(tx,tz,1)){e.mesh.position.set(tx,0,tz);spawnP(e.mesh.position.clone().setY(1),0x4444ff,8)}}}
+      if(!checkWall(tx,tz,1)){e.mesh.position.set(tx,0,tz);spawnP(e.mesh.position.clone().setY(1),0x8888ff,8);spawnRing(e.mesh.position,0x6666ff,5,400);sfx('explode')}}}
   // Warlord: rockets + summon + rage mode
   if(bt==='warlord'){
     if(now-B.lastSummon>(B.summonCD/B.phase)){B.lastSummon=now;
@@ -673,7 +770,7 @@ function doBossAttack(e,now){
         var rb=new THREE.Mesh(bGeo2,new THREE.MeshBasicMaterial({color:0xff0000}));
         rb.position.copy(e.mesh.position);rb.position.y=1.3*e.sc;scene.add(rb);
         G.bullets.push({m:rb,d:rd,s:40,l:4,p:false,dmg:20})}
-      G.shake=.05;sfx('explode');spawnP(e.mesh.position.clone().setY(1),0xff0000,10)}}
+      G.shake=.05;sfx('explode');spawnP(e.mesh.position.clone().setY(1),0xff0000,10);spawnRing(e.mesh.position,0xff2200,10,600)}}
   // ── BOSS RUSH EXCLUSIVE ATTACKS ──
   // Twins: synchronized burst — fires 3 rapid shots
   if(bt==='twins'){
@@ -691,10 +788,11 @@ function doBossAttack(e,now){
         var hpos=new THREE.Vector3(e.mesh.position.x+Math.cos(ha)*hd2,0,e.mesh.position.z+Math.sin(ha)*hd2);
         if(!checkWall(hpos.x,hpos.z,1)){var he=createEnemy(hpos,'scout');G.enemies.push(he);G.alive++}}}
     if(now-B.lastBurrow>(B.burrowCD/B.phase)){B.lastBurrow=now;
-      // Burrow — teleport behind player
-      var ba2=Math.atan2(camera.position.x-e.mesh.position.x,camera.position.z-e.mesh.position.z)+Math.PI;
-      var bd2=6+Math.random()*4;var bx=camera.position.x+Math.sin(ba2)*bd2;var bz=camera.position.z+Math.cos(ba2)*bd2;
-      if(!checkWall(bx,bz,1.5)){e.mesh.position.set(bx,0,bz);spawnP(e.mesh.position.clone().setY(1),0xaaaa00,8);sfx('explode');G.shake=.04}}}
+      // Burrow — teleport behind where player is LOOKING
+      var behindAng=G.yaw+Math.PI;
+      var bd2=6+Math.random()*4;var bx=camera.position.x+Math.sin(behindAng)*bd2;var bz=camera.position.z-Math.cos(behindAng)*bd2;
+      spawnP(e.mesh.position.clone().setY(1),0xaaaa00,6);// departure VFX
+      if(!checkWall(bx,bz,1.5)){e.mesh.position.set(bx,0,bz);spawnP(e.mesh.position.clone().setY(1),0xffff00,8);sfx('explode');G.shake=.04}}}
   // Aegis Prime: shield reflect + energy pulse
   if(bt==='shield'){
     if(now-B.lastReflect>(B.reflectCD/B.phase)&&!B.shielded){B.shielded=true;B.lastReflect=now;B.shieldEnd=now+2500;
@@ -709,8 +807,7 @@ function doBossAttack(e,now){
         var pb=new THREE.Mesh(bGeo2,new THREE.MeshBasicMaterial({color:0x4488ff}));
         pb.position.copy(e.mesh.position);pb.position.y=1.3*e.sc;scene.add(pb);
         G.bullets.push({m:pb,d:pd2,s:30,l:3,p:false,dmg:15})}
-      sfx('explode');G.shake=.04}}
-  // Omega Unit: uses ALL attacks
+      sfx('explode');G.shake=.04;spawnRing(e.mesh.position,0x4488ff,12,600)}}
   if(bt==='omega'){
     if(now-B.lastSummon>(B.summonCD/B.phase)){B.lastSummon=now;
       var ot=['soldier','heavy','scout'];for(var oi=0;oi<B.phase+1;oi++){
@@ -720,7 +817,7 @@ function doBossAttack(e,now){
       showPM('summon')}
     if(now-B.lastStomp>(B.stompCD/B.phase)&&dp2<15){B.lastStomp=now;G.shake=.08;
       if(dp2<10){takeDamage(25*B.phase);showPM('stomp')}
-      spawnP(e.mesh.position.clone().setY(.5),0xff4400,12)}
+      spawnP(e.mesh.position.clone().setY(.5),0xff4400,12);spawnRing(e.mesh.position,0xff6600,15,800)}
     if(now-B.lastTele>(B.teleCD/B.phase)){B.lastTele=now;
       var ota=Math.random()*6.28;var otd=8+Math.random()*10;
       var otx=camera.position.x+Math.cos(ota)*otd;var otz=camera.position.z+Math.sin(ota)*otd;
@@ -730,7 +827,7 @@ function doBossAttack(e,now){
         var orb=new THREE.Mesh(bGeo2,new THREE.MeshBasicMaterial({color:0xaa00ff}));
         orb.position.copy(e.mesh.position);orb.position.y=1.3*e.sc;scene.add(orb);
         G.bullets.push({m:orb,d:ord,s:35,l:4,p:false,dmg:22})}
-      G.shake=.06;sfx('explode');spawnP(e.mesh.position.clone().setY(1),0xaa00ff,10)}}
+      G.shake=.06;sfx('explode');spawnP(e.mesh.position.clone().setY(1),0xaa00ff,10);spawnRing(e.mesh.position,0xaa44ff,12,700)}}
   // ── THE ARCHITECT — REALITY MANIPULATOR ──
   if(bt==='architect'){
     // Phase transitions with reality effects
@@ -771,12 +868,13 @@ function doBossAttack(e,now){
         var sb=new THREE.Mesh(bGeo2,getPMat(0xff00ff));
         sb.position.copy(e.mesh.position);sb.position.y=2;scene.add(sb);
         G.bullets.push({m:sb,d:sd,s:18,l:6,p:false,dmg:12})}
-      G.shake=.04}
+      G.shake=.04;spawnRing(e.mesh.position,0xff00ff,18,1000)}
     // GRAVITY PULL — drag player toward boss
     if(now-B.lastPull>(B.pullCD/B.phase)){B.lastPull=now;
       G._gravPull={x:e.mesh.position.x,z:e.mesh.position.z,end:now+2500,str:4};
       sfx('boss');G.shake=.05;
-      spawnP(e.mesh.position.clone().setY(3),0x8800ff,10)}
+      spawnP(e.mesh.position.clone().setY(3),0x8800ff,10);
+      spawnRing(e.mesh.position,0x8800ff,20,1200)}
     // SUMMON ELITES
     if(now-B.lastSummon>(B.summonCD/B.phase)){B.lastSummon=now;
       var et2=['heavy','soldier','scout'];
@@ -816,10 +914,11 @@ function startWave(){
       victory();return;
     }
     var br=BOSS_RUSH_WAVES[brIdx];
-    showWave(G.wave);
+    showWave(G.wave);var brShowId=G.wave;
     G.waveMod=null;scene.fog=new THREE.FogExp2(0x0a0a14,0.016);
     document.getElementById('minimap').style.display='block';
     setTimeout(function(){
+      if(G.wave!==brShowId)return;
       var b2=document.getElementById('waveBanner');
       b2.querySelector('.wbs').textContent=br.name;
       b2.querySelector('.wbm').textContent='ELIMINATE THE BOSS';
@@ -854,9 +953,11 @@ function startWave(){
   // Determine enemy count
   var c=Math.round(wd.count*(G.ai.count||1));
   G.toSpawn=c;G.alive=c;
-  // Show wave info
+  // Show wave info — single combined display
   showWave(G.wave);
+  var showId=G.wave;
   setTimeout(function(){
+    if(G.wave!==showId)return;// prevent stale notification from previous wave
     var b=document.getElementById('waveBanner');
     b.querySelector('.wbs').textContent=wd.name;
     b.querySelector('.wbm').textContent=wd.desc;
@@ -1025,7 +1126,7 @@ function loop(){
       if(dist2<hitR*hitR){
         _v.copy(e.mesh.position);_v.y+=1.78*e.sc;
         var hdR=.35*e.sc;var hdDist=(closestX-_v.x)*(closestX-_v.x)+(closestY-_v.y)*(closestY-_v.y)+(closestZ-_v.z)*(closestZ-_v.z);
-        var hd=hdDist<hdR*hdR;var wDm=b.wDmg||1;var dmg=hd?e.maxHp:(28+Math.random()*17)*wDm;
+        var hd=hdDist<hdR*hdR;var wDm=b.wDmg||1;var baseDmg=(28+Math.random()*17)*wDm;var dmg=hd?baseDmg*3:baseDmg;
         e.hp-=dmg;e.ft=.15;G.shotsHit++;showHit(hd);sfx(hd?'headshot':'hit');showDmgNum(b.m.position.clone(),dmg,hd);spawnP(b.m.position,0xff0000,3);
         // Aegis shield reflect — bounce damage back to player
         if(e.isBoss&&e.bossData&&e.bossData.shielded){e.hp+=dmg;takeDamage(Math.ceil(dmg*.4));spawnP(b.m.position,0x4488ff,4)}
