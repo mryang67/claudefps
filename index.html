@@ -625,16 +625,16 @@ var BOSSES={
   omega:{name:'OMEGA UNIT',hp:2200,spd:2.0,sc:2.0,si:350,acc:.04,dmg:16,bs:45,color:0x880088,
     attacks:['all'],summonCD:12000,lastSummon:0,stompCD:8000,lastStomp:0,teleCD:10000,lastTele:0,rageCD:14000,lastRage:0,overloadCD:9000,lastOverload:0,hackCD:16000,lastHack:0,phase:1},
   // ── SECRET BOSS ──
-  architect:{name:'THE ARCHITECT',hp:6000,spd:0,sc:12.0,si:300,acc:.05,dmg:20,bs:35,color:0x220033,
-    attacks:['reality'],warpCD:12000,lastWarp:0,voidCD:6000,lastVoid:0,
-    spiralCD:4000,lastSpiral:0,pullCD:8000,lastPull:0,summonCD:15000,lastSummon:0,phase:1},
+  architect:{name:'THE ARCHITECT',hp:6000,spd:0,sc:12.0,si:250,acc:.04,dmg:22,bs:35,color:0x220033,
+    attacks:['reality'],warpCD:18000,lastWarp:0,voidCD:4000,lastVoid:0,
+    spiralCD:3500,lastSpiral:0,pullCD:7000,lastPull:0,summonCD:12000,lastSummon:0,slamCD:5000,lastSlam:0,phase:1},
 };
 
 // Boss Rush sequence
 var BOSS_RUSH_WAVES=[
   {boss:'commander',name:'ROUND 1: COMMANDER VOSS',adds:2},
   {boss:'twins',name:'ROUND 2: THE TWINS',adds:0,spawnTwin:true},
-  {boss:'titan',name:'ROUND 3: TITAN MK-II',adds:3},
+  {boss:'titan',name:'ROUND 3: TITAN MK-II',adds:0},
   {boss:'hivemind',name:'ROUND 4: HIVE QUEEN',adds:0},
   {boss:'phantom',name:'ROUND 5: THE PHANTOM',adds:2},
   {boss:'shield',name:'ROUND 6: AEGIS PRIME',adds:2},
@@ -657,7 +657,7 @@ function createBoss(type){
   e.bossData.lastSummon=nt;e.bossData.lastStomp=nt;e.bossData.lastTele=nt;e.bossData.lastRage=nt;
   e.bossData.lastSync=nt;e.bossData.lastSwarm=nt;e.bossData.lastBurrow=nt;e.bossData.lastAcid=nt;e.bossData.lastScream=nt;
   e.bossData.lastReflect=nt;e.bossData.lastPulse=nt;e.bossData.lastCharge=nt;
-  e.bossData.lastOverload=nt;e.bossData.lastHack=nt;
+  e.bossData.lastOverload=nt;e.bossData.lastHack=nt;e.bossData.lastSlam=nt;
   // ── Boss-specific visuals ──
   var bsc=B.sc;var bRoot=e.mesh;var bBody=e.jBody;
   var glowMat=function(c,ei){return new THREE.MeshBasicMaterial({color:c,transparent:true,opacity:ei||.8})};
@@ -721,22 +721,48 @@ function createBoss(type){
     bBody.add(mk(new THREE.SphereGeometry(.03*bsc,4,4),glowMat(0xff44ff),0,1.1*bsc,0));
   }
   if(type==='architect'){
-    // Towering dark entity — purple glowing eyes, energy tendrils, aura
+    var tMat=glowMat(0x6600aa,.6);var eMat=glowMat(0xcc00ff);
+    // Massive glowing eyes
     if(e.jHead){
-      e.jHead.add(mk(new THREE.SphereGeometry(.06*bsc,4,4),glowMat(0xaa00ff),-.08*bsc,.22*bsc,-.18*bsc));// left eye
-      e.jHead.add(mk(new THREE.SphereGeometry(.06*bsc,4,4),glowMat(0xaa00ff),.08*bsc,.22*bsc,-.18*bsc));// right eye
+      e.jHead.add(mk(new THREE.SphereGeometry(.1*bsc,6,4),eMat,-.1*bsc,.22*bsc,-.19*bsc));
+      e.jHead.add(mk(new THREE.SphereGeometry(.1*bsc,6,4),eMat,.1*bsc,.22*bsc,-.19*bsc));
+      // Third eye
+      e.jHead.add(mk(new THREE.SphereGeometry(.06*bsc,4,4),glowMat(0xff00ff),0,.35*bsc,-.16*bsc));
+      // Crown of spikes
+      for(var ci7=0;ci7<8;ci7++){var ca2=ci7*Math.PI*2/8;
+        var spike=mk(new THREE.CylinderGeometry(0,.03*bsc,.3*bsc,3),tMat,Math.sin(ca2)*.2*bsc,.4*bsc,Math.cos(ca2)*.2*bsc);
+        spike.rotation.z=Math.sin(ca2)*.3;spike.rotation.x=Math.cos(ca2)*.3;
+        e.jHead.add(spike)}
     }
-    // Energy tendrils from shoulders
-    var tMat=glowMat(0x6600aa,.5);
-    bBody.add(mk(new THREE.CylinderGeometry(.02*bsc,.01*bsc,.8*bsc,4),tMat,-.4*bsc,.7*bsc,.15*bsc));
-    bBody.add(mk(new THREE.CylinderGeometry(.02*bsc,.01*bsc,.8*bsc,4),tMat,.4*bsc,.7*bsc,.15*bsc));
+    // 4 TENTACLE ARMS — stored for animation
+    e._tentacles=[];
+    var tentPositions=[
+      {x:-.45,z:-.1,ang:-.3},{x:.45,z:-.1,ang:.3},// front pair
+      {x:-.4,z:.15,ang:-.5},{x:.4,z:.15,ang:.5}// back pair
+    ];
+    for(var ti3=0;ti3<4;ti3++){
+      var tp=tentPositions[ti3];
+      var tentGrp=new THREE.Group();tentGrp.position.set(tp.x*bsc,.55*bsc,tp.z*bsc);
+      // Upper segment
+      var seg1=mk(new THREE.CylinderGeometry(.04*bsc,.03*bsc,.5*bsc,5),tMat,0,-.25*bsc,0);tentGrp.add(seg1);
+      // Mid joint
+      var joint1=new THREE.Group();joint1.position.set(0,-.5*bsc,0);tentGrp.add(joint1);
+      joint1.add(mk(new THREE.CylinderGeometry(.03*bsc,.02*bsc,.45*bsc,4),tMat,0,-.22*bsc,0));
+      // Lower joint
+      var joint2=new THREE.Group();joint2.position.set(0,-.45*bsc,0);joint1.add(joint2);
+      joint2.add(mk(new THREE.CylinderGeometry(.02*bsc,.01*bsc,.35*bsc,4),glowMat(0x8800ff,.7),0,-.17*bsc,0));
+      // Tip claw
+      joint2.add(mk(new THREE.CylinderGeometry(0,.015*bsc,.12*bsc,3),eMat,0,-.38*bsc,0));
+      bBody.add(tentGrp);
+      e._tentacles.push({grp:tentGrp,j1:joint1,j2:joint2,phase:ti3*1.5,baseAng:tp.ang});
+    }
     // Floating rings
-    var archRing=mk(new THREE.TorusGeometry(.6*bsc,.02*bsc,6,16),glowMat(0x8800ff,.4),0,.6*bsc,0);
+    var archRing=mk(new THREE.TorusGeometry(.6*bsc,.025*bsc,6,16),glowMat(0x8800ff,.4),0,.6*bsc,0);
     archRing.rotation.x=Math.PI/2;bBody.add(archRing);
-    var archRing2=mk(new THREE.TorusGeometry(.45*bsc,.015*bsc,6,12),glowMat(0xaa44ff,.3),0,.3*bsc,0);
+    var archRing2=mk(new THREE.TorusGeometry(.45*bsc,.02*bsc,6,12),glowMat(0xaa44ff,.3),0,.3*bsc,0);
     archRing2.rotation.x=Math.PI/2;archRing2.rotation.z=.3;bBody.add(archRing2);
     // Dark aura core
-    bBody.add(mk(new THREE.SphereGeometry(.15*bsc,6,6),glowMat(0x440088,.7),0,.45*bsc,0));
+    bBody.add(mk(new THREE.SphereGeometry(.18*bsc,6,6),glowMat(0x440088,.5),0,.45*bsc,0));
   }
   // Show boss HUD
   document.getElementById('bossHud').style.display='block';
@@ -775,7 +801,7 @@ function doBossAttack(e,now,dt){
       sfx('explode');
       spawnP(e.mesh.position.clone().setY(.5),0xff4400,12);
       spawnRing(e.mesh.position,0xff6600,20,1000);
-      G.shockwaves.push({x:e.mesh.position.x,z:e.mesh.position.z,start:now,speed:20,maxR:30,dmg:25*B.phase,hit:false})}}
+      G.shockwaves.push({x:e.mesh.position.x,z:e.mesh.position.z,start:now,speed:20,maxR:35,dmg:25*B.phase,hit:false})}}
   // Phantom: teleport + rapid fire
   if(bt==='phantom'){
     if(now-B.lastTele>(B.teleCD/B.phase)){B.lastTele=now;
@@ -924,42 +950,57 @@ function doBossAttack(e,now,dt){
   }
   // ── THE ARCHITECT — REALITY MANIPULATOR ──
   if(bt==='architect'){
-    // Phase transitions with reality effects
-    if(hpPct<.6&&B.phase===1){B.phase=2;showPM('boss_rage');
-      scene.fog=new THREE.FogExp2(0x1a0033,0.01);sfx('boss')}
-    if(hpPct<.25&&B.phase===2){B.phase=3;
-      scene.fog=new THREE.FogExp2(0x220011,0.015);sfx('boss')}
-    // REALITY WARP — invert controls + screen glitch
+    if(hpPct<.6&&B.phase===1){B.phase=2;showPM('boss_rage');scene.fog=new THREE.FogExp2(0x1a0033,0.01);sfx('boss')}
+    if(hpPct<.25&&B.phase===2){B.phase=3;scene.fog=new THREE.FogExp2(0x220011,0.015);sfx('boss')}
+    // Animate tentacles — eerie swaying
+    if(e._tentacles){for(var tn=0;tn<e._tentacles.length;tn++){var tt=e._tentacles[tn];
+      var tp2=now*.001+tt.phase;
+      tt.grp.rotation.z=tt.baseAng+Math.sin(tp2*.8)*.25;
+      tt.grp.rotation.x=Math.sin(tp2*.6+tn)*.2;
+      tt.j1.rotation.x=-.3+Math.sin(tp2*1.2)*.3;
+      tt.j2.rotation.x=-.2+Math.sin(tp2*1.5+1)*.35;
+    }}
+    // REALITY WARP — less frequent, still disorienting
     if(now-B.lastWarp>(B.warpCD/B.phase)){B.lastWarp=now;
       G._controlInvert=true;document.body.classList.add('warp-glitch');sfx('boss');G.shake=.06;
       setTimeout(function(){document.body.classList.add('warp-invert')},500);
-      setTimeout(function(){G._controlInvert=false;document.body.classList.remove('warp-invert');document.body.classList.remove('warp-glitch')},3500)}
-    // VOID RAIN — projectiles rain down onto player's area from above
+      setTimeout(function(){G._controlInvert=false;document.body.classList.remove('warp-invert');document.body.classList.remove('warp-glitch')},3000)}
+    // VOID RAIN — concentrated deadly barrage
     if(now-B.lastVoid>(B.voidCD/B.phase)){B.lastVoid=now;
-      for(var vi=0;vi<(6+B.phase*3);vi++){
-        var vx=camera.position.x+(Math.random()-.5)*20;var vz=camera.position.z+(Math.random()-.5)*20;
+      var vCount=8+B.phase*4;
+      for(var vi=0;vi<vCount;vi++){
+        var vx=camera.position.x+(Math.random()-.5)*14;var vz=camera.position.z+(Math.random()-.5)*14;
         var vb=new THREE.Mesh(bGeo2,getPMat(0xaa00ff));
-        vb.position.set(vx,15+Math.random()*5,vz);scene.add(vb);
-        G.bullets.push({m:vb,d:new THREE.Vector3((Math.random()-.5)*.3,-1,(Math.random()-.5)*.3).normalize(),s:20,l:4,p:false,dmg:15})}
-      sfx('explode');G.shake=.03}
-    // DIMENSIONAL SPIRAL — expanding ring from player's position
+        vb.position.set(vx,12+Math.random()*8,vz);scene.add(vb);
+        G.bullets.push({m:vb,d:new THREE.Vector3((Math.random()-.5)*.2,-1,(Math.random()-.5)*.2).normalize(),s:25,l:3,p:false,dmg:18})}
+      sfx('explode');G.shake=.04}
+    // HAND SLAM — tentacle slams into arena, creates shockwave at impact
+    if(now-B.lastSlam>(B.slamCD/B.phase)){B.lastSlam=now;
+      var slamX=camera.position.x+(Math.random()-.5)*10;var slamZ=camera.position.z+(Math.random()-.5)*10;
+      G.shockwaves.push({x:slamX,z:slamZ,start:now+400,speed:16,maxR:20,dmg:30*B.phase,hit:false});
+      spawnRing(new THREE.Vector3(slamX,0,slamZ),0xaa00ff,20,800);
+      sfx('explode');G.shake=.06;
+      // Animate a tentacle slamming
+      if(e._tentacles){var st=e._tentacles[Math.random()*4|0];st.j1.rotation.x=-.8;st.j2.rotation.x=-1;
+        setTimeout(function(){if(st){st.j1.rotation.x=-.3;st.j2.rotation.x=-.2}},600)}}
+    // DIMENSIONAL SPIRAL — at player position
     if(now-B.lastSpiral>(B.spiralCD/B.phase)){B.lastSpiral=now;
-      var spiralN=8+B.phase*4;var spawnPos=camera.position.clone();spawnPos.y=1;
+      var spiralN=10+B.phase*4;var spawnPos=camera.position.clone();spawnPos.y=1;
       for(var si2=0;si2<spiralN;si2++){
         var sa2=si2*(Math.PI*2/spiralN)+(now*.001);
         var sd=new THREE.Vector3(Math.sin(sa2),0,Math.cos(sa2));
         var sb=new THREE.Mesh(bGeo2,getPMat(0xff00ff));
         sb.position.copy(spawnPos);scene.add(sb);
-        G.bullets.push({m:sb,d:sd,s:14,l:5,p:false,dmg:10})}
+        G.bullets.push({m:sb,d:sd,s:16,l:5,p:false,dmg:12})}
       G.shake=.04;spawnRing(spawnPos,0xff00ff,18,1000)}
-    // GRAVITY PULL — drag player toward map edge (boss position)
+    // GRAVITY PULL — stronger drag
     if(now-B.lastPull>(B.pullCD/B.phase)){B.lastPull=now;
-      G._gravPull={x:e.mesh.position.x,z:e.mesh.position.z,end:now+2500,str:5};
+      G._gravPull={x:e.mesh.position.x,z:e.mesh.position.z,end:now+3000,str:6};
       sfx('boss');G.shake=.05;spawnRing(camera.position,0x8800ff,20,1200)}
-    // SUMMON ELITES inside the arena
+    // SUMMON ELITES
     if(now-B.lastSummon>(B.summonCD/B.phase)){B.lastSummon=now;
       var et2=['heavy','soldier','scout'];
-      for(var ai2=0;ai2<B.phase;ai2++){
+      for(var ai2=0;ai2<B.phase+1;ai2++){
         var aa2=Math.random()*6.28;var ad2=15+Math.random()*10;
         var apos=new THREE.Vector3(Math.cos(aa2)*ad2,0,Math.sin(aa2)*ad2);
         if(!checkWall(apos.x,apos.z,1)){var ae=createEnemy(apos,et2[ai2%3]);ae.hp*=1.5;ae.maxHp*=1.5;G.enemies.push(ae);G.alive++}}
