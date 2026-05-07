@@ -263,8 +263,8 @@ async function loadProgress(){
 loadProgress();
 var BUFFS=[
   {key:'maxhp',name:'+12 MAX HP',apply:function(){G.maxHP=(G.maxHP||100)+12;G.hp=Math.min(G.maxHP,G.hp+12);updateHP()}},
-  {key:'dmg',name:'+8% DAMAGE',apply:function(){G.buffs.dmg=Math.min(.80,G.buffs.dmg+.08)}},
-  {key:'rate',name:'+8% FIRE RATE',apply:function(){G.buffs.rate=Math.min(.50,G.buffs.rate+.08)}},
+  {key:'dmg',name:'+8% DAMAGE',apply:function(){G.buffs.dmg=Math.min(.60,G.buffs.dmg+.08)}},
+  {key:'rate',name:'+8% FIRE RATE',apply:function(){G.buffs.rate=Math.min(.40,G.buffs.rate+.08)}},
   {key:'armor',name:'+12 MAX ARMOR',apply:function(){G.maxArmor+=12;G.armor=Math.min(G.maxArmor,G.armor+12);updateArmor()}},
   {key:'speed',name:'+6% SPEED',apply:function(){G.buffs.speed=Math.min(.40,G.buffs.speed+.06)}},
   {key:'spread',name:'+8% ACCURACY',apply:function(){G.buffs.spread=Math.min(.50,G.buffs.spread+.08)}},
@@ -274,11 +274,11 @@ var BUFFS=[
 // Boss-kill guaranteed buffs
 var BOSS_BUFFS={
   5:  [{name:'+20 MAX HP',apply:function(){G.maxHP=(G.maxHP||100)+20;G.hp=Math.min(G.maxHP,G.hp+20);updateHP()}},
-       {name:'+12% DAMAGE',apply:function(){G.buffs.dmg=Math.min(.80,G.buffs.dmg+.12)}}],
+       {name:'+12% DAMAGE',apply:function(){G.buffs.dmg=Math.min(.60,G.buffs.dmg+.12)}}],
   10: [{name:'+25 MAX HP',apply:function(){G.maxHP=(G.maxHP||100)+25;G.hp=Math.min(G.maxHP,G.hp+25);updateHP()}},
-       {name:'+12% FIRE RATE',apply:function(){G.buffs.rate=Math.min(.50,G.buffs.rate+.12)}}],
+       {name:'+12% FIRE RATE',apply:function(){G.buffs.rate=Math.min(.40,G.buffs.rate+.12)}}],
   15: [{name:'+20 MAX ARMOR',apply:function(){G.maxArmor+=20;G.armor=Math.min(G.maxArmor,G.armor+20);updateArmor()}},
-       {name:'+15% DAMAGE',apply:function(){G.buffs.dmg=Math.min(.80,G.buffs.dmg+.15)}},
+       {name:'+15% DAMAGE',apply:function(){G.buffs.dmg=Math.min(.60,G.buffs.dmg+.15)}},
        {name:'+2 HP/S REGEN',apply:function(){G.buffs.regen=Math.min(6,G.buffs.regen+2)}}],
 };
 function grantBuff(){
@@ -583,6 +583,64 @@ function spawnRing(pos,col,maxR,dur){
     requestAnimationFrame(expandRing);
   };expandRing();
 }
+// Ground warning circle — pulses at target location before an attack lands
+function spawnWarning(x,z,radius,dur,col){
+  col=col||0xaa00ff;
+  var wGeo=new THREE.RingGeometry(radius*.15,radius,32);
+  var wMat=new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:0,side:THREE.DoubleSide});
+  var warn=new THREE.Mesh(wGeo,wMat);warn.position.set(x,0.12,z);warn.rotation.x=-Math.PI/2;scene.add(warn);
+  // Inner fill
+  var fGeo=new THREE.CircleGeometry(radius,24);
+  var fMat=new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:0,side:THREE.DoubleSide});
+  var fill=new THREE.Mesh(fGeo,fMat);fill.position.set(x,0.11,z);fill.rotation.x=-Math.PI/2;scene.add(fill);
+  var start=performance.now();
+  var animWarn=function(){
+    var t=(performance.now()-start)/dur;
+    if(t>=1){scene.remove(warn);scene.remove(fill);return}
+    // Pulse faster as it nears detonation
+    var pulse=Math.sin(t*Math.PI*6*(1+t*3))*.5+.5;
+    wMat.opacity=(.3+t*.5)*pulse;
+    fMat.opacity=(.05+t*.15)*pulse;
+    var sc=.7+t*.3;warn.scale.set(sc,sc,1);
+    requestAnimationFrame(animWarn);
+  };animWarn();
+}
+// Tentacle telegraph — dramatic windup before attacks
+function tentacleTelegraph(e,type,dur){
+  if(!e._tentacles)return;
+  dur=dur||600;
+  var tents=e._tentacles;
+  var start=performance.now();
+  var anim=function(){
+    var t=(performance.now()-start)/dur;
+    if(t>=1){return}// attacks restore tentacles to idle
+    var ease=t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+    if(type==='slam'){// All tentacles rear UP then slam DOWN
+      for(var i=0;i<tents.length;i++){
+        if(t<.6){tents[i].j1.rotation.x=-.3+ease*1.2;tents[i].j2.rotation.x=-.2+ease*.8}
+        else{var down=(t-.6)/.4;tents[i].j1.rotation.x=.9-down*2.2;tents[i].j2.rotation.x=.6-down*1.8}
+      }
+    }else if(type==='void'){// Front tentacles point upward, tips glow
+      tents[0].j1.rotation.x=-.3+ease*1.5;tents[1].j1.rotation.x=-.3+ease*1.5;
+      tents[0].j2.rotation.x=-.2+ease*1.0;tents[1].j2.rotation.x=-.2+ease*1.0;
+    }else if(type==='spiral'){// Tentacles spread wide outward
+      for(var i2=0;i2<tents.length;i2++){
+        tents[i2].grp.rotation.z=tents[i2].baseAng+ease*(i2<2?-.8:.8);
+        tents[i2].j1.rotation.x=-.3-ease*.5;
+      }
+    }else if(type==='pull'){// All tentacles curl inward, grasping
+      for(var i3=0;i3<tents.length;i3++){
+        tents[i3].grp.rotation.z=tents[i3].baseAng*(1-ease*.6);
+        tents[i3].j1.rotation.x=-.3-ease*.8;tents[i3].j2.rotation.x=-.2-ease*1.0;
+      }
+    }else if(type==='swipe'){// Front pair sweeps sideways
+      tents[0].grp.rotation.z=tents[0].baseAng-ease*1.5;
+      tents[1].grp.rotation.z=tents[1].baseAng+ease*1.5;
+      tents[0].j1.rotation.x=-.3-ease*.6;tents[1].j1.rotation.x=-.3-ease*.6;
+    }
+    requestAnimationFrame(anim);
+  };anim();
+}
 function spawnP(pos,col,n){var mat=getPMat(col);for(var i=0;i<n;i++){var m=new THREE.Mesh(pGeo2,mat);m.position.copy(pos);scene.add(m);G.particles.push({m:m,v:new THREE.Vector3((Math.random()-.5)*10,Math.random()*8,(Math.random()-.5)*10),l:.4+Math.random()*.5})}}
 var shellGeo=new THREE.CylinderGeometry(.006,.006,.04,4);var shellMat=new THREE.MeshBasicMaterial({color:0xddaa44});
 function spawnShell(){var s=new THREE.Mesh(shellGeo,shellMat);s.position.copy(camera.position);s.position.y-=.1;scene.add(s);var r=new THREE.Vector3(1,0,0).applyQuaternion(camera.quaternion);G.particles.push({m:s,v:r.multiplyScalar(3).add(new THREE.Vector3(0,2+Math.random()*2,0)),l:.8+Math.random()*.4,spin:true})}
@@ -688,7 +746,7 @@ var BOSSES={
   // ── SECRET BOSS ──
   architect:{name:'THE ARCHITECT',hp:8000,spd:0,sc:24.0,si:280,acc:.04,dmg:18,bs:35,color:0x220033,
     attacks:['reality'],warpCD:20000,lastWarp:0,voidCD:6000,lastVoid:0,
-    spiralCD:6000,lastSpiral:0,pullCD:9000,lastPull:0,summonCD:99999,lastSummon:0,slamCD:4500,lastSlam:0,phase:1},
+    spiralCD:6000,lastSpiral:0,pullCD:9000,lastPull:0,summonCD:99999,lastSummon:0,slamCD:4500,lastSlam:0,swipeCD:7000,lastSwipe:0,phase:1},
 };
 
 // Boss Rush sequence
@@ -728,7 +786,7 @@ function createBoss(type){
   e.bossData.lastSummon=nt;e.bossData.lastStomp=nt;e.bossData.lastTele=nt;e.bossData.lastRage=nt;e.bossData.lastLeap=nt;e.bossData.lastHell=nt;
   e.bossData.lastSync=nt;e.bossData.lastSwarm=nt;e.bossData.lastBurrow=nt;e.bossData.lastAcid=nt;e.bossData.lastScream=nt;
   e.bossData.lastReflect=nt;e.bossData.lastPulse=nt;e.bossData.lastCharge=nt;
-  e.bossData.lastOverload=nt;e.bossData.lastHack=nt;e.bossData.lastSlam=nt;
+  e.bossData.lastOverload=nt;e.bossData.lastHack=nt;e.bossData.lastSlam=nt;e.bossData.lastSwipe=nt;
   // ── Boss-specific visuals ──
   var bsc=B.sc;var bRoot=e.mesh;var bBody=e.jBody;
   var glowMat=function(c,ei){return new THREE.MeshBasicMaterial({color:c,transparent:true,opacity:ei||.8})};
@@ -1058,8 +1116,8 @@ function doBossAttack(e,now,dt){
   if(bt==='architect'){
     if(hpPct<.6&&B.phase===1){B.phase=2;showPM('boss_rage');scene.fog=new THREE.FogExp2(0x1a0033,0.005);sfx('boss')}
     if(hpPct<.25&&B.phase===2){B.phase=3;scene.fog=new THREE.FogExp2(0x220011,0.008);sfx('boss')}
-    // Animate tentacles — eerie swaying
-    if(e._tentacles){for(var tn=0;tn<e._tentacles.length;tn++){var tt=e._tentacles[tn];
+    // Animate tentacles — eerie swaying (only when not mid-telegraph)
+    if(e._tentacles&&!e._tentActive){for(var tn=0;tn<e._tentacles.length;tn++){var tt=e._tentacles[tn];
       var tp2=now*.001+tt.phase;
       tt.grp.rotation.z=tt.baseAng+Math.sin(tp2*.8)*.25;
       tt.grp.rotation.x=Math.sin(tp2*.6+tn)*.2;
@@ -1073,38 +1131,102 @@ function doBossAttack(e,now,dt){
       G._controlInvert=true;document.body.classList.add('warp-glitch');sfx('boss');G.shake=.06;
       setTimeout(function(){document.body.classList.add('warp-invert')},500);
       setTimeout(function(){G._controlInvert=false;document.body.classList.remove('warp-invert');document.body.classList.remove('warp-glitch')},3000)}
-    // VOID RAIN — fewer, straight down, easier to dodge by moving
+    // VOID RAIN — telegraphed with ground warnings + tentacle raise
     if(now-B.lastVoid>(B.voidCD/B.phase)){B.lastVoid=now;
-      var vCount=4+B.phase*2;
+      var vCount=4+B.phase*2;var vDelay=700;
+      // Tentacle telegraph — front pair raises up
+      e._tentActive=true;tentacleTelegraph(e,'void',vDelay);
+      sfx('boss');
+      // Spawn warning circles on the ground where rain will land
+      var vTargets=[];
       for(var vi=0;vi<vCount;vi++){
         var vx=camera.position.x+(Math.random()-.5)*18;var vz=camera.position.z+(Math.random()-.5)*18;
-        var vb=new THREE.Mesh(bGeo2,getPMat(0xaa00ff));
-        vb.position.set(vx,14+Math.random()*6,vz);scene.add(vb);
-        G.bullets.push({m:vb,d:new THREE.Vector3(0,-1,0),s:18,l:4,p:false,dmg:16})}
-      sfx('explode');G.shake=.03;
-      if(e._tentacles){var vt2=e._tentacles[Math.random()*4|0];vt2.j1.rotation.x=-1;setTimeout(function(){if(vt2)vt2.j1.rotation.x=-.3},800)}}
-    // HAND SLAM — shockwave near player, jumpable
+        vTargets.push({x:vx,z:vz});
+        spawnWarning(vx,vz,1.5,vDelay,0xaa00ff);
+      }
+      // After delay, spawn the actual projectiles
+      (function(targets,bossRef){setTimeout(function(){
+        if(bossRef.hp<=0)return;bossRef._tentActive=false;
+        for(var vi2=0;vi2<targets.length;vi2++){
+          var vb=new THREE.Mesh(bGeo2,getPMat(0xaa00ff));
+          vb.position.set(targets[vi2].x,14+Math.random()*6,targets[vi2].z);scene.add(vb);
+          G.bullets.push({m:vb,d:new THREE.Vector3(0,-1,0),s:18,l:4,p:false,dmg:16})}
+        sfx('explode');G.shake=.03;
+      },vDelay)})(vTargets,e)}
+    // HAND SLAM — warning circle + tentacle windup, then shockwave
     if(now-B.lastSlam>(B.slamCD/B.phase)){B.lastSlam=now;
       var slamX=camera.position.x+(Math.random()-.5)*8;var slamZ=camera.position.z+(Math.random()-.5)*8;
-      G.shockwaves.push({x:slamX,z:slamZ,start:now+500,speed:16,maxR:18,dmg:25*B.phase,hit:false});
-      spawnRing(new THREE.Vector3(slamX,0,slamZ),0xaa00ff,18,700);
-      sfx('explode');G.shake=.07;
-      if(e._tentacles){var st3=e._tentacles[Math.random()*4|0];st3.j1.rotation.x=-.9;st3.j2.rotation.x=-1.1;
-        setTimeout(function(){if(st3){st3.j1.rotation.x=-.3;st3.j2.rotation.x=-.2}},700)}}
-    // SPIRAL — fewer, slower, wider gaps
+      var slamDelay=800;
+      // Tentacle telegraph — all rear up then slam
+      e._tentActive=true;tentacleTelegraph(e,'slam',slamDelay);
+      // Ground warning — bright pulsing circle at impact point
+      spawnWarning(slamX,slamZ,3,slamDelay,0xff00ff);
+      showPM('stomp');sfx('boss');
+      // After delay, deliver the shockwave
+      (function(sx,sz,bossRef){setTimeout(function(){
+        if(bossRef.hp<=0)return;bossRef._tentActive=false;
+        G.shockwaves.push({x:sx,z:sz,start:performance.now(),speed:16,maxR:18,dmg:25*B.phase,hit:false});
+        spawnRing(new THREE.Vector3(sx,0,sz),0xaa00ff,18,700);
+        sfx('explode');G.shake=.07;
+      },slamDelay)})(slamX,slamZ,e)}
+    // TENTACLE SWIPE — new attack: visible tentacle sweeps across the arena
+    if(now-B.lastSwipe>(B.swipeCD/B.phase)){B.lastSwipe=now;
+      var swDelay=600;
+      e._tentActive=true;tentacleTelegraph(e,'swipe',swDelay);
+      sfx('boss');
+      // Spawn a visible sweeping tentacle on the ground
+      (function(bossRef,bossE){setTimeout(function(){
+        if(bossRef.hp<=0)return;bossRef._tentActive=false;
+        // Create a line of projectiles sweeping from left to right across player area
+        var sweepCenter=camera.position.clone();
+        var sweepAng=Math.atan2(sweepCenter.x-bossE.mesh.position.x,sweepCenter.z-bossE.mesh.position.z);
+        var perpAng=sweepAng+Math.PI/2;
+        var segments=8+B.phase*2;
+        for(var sw=0;sw<segments;sw++){
+          var offset=(sw-segments/2)*2;
+          var sx2=sweepCenter.x+Math.sin(perpAng)*offset;
+          var sz2=sweepCenter.z+Math.cos(perpAng)*offset;
+          // Stagger timing slightly for sweep effect
+          (function(px,pz,delay){setTimeout(function(){
+            if(bossRef.hp<=0)return;
+            // Ground-level projectile moving toward player
+            var sd3=new THREE.Vector3(Math.sin(sweepAng),0,Math.cos(sweepAng));
+            var sb2=new THREE.Mesh(bGeo2,getPMat(0xcc44ff));
+            sb2.position.set(px,0.5,pz-12);scene.add(sb2);
+            G.bullets.push({m:sb2,d:sd3,s:20,l:3,p:false,dmg:14});
+          },delay)})(sx2,sz2,sw*40);
+        }
+        sfx('explode');G.shake=.05;
+        // Spawn warning line on the ground
+        spawnRing(sweepCenter,0xcc44ff,12,600);
+      },swDelay)})(B,e)}
+    // SPIRAL — telegraphed with tentacle spread
     if(now-B.lastSpiral>(B.spiralCD/B.phase)){B.lastSpiral=now;
-      var spiralN=6+B.phase;var spawnPos=camera.position.clone();spawnPos.y=1;
-      for(var si2=0;si2<spiralN;si2++){
-        var sa2=si2*(Math.PI*2/spiralN)+(now*.001);
-        var sd2=new THREE.Vector3(Math.sin(sa2),0,Math.cos(sa2));
-        var sb=new THREE.Mesh(bGeo2,getPMat(0xff00ff));
-        sb.position.copy(spawnPos);scene.add(sb);
-        G.bullets.push({m:sb,d:sd2,s:12,l:5,p:false,dmg:10})}
-      G.shake=.03;spawnRing(spawnPos,0xff00ff,15,800)}
-    // GRAVITY PULL — gentler
+      var spDelay=500;
+      e._tentActive=true;tentacleTelegraph(e,'spiral',spDelay);
+      // Warning ring at player position
+      spawnWarning(camera.position.x,camera.position.z,2.5,spDelay,0xff00ff);
+      (function(bossRef){setTimeout(function(){
+        if(bossRef.hp<=0)return;bossRef._tentActive=false;
+        var spiralN=6+B.phase;var spawnPos=camera.position.clone();spawnPos.y=1;
+        for(var si2=0;si2<spiralN;si2++){
+          var sa2=si2*(Math.PI*2/spiralN)+(performance.now()*.001);
+          var sd2=new THREE.Vector3(Math.sin(sa2),0,Math.cos(sa2));
+          var sb=new THREE.Mesh(bGeo2,getPMat(0xff00ff));
+          sb.position.copy(spawnPos);scene.add(sb);
+          G.bullets.push({m:sb,d:sd2,s:12,l:5,p:false,dmg:10})}
+        G.shake=.03;spawnRing(spawnPos,0xff00ff,15,800);
+      },spDelay)})(e)}
+    // GRAVITY PULL — telegraphed with tentacle curl
     if(now-B.lastPull>(B.pullCD/B.phase)){B.lastPull=now;
-      G._gravPull={x:e.mesh.position.x,z:e.mesh.position.z,end:now+2000,str:4};
-      sfx('boss');G.shake=.04;spawnRing(camera.position,0x8800ff,15,1000)}
+      var plDelay=500;
+      e._tentActive=true;tentacleTelegraph(e,'pull',plDelay);
+      sfx('boss');
+      (function(bossRef){setTimeout(function(){
+        if(bossRef.hp<=0)return;bossRef._tentActive=false;
+        G._gravPull={x:bossRef.mesh.position.x,z:bossRef.mesh.position.z,end:performance.now()+2000,str:4};
+        G.shake=.04;spawnRing(camera.position,0x8800ff,15,1000);
+      },plDelay)})(e)}
   }
 }
 
@@ -1182,9 +1304,25 @@ function startWave(){
     var totalCount=1+br.adds+(br.spawnTwin?1:0);
     G.toSpawn=0;G.alive=totalCount;
     // Spawn boss
-    var boss=createBoss(br.boss);G.enemies.push(boss);
+    var boss=createBoss(br.boss);
+    // ── BOSS RUSH SCALING — compensate for accumulated player buffs ──
+    // Early bosses (rounds 1-3) are slightly gentler; late bosses scale up hard
+    var roundScaling={1:1.0,2:1.0,3:0.9,4:1.0,5:1.1,6:1.3,7:1.7,8:2.0};
+    var hpMult=roundScaling[G.wave]||1.0;
+    var dmgMult=1+Math.max(0,(G.wave-4))*0.12;// +12% dmg per round past round 4
+    boss.hp=Math.round(boss.hp*hpMult);boss.maxHp=boss.hp;
+    boss.dmg=Math.round(boss.dmg*dmgMult);
+    // Late bosses attack faster to keep pressure up against buffed players
+    if(G.wave>=6&&boss.bossData){
+      var cdReduction=1-Math.min(0.3,(G.wave-5)*0.1);// up to 30% faster attacks
+      for(var cdKey in boss.bossData){if(cdKey.indexOf('CD')>-1&&typeof boss.bossData[cdKey]==='number'){
+        boss.bossData[cdKey]=Math.round(boss.bossData[cdKey]*cdReduction)}}
+    }
+    G.enemies.push(boss);
     // Spawn twin at opposite spawn point
-    if(br.spawnTwin){var twin=createBoss(br.boss);G.enemies.push(twin);
+    if(br.spawnTwin){var twin=createBoss(br.boss);
+      twin.hp=Math.round(twin.hp*hpMult);twin.maxHp=twin.hp;twin.dmg=Math.round(twin.dmg*dmgMult);
+      G.enemies.push(twin);
       twin.mesh.position.set(boss.mesh.position.x+5,0,boss.mesh.position.z+5)}
     // Spawn adds
     if(br.adds>0){spawnBatchTyped(br.adds,['soldier','scout','heavy'])}
