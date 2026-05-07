@@ -57,6 +57,12 @@ canvas#game{display:block;width:100%!important;height:100%!important;position:fi
 #grenadeBtn .cd-text{font-size:9px;color:#bbb;letter-spacing:1px;margin-top:2px}
 #grenadeBtn.ready{border-color:rgba(255,180,0,.6);background:rgba(200,120,0,.3)}
 #grenadeBtn.cooldown{opacity:.5;border-color:rgba(100,100,100,.3)}
+#skillBtn{position:fixed;bottom:245px;right:170px;z-index:60;width:62px;height:62px;border-radius:12px;background:rgba(100,50,200,.2);border:2.5px solid rgba(140,80,255,.5);display:none;flex-direction:column;align-items:center;justify-content:center;pointer-events:auto;color:#aa66ff;font-size:18px;line-height:1;box-shadow:0 0 12px rgba(140,80,255,.15);overflow:hidden}
+#skillBtn .cd-text{font-size:8px;color:#bbb;letter-spacing:1px;margin-top:2px;z-index:2;position:relative}
+#skillBtn .sk-icon{z-index:2;position:relative}
+#skillBtn .sk-fill{position:absolute;bottom:0;left:0;right:0;height:0%;background:linear-gradient(180deg,rgba(160,100,255,.4),rgba(100,50,200,.6));transition:height .3s;z-index:1}
+#skillBtn.ready{border-color:rgba(200,140,255,.8);background:rgba(140,80,255,.35);box-shadow:0 0 18px rgba(160,100,255,.4)}
+#skillBtn.charging{border-color:rgba(140,80,255,.4);opacity:.85}
 .hw{color:#888;font-size:10px;letter-spacing:3px}.hw b{color:#ff6633;font-size:14px}
 .hs{color:#fff;font-size:11px;letter-spacing:2px}.hs b{color:#ff4400;font-size:16px}
 #ammoHud{position:fixed;bottom:14px;right:14px;z-index:50;pointer-events:none;text-align:right}
@@ -190,6 +196,7 @@ canvas#game{display:block;width:100%!important;height:100%!important;position:fi
 <div id="fireBtn"></div><div id="reloadBtn">RLD</div><div id="jumpBtn">&#9650;</div>
 <div id="medkitBtn">&#10010;<span class="cd-text">HEAL</span></div>
 <div id="grenadeBtn">&#9679;<span class="cd-text">FRAG</span></div>
+<div id="skillBtn"><div class="sk-fill" id="skillFill"></div><span class="sk-icon">&#9889;</span><span class="cd-text">SKILL</span></div>
 <div id="settingsBtn">&#9881;</div><div id="settingsOverlay"></div>
 <div id="settingsPanel"><div class="spt">SETTINGS</div><div class="spr"><span class="spl">Look Sensitivity</span><span class="spv" id="sensVal">6.0</span></div><input type="range" class="sps" id="sensSlider" min="1" max="15" step="0.5" value="6.0"><div class="spr"><span class="spl">Aim Sensitivity</span><span class="spv" id="aimVal">6</span></div><input type="range" class="sps" id="aimSlider" min="1" max="15" step="1" value="6"><button id="settingsClose">DONE</button></div>
 <div id="gameOver"><div class="got">MISSION FAILED</div><div class="gos">ALL UNITS LOST</div><div class="gost">Eliminated: <b id="finalKills">0</b><br>Headshots: <b id="finalHS">0</b><br>Best Streak: <b id="finalStreak">0</b><br>Waves: <b id="finalWaves">0</b><br>Score: <b id="finalScore">0</b></div><button id="restartBtn">REDEPLOY</button></div>
@@ -227,7 +234,7 @@ var G={
   on:false,hp:100,ammo:30,score:0,kills:0,wave:0,hs:0,streak:0,bestStreak:0,lastKT:0,mode:'campaign',
   defeatedBosses:{},
   armor:0,maxArmor:100,lastDmgTime:0,
-  medkitCD:0,grenadeCD:0,sprintStam:100,sprinting:false,
+  medkitCD:0,grenadeCD:0,skillKills:0,sprintStam:100,sprinting:false,
   shotsFired:0,shotsHit:0,dmgTaken:0,waveDmgTaken:0,waveKills:0,waveTime:0,
   ai:{aggression:1,accuracy:1,flanking:1,speed:1,count:1,gen:0},
   alive:0,toSpawn:0,fireRate:120,lastFire:0,reloading:false,_waveEnding:false,_loopRunning:false,
@@ -368,10 +375,14 @@ var WEAPONS=[
     desc:'Non-stop suppression.<br>3.25s continuous fire.'},
 ];
 var PERKS=[
-  {id:0,name:'JUGGERNAUT',icon:'&#9632;',desc:'+30 HP, +10 armor. Take 12% less damage.',hpBonus:30,armorBonus:10,dmgReduce:0.88},
-  {id:1,name:'QUICK HANDS',icon:'&#9733;',desc:'25% faster reload. 12% faster fire rate.',reloadMult:.75,rateMult:.88},
-  {id:2,name:'SCAVENGER',icon:'&#10010;',desc:'25% more loot drops. Pickups give 25% more.',lootMult:1.25,pickupMult:1.25},
-  {id:3,name:'GHOST',icon:'&#9830;',desc:'25% faster movement. Sprint costs 35% less.',speedMult:1.25,sprintMult:0.65},
+  {id:0,name:'JUGGERNAUT',icon:'&#9632;',desc:'+30 HP, +10 armor. Take 12% less damage.<br><b>SKILL: SHOCKWAVE</b> — Knockback + stun all nearby enemies.',hpBonus:30,armorBonus:10,dmgReduce:0.88,
+    skill:{name:'SHOCKWAVE',icon:'&#9632;',charge:7,radius:14,dmg:25,stunDur:2500}},
+  {id:1,name:'GUNSLINGER',icon:'&#9733;',desc:'25% faster reload. 12% faster fire rate.<br><b>SKILL: OVERDRIVE</b> — 3s of instant reload + double fire rate.',reloadMult:.75,rateMult:.88,
+    skill:{name:'OVERDRIVE',icon:'&#9733;',charge:8,dur:3000}},
+  {id:2,name:'SCAVENGER',icon:'&#10010;',desc:'25% more loot drops. Pickups give 25% more.<br><b>SKILL: PULSE TRAP</b> — EMP slows all enemies in radius for 4s.',lootMult:1.25,pickupMult:1.25,
+    skill:{name:'PULSE TRAP',icon:'&#10010;',charge:6,radius:12,slowDur:4000,slowAmt:.4}},
+  {id:3,name:'GHOST',icon:'&#9830;',desc:'25% faster movement. Sprint costs 35% less.<br><b>SKILL: VANISH</b> — Go invisible for 3s. Enemies lose track.',speedMult:1.25,sprintMult:0.65,
+    skill:{name:'VANISH',icon:'&#9830;',charge:5,dur:3000}},
 ];
 var TACTICALS=[
   {id:0,name:'FRAG',icon:'&#9679;',desc:'Explosive. 100 dmg blast. 16s CD.',type:'frag'},
@@ -628,7 +639,7 @@ function spawnSupplyCrate(cx,cz){
 // ══════ COMBAT ══════
 var bGeo2=new THREE.SphereGeometry(.04,4,4);
 var tGeo=new THREE.CylinderGeometry(.008,.008,.3,4);tGeo.rotateX(Math.PI/2);
-function fireBullet(){if(G.ammo<=0||G.reloading)return;var now=performance.now();var W2=WEAPONS[curWeapon];var rate=W2.rate*(G.perkRateMult||1)*Math.max(.3,1-G.buffs.rate);if(now-G.lastFire<rate)return;
+function fireBullet(){if(G.ammo<=0||G.reloading)return;var now=performance.now();var W2=WEAPONS[curWeapon];var rate=W2.rate*(G.perkRateMult||1)*Math.max(.3,1-G.buffs.rate);if(G._overdrive)rate*=.5;if(now-G.lastFire<rate)return;
   // Echo profiling — track burst vs sustained fire
   G.echo.totalShots++;if(now-G.lastFire<rate*3)G.echo.sustainedFire++;else G.echo.burstPatterns++;
   G.lastFire=now;G.ammo--;G.shotsFired++;updateAmmo();G.weapRec=.035;G.pitch=Math.min(G.pitch+.008,Math.PI/2);G.yaw+=(Math.random()-.5)*.003;G.shake=.005;mzL.intensity=4;setTimeout(function(){mzL.intensity=0},40);var mf=document.getElementById('muzzleFlash');mf.style.opacity='1';setTimeout(function(){mf.style.opacity='0'},40);
@@ -773,7 +784,7 @@ function showWave(w){var b=document.getElementById('waveBanner');var total=G.mod
   document.getElementById('bossHud').style.display='none';
   b.style.opacity='1';setTimeout(function(){b.style.opacity='0'},2500)}
 function showStreak(c){if(c<2)return;var names=['','','DOUBLE KILL','TRIPLE KILL','MULTI KILL','MEGA KILL','ULTRA KILL','UNSTOPPABLE'];var el=document.getElementById('streakHud');document.getElementById('streakText').textContent=names[Math.min(c,7)]||'GODLIKE';document.getElementById('streakSub').textContent='x'+c+' STREAK';el.style.opacity='1';setTimeout(function(){el.style.opacity='0'},1500)}
-function showPM(t){var el=document.createElement('div');el.className='pm';var msgs={health:'+ HEALTH RESTORED',ammo:'+ AMMO RESUPPLIED',armor:'+ ARMOR PLATED',medkit:'+ MEDKIT USED (+35 HP)',flash:'&#9788; FLASH DEPLOYED',weapon:'&#9658; '+WEAPONS[curWeapon].name,summon:'&#9888; REINFORCEMENTS INCOMING',stomp:'&#9888; GROUND SLAM — JUMP!',boss_rage:'&#9888; BOSS ENRAGED',shield_up:'&#9888; SHIELD CHARGING — STOP FIRING!',shield_down:'&#10004; SHIELD DOWN — FIRE!',supply:'&#11015; SUPPLY DROP INCOMING',mortar:'&#9888; MORTAR STRIKE INCOMING',rally:'&#9888; COMMANDER RALLYING TROOPS',decoy:'&#9888; PHANTOM DECOYS DEPLOYED',cloak_end:'&#9888; AMBUSH!',fortress:'&#9888; FORTRESS MODE ENGAGED',echo_adapt:'&#9888; PATTERN RECOGNIZED',echo_evolve:'&#9888; FULL ADAPTATION COMPLETE',echo_counter:'&#9888; HEALING PUNISHED',echo_mirror:'&#9888; MIRRORING YOUR POWER',stim_boost:'&#9889; STIM BOOST — SPEED UP',omega_laser:'&#9888; LASER SWEEP — MOVE!'};el.innerHTML=msgs[t]||'+ PICKUP';
+function showPM(t){var el=document.createElement('div');el.className='pm';var msgs={health:'+ HEALTH RESTORED',ammo:'+ AMMO RESUPPLIED',armor:'+ ARMOR PLATED',medkit:'+ MEDKIT USED (+35 HP)',flash:'&#9788; FLASH DEPLOYED',weapon:'&#9658; '+WEAPONS[curWeapon].name,summon:'&#9888; REINFORCEMENTS INCOMING',stomp:'&#9888; GROUND SLAM — JUMP!',boss_rage:'&#9888; BOSS ENRAGED',shield_up:'&#9888; SHIELD CHARGING — STOP FIRING!',shield_down:'&#10004; SHIELD DOWN — FIRE!',supply:'&#11015; SUPPLY DROP INCOMING',mortar:'&#9888; MORTAR STRIKE INCOMING',rally:'&#9888; COMMANDER RALLYING TROOPS',decoy:'&#9888; PHANTOM DECOYS DEPLOYED',cloak_end:'&#9888; AMBUSH!',fortress:'&#9888; FORTRESS MODE ENGAGED',echo_adapt:'&#9888; PATTERN RECOGNIZED',echo_evolve:'&#9888; FULL ADAPTATION COMPLETE',echo_counter:'&#9888; HEALING PUNISHED',echo_mirror:'&#9888; MIRRORING YOUR POWER',stim_boost:'&#9889; STIM BOOST — SPEED UP',omega_laser:'&#9888; LASER SWEEP — MOVE!',skill_shockwave:'&#9632; SHOCKWAVE — ENEMIES STUNNED',skill_overdrive:'&#9733; OVERDRIVE — UNLIMITED POWER',skill_trap:'&#10010; PULSE TRAP DEPLOYED',skill_vanish:'&#9830; VANISH — INVISIBLE'};el.innerHTML=msgs[t]||'+ PICKUP';
   // Stack notifications — offset each active PM upward
   var existingPMs=document.querySelectorAll('.pm');var offset=existingPMs.length*24;
   el.style.bottom='calc(35% + '+offset+'px)';
@@ -821,7 +832,7 @@ var BOSSES={
     attacks:['burst','summon','mortar','rally'],summonCD:10000,lastSummon:0,mortarCD:8000,lastMortar:0,rallyCD:14000,lastRally:0,phase:1},
   titan:{name:'TITAN MK-II',hp:2200,spd:3.5,sc:2.0,si:99999,acc:1,dmg:0,bs:45,color:0x444466,
     attacks:['slam'],stompCD:3200,lastStomp:0,leapCD:5500,lastLeap:0,phase:1},
-  phantom:{name:'THE PHANTOM',hp:1200,spd:4.2,sc:1.0,si:450,acc:.04,dmg:10,bs:62,color:0x222244,
+  phantom:{name:'THE PHANTOM',hp:900,spd:4.2,sc:1.0,si:450,acc:.04,dmg:10,bs:62,color:0x222244,
     attacks:['teleport','decoy','cloak','dash'],teleCD:5000,lastTele:0,decoyCD:15000,lastDecoy:0,cloakCD:14000,lastCloak:0,dashCD:9000,lastDash:0,phase:1},
   warlord:{name:'WARLORD KAINE',hp:3200,spd:2.4,sc:1.8,si:380,acc:.04,dmg:14,bs:52,color:0x660000,
     attacks:['rockets','summon','rage','hell'],summonCD:8000,lastSummon:0,rageCD:10000,lastRage:0,hellCD:8000,lastHell:0,phase:1},
@@ -2058,6 +2069,7 @@ document.getElementById('jumpBtn').addEventListener('touchstart',function(e){e.p
 document.getElementById('jumpBtn').addEventListener('touchend',function(){G.sprinting=false},{passive:true});
 document.getElementById('medkitBtn').addEventListener('touchstart',function(e){e.preventDefault();useMedkit()},{passive:false});
 document.getElementById('grenadeBtn').addEventListener('touchstart',function(e){e.preventDefault();useTactical()},{passive:false});
+document.getElementById('skillBtn').addEventListener('touchstart',function(e){e.preventDefault();useSkill()},{passive:false});
 // weapon swap removed — locked at loadout
 
 // Settings
@@ -2171,6 +2183,18 @@ function loop(){
   // Cooldowns
   if(G.medkitCD>0){G.medkitCD-=dt;var mb=document.getElementById('medkitBtn');if(G.medkitCD<=0){G.medkitCD=0;mb.className='ready';mb.querySelector('.cd-text').textContent='HEAL'}else{mb.className='cooldown';mb.querySelector('.cd-text').textContent=Math.ceil(G.medkitCD)+'s'}}
   if(G.grenadeCD>0){G.grenadeCD-=dt;var gb2=document.getElementById('grenadeBtn');var tacName=TACTICALS[curTactical].name;if(G.grenadeCD<=0){G.grenadeCD=0;gb2.className='ready';gb2.querySelector('.cd-text').textContent=tacName}else{gb2.className='cooldown';gb2.querySelector('.cd-text').textContent=Math.ceil(G.grenadeCD)+'s'}}
+  // Operator skill charge bar
+  var skb=document.getElementById('skillBtn');var skDef=PERKS[curPerk].skill;
+  var skFill=document.getElementById('skillFill');
+  var chargePct=Math.min(100,G.skillKills/skDef.charge*100);
+  skFill.style.height=chargePct+'%';
+  if(G.skillKills>=skDef.charge){skb.className='ready';skb.querySelector('.cd-text').textContent=skDef.name}
+  else{skb.className='charging';skb.querySelector('.cd-text').textContent=G.skillKills+'/'+skDef.charge}
+  // Overdrive effect — double fire rate active
+  if(G._overdrive&&now>G._overdriveEnd){G._overdrive=false}
+  // Vanish effect — enemies can't see player
+  if(G._vanish&&now>G._vanishEnd){G._vanish=false;
+    var d2=document.getElementById('damageOverlay');d2.style.background='';d2.style.opacity='0'}
   // Bullets
   for(var i=G.bullets.length-1;i>=0;i--){var b=G.bullets[i];
     var prevPos=b.m.position.clone();
@@ -2259,6 +2283,7 @@ function loop(){
     // ── 1. LOS & AI MOVEMENT ──
     var mv=new THREE.Vector3();
     var canSee=hasLOS(e2.mesh.position.x,e2.mesh.position.z,camera.position.x,camera.position.z);
+    if(G._vanish)canSee=false;// Vanish skill — player is invisible
     var hpPct=e2.hp/e2.maxHp;var isLowHP=hpPct<0.3;
     var tooClose=false;
     for(var ej=0;ej<G.enemies.length;ej++){if(ej===ei||G.enemies[ej].hp<=0)continue;if(e2.mesh.position.distanceTo(G.enemies[ej].mesh.position)<2.5){tooClose=true;break}}
@@ -2489,7 +2514,7 @@ function loop(){
   }
   if(!G._mmFrame)G._mmFrame=0;G._mmFrame++;if(G._mmFrame%3===0)drawMM();renderer.render(scene,camera)}
 
-function killE(e,hd){G.kills++;if(hd)G.hs++;G.score+=(hd?200:100)+G.wave*10;G.alive--;updateScore();sfx('kill');
+function killE(e,hd){G.kills++;if(hd)G.hs++;G.score+=(hd?200:100)+G.wave*10;G.alive--;G.skillKills++;updateScore();sfx('kill');
   if(e.isBoss&&e.bossType){G.defeatedBosses[e.bossType]=true;saveProgress()}var ts=performance.now()-G.lastKT;if(ts<3000)G.streak++;else G.streak=1;G.lastKT=performance.now();if(G.streak>G.bestStreak)G.bestStreak=G.streak;showStreak(G.streak);if(G.streak>=3)G.score+=G.streak*25;var cs=['Tango','Hostile','Bogey','X-Ray','Victor','Sierra','Bravo','Delta'];addKF(cs[Math.random()*cs.length|0]+'-'+(Math.random()*99|0),hd);spawnP(e.mesh.position.clone().setY(e.sc),0xff4400,8);if(hd)spawnP(e.mesh.position.clone().setY(1.8*e.sc),0xffcc00,5);
   // Loot drops — scavenger perk doubles drops
   var lootRolls=G.perkLootMult||1;
@@ -2560,6 +2585,67 @@ function useTactical(){
   }
 }
 
+// ── OPERATOR SKILLS ──
+function useSkill(){
+  var perk=PERKS[curPerk];var sk=perk.skill;
+  if(G.skillKills<sk.charge||!G.on)return;
+  G.skillKills=0;// Reset charge
+  var now=performance.now();
+  sfx('boss');G.shake=.03;
+
+  if(perk.id===0){// JUGGERNAUT — SHOCKWAVE: knockback + stun all nearby enemies
+    spawnRing(camera.position,0xffaa00,sk.radius,800);
+    spawnP(camera.position.clone().setY(.5),0xff8800,15);
+    showPM('skill_shockwave');
+    for(var i=0;i<G.enemies.length;i++){var en=G.enemies[i];if(en.hp<=0)continue;
+      var dist=camera.position.distanceTo(en.mesh.position);
+      if(dist<sk.radius){
+        en.hp-=sk.dmg;if(en.hp<=0){killE(en,false);continue}
+        en.ft=.3;
+        var kb=new THREE.Vector3().subVectors(en.mesh.position,camera.position).normalize();
+        var kbDist=6*(1-dist/sk.radius);
+        var kx=en.mesh.position.x+kb.x*kbDist;var kz=en.mesh.position.z+kb.z*kbDist;
+        if(!checkWall(kx,kz,.5)){en.mesh.position.x=kx;en.mesh.position.z=kz}
+        var origSI=en.si;en.si*=2.5;
+        (function(enemy,osi){setTimeout(function(){if(enemy.hp>0)enemy.si=osi},sk.stunDur)})(en,origSI);
+        spawnP(en.mesh.position.clone().setY(1),0xffaa00,3)}}
+    G.shake=.06;
+  }
+  else if(perk.id===1){// GUNSLINGER — OVERDRIVE: instant reload + double fire rate
+    G._overdrive=true;G._overdriveEnd=now+sk.dur;
+    G.ammo=WEAPONS[curWeapon].mag;G.reloading=false;updateAmmo();// instant reload
+    showPM('skill_overdrive');
+    var d=document.getElementById('damageOverlay');d.style.background='radial-gradient(ellipse at center,rgba(255,200,0,0.1),transparent 70%)';d.style.opacity='1';
+    setTimeout(function(){d.style.opacity='0'},sk.dur);
+    spawnRing(camera.position,0xffcc00,8,500);
+  }
+  else if(perk.id===2){// SCAVENGER — PULSE TRAP: slow all enemies in radius
+    var trapX=camera.position.x;var trapZ=camera.position.z;
+    var trapMesh=new THREE.Mesh(new THREE.SphereGeometry(.3,6,6),new THREE.MeshBasicMaterial({color:0x44ff88,emissive:0x00ff44,emissiveIntensity:.5}));
+    trapMesh.position.set(trapX,.3,trapZ);scene.add(trapMesh);
+    showPM('skill_trap');
+    (function(tx,tz,tm){setTimeout(function(){
+      scene.remove(tm);if(!G.on)return;
+      spawnRing(new THREE.Vector3(tx,0,tz),0x44ff88,sk.radius,600);
+      spawnP(new THREE.Vector3(tx,1,tz),0x44ff88,12);sfx('explode');G.shake=.04;
+      for(var j=0;j<G.enemies.length;j++){var en2=G.enemies[j];if(en2.hp<=0)continue;
+        var d2=Math.hypot(en2.mesh.position.x-tx,en2.mesh.position.z-tz);
+        if(d2<sk.radius){
+          var origSpd2=en2.spd;var origSI2=en2.si;
+          en2.spd*=sk.slowAmt;en2.si=Math.round(en2.si/sk.slowAmt);
+          spawnP(en2.mesh.position.clone().setY(1),0x44ff88,4);
+          (function(enemy,os,oi){setTimeout(function(){if(enemy.hp>0){enemy.spd=os;enemy.si=oi}},sk.slowDur)})(en2,origSpd2,origSI2)}}
+    },1000)})(trapX,trapZ,trapMesh);
+  }
+  else if(perk.id===3){// GHOST — VANISH: go invisible, enemies lose track
+    G._vanish=true;G._vanishEnd=now+sk.dur;
+    showPM('skill_vanish');
+    var d3=document.getElementById('damageOverlay');d3.style.background='radial-gradient(ellipse at center,rgba(50,100,255,0.1),transparent 70%)';d3.style.opacity='1';
+    spawnP(camera.position.clone().setY(1),0x4466ff,10);
+    G._stimBoost=true;G._stimEnd=now+sk.dur;
+  }
+}
+
 function gameOver(){
   // Boss rush / free play: respawn with lives
   if(G.mode==='bossrush'||G.mode==='freeplay'){
@@ -2569,9 +2655,9 @@ function gameOver(){
     G.lives--;
     G.hp=G.maxHP||100;G.armor=Math.min(G.maxArmor,25);
     G.ammo=WEAPONS[curWeapon].mag;G.reloading=false;
-    G._controlInvert=false;G._gravPull=null;G._slowEnd=0;
+    G._controlInvert=false;G._gravPull=null;G._slowEnd=0;G._vanish=false;G._overdrive=false;
     document.body.classList.remove('warp-invert');document.body.classList.remove('warp-glitch');
-    // Safe spawn — retry to avoid walls
+    // Safe spawn
     for(var rs=0;rs<15;rs++){
       var sa=Math.random()*Math.PI*2;var sd=20+Math.random()*15;
       var sx=Math.cos(sa)*sd;var sz=Math.sin(sa)*sd;
@@ -2579,10 +2665,19 @@ function gameOver(){
       if(!checkWall(sx,sz,.5)){camera.position.set(sx,G.pH,sz);break}
     }
     updateHP();updateArmor();updateAmmo();
+    // Reset boss HP and phase
     for(var rb2=0;rb2<G.enemies.length;rb2++){if(G.enemies[rb2].isBoss&&G.enemies[rb2].hp>0){G.enemies[rb2].hp=G.enemies[rb2].maxHp;if(G.enemies[rb2].bossData)G.enemies[rb2].bossData.phase=1}}
+    // DESPAWN ALL NON-BOSS ENEMIES (adds, summons, decoys)
+    var bossCount=0;
+    for(var rc=G.enemies.length-1;rc>=0;rc--){
+      if(G.enemies[rc].isBoss&&G.enemies[rc].hp>0){bossCount++;continue}
+      scene.remove(G.enemies[rc].mesh);G.enemies.splice(rc,1)}
+    G.alive=bossCount;
     document.getElementById('bossBar').style.width='100%';
-    for(var ri2=G.bullets.length-1;ri2>=0;ri2--){if(!G.bullets[ri2].p){scene.remove(G.bullets[ri2].m);G.bullets.splice(ri2,1)}}
+    // Clear all bullets, shockwaves, acid
+    for(var ri2=G.bullets.length-1;ri2>=0;ri2--){scene.remove(G.bullets[ri2].m);G.bullets.splice(ri2,1)}
     G.shockwaves=[];
+    for(var ra2=G.acidZones.length-1;ra2>=0;ra2--){scene.remove(G.acidZones[ra2].mesh);G.acidZones.splice(ra2,1)}
     sfx('pickup');showPM('health');
     document.getElementById('aiGen').textContent='LIVES: '+G.lives;
     return;
@@ -2594,7 +2689,12 @@ function startGame(){
   document.getElementById('startScreen').style.display='none';document.getElementById('gameOver').style.display='none';document.getElementById('victoryScreen').style.display='none';document.getElementById('bossHud').style.display='none';document.getElementById('bossSelectScreen').style.display='none';
   scene.fog=new THREE.FogExp2(0x0a0a14,0.016);G.waveMod=null;
   ['hud','ammoHud','crosshair','minimap','aiHud','enemyCount'].forEach(function(id){document.getElementById(id).style.display='block'});
-  ['fireBtn','reloadBtn','jumpBtn','settingsBtn','medkitBtn','grenadeBtn'].forEach(function(id){document.getElementById(id).style.display='flex'});
+  ['fireBtn','reloadBtn','jumpBtn','settingsBtn','medkitBtn','grenadeBtn','skillBtn'].forEach(function(id){document.getElementById(id).style.display='flex'});
+  // Set operator skill button label
+  var skillDef=PERKS[curPerk].skill;
+  var skBtn=document.getElementById('skillBtn');
+  skBtn.innerHTML='<div class="sk-fill" id="skillFill"></div><span class="sk-icon">'+skillDef.icon+'</span><span class="cd-text">0/'+skillDef.charge+'</span>';
+  skBtn.className='charging';G.skillKills=0;
   var W2=WEAPONS[curWeapon];var perk=PERKS[curPerk];var tac=TACTICALS[curTactical];
   // Apply perk bonuses
   var maxHP=100+(perk.hpBonus||0);
@@ -2603,7 +2703,7 @@ function startGame(){
   G.perkLootMult=perk.lootMult||1;G.perkPickupMult=perk.pickupMult||1;
   G.perkSpeedMult=perk.speedMult||1;G.perkDmgReduce=perk.dmgReduce||1;G.perkSprintMult=perk.sprintMult||1;
   G.tacType=tac.type;
-  G.armor=20+(perk.armorBonus||0);G.medkitCD=0;G.grenadeCD=0;G.sprintStam=100;G.sprinting=false;G.lastDmgTime=0;
+  G.armor=20+(perk.armorBonus||0);G.medkitCD=0;G.grenadeCD=0;G.skillKills=0;G.sprintStam=100;G.sprinting=false;G.lastDmgTime=0;
   G.lives=(G.mode==='bossrush'||G.mode==='freeplay')?5:0;
   G.shotsFired=0;G.shotsHit=0;G.waveDmgTaken=0;G.waveKills=0;G.waveTime=0;
   G.ai={aggression:1,accuracy:1,flanking:1,speed:1,count:1,gen:0};
