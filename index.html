@@ -856,7 +856,7 @@ function tentacleTelegraph(e,type,dur){
     requestAnimationFrame(anim);
   };anim();
 }
-function spawnP(pos,col,n){var mat=getPMat(col);for(var i=0;i<n;i++){var m=new THREE.Mesh(pGeo2,mat);m.position.copy(pos);scene.add(m);G.particles.push({m:m,v:new THREE.Vector3((Math.random()-.5)*10,Math.random()*8,(Math.random()-.5)*10),l:.4+Math.random()*.5})}}
+function spawnP(pos,col,n){if(G.particles.length>80)n=Math.min(n,2);var mat=getPMat(col);for(var i=0;i<n;i++){var m=new THREE.Mesh(pGeo2,mat);m.position.copy(pos);scene.add(m);G.particles.push({m:m,v:new THREE.Vector3((Math.random()-.5)*10,Math.random()*8,(Math.random()-.5)*10),l:.4+Math.random()*.5})}}
 var shellGeo=new THREE.CylinderGeometry(.006,.006,.04,4);var shellMat=new THREE.MeshBasicMaterial({color:0xddaa44});
 function spawnShell(){var s=new THREE.Mesh(shellGeo,shellMat);s.position.copy(camera.position);s.position.y-=.1;scene.add(s);var r=new THREE.Vector3(1,0,0).applyQuaternion(camera.quaternion);G.particles.push({m:s,v:r.multiplyScalar(3).add(new THREE.Vector3(0,2+Math.random()*2,0)),l:.8+Math.random()*.4,spin:true})}
 
@@ -963,7 +963,7 @@ var WAVE_DATA=[
 var BOSSES={
   commander:{name:'COMMANDER VOSS',hp:1000,spd:2.5,sc:1.5,si:600,acc:.05,dmg:10,bs:55,color:0x882200,
     attacks:['burst','summon','mortar','rally'],summonCD:10000,lastSummon:0,mortarCD:8000,lastMortar:0,rallyCD:14000,lastRally:0,phase:1},
-  titan:{name:'TITAN MK-II',hp:2200,spd:3.5,sc:2.0,si:99999,acc:1,dmg:0,bs:45,color:0x444466,
+  titan:{name:'TITAN MK-II',hp:2000,spd:3.5,sc:2.0,si:99999,acc:1,dmg:0,bs:45,color:0x444466,
     attacks:['slam'],stompCD:3200,lastStomp:0,leapCD:5500,lastLeap:0,phase:1},
   phantom:{name:'THE PHANTOM',hp:900,spd:4.2,sc:1.0,si:450,acc:.04,dmg:10,bs:62,color:0x222244,
     attacks:['teleport','decoy','cloak','dash'],teleCD:5000,lastTele:0,decoyCD:15000,lastDecoy:0,cloakCD:14000,lastCloak:0,dashCD:9000,lastDash:0,phase:1},
@@ -972,8 +972,8 @@ var BOSSES={
   // ── BOSS RUSH EXCLUSIVES ──
   twins:{name:'THE TWINS',hp:750,spd:3.0,sc:1.1,si:550,acc:.05,dmg:9,bs:58,color:0x448844,
     attacks:['sync','tether','converge'],syncCD:7000,lastSync:0,tetherCD:10000,lastTether:0,convergeCD:12000,lastConverge:0,phase:1,twinLink:true},
-  hivemind:{name:'HIVE QUEEN',hp:1500,spd:2.2,sc:1.6,si:500,acc:.045,dmg:10,bs:52,color:0x886600,
-    attacks:['swarm','burrow','acid','scream','stinger'],swarmCD:5500,lastSwarm:0,burrowCD:9000,lastBurrow:0,acidCD:4000,lastAcid:0,screamCD:10000,lastScream:0,stingerCD:7000,lastStinger:0,phase:1},
+  hivemind:{name:'HIVE QUEEN',hp:1200,spd:2.0,sc:1.6,si:550,acc:.05,dmg:9,bs:50,color:0x886600,
+    attacks:['swarm','burrow','acid','scream','stinger'],swarmCD:6500,lastSwarm:0,burrowCD:10000,lastBurrow:0,acidCD:5000,lastAcid:0,screamCD:12000,lastScream:0,stingerCD:8500,lastStinger:0,phase:1},
   shield:{name:'AEGIS PRIME',hp:1800,spd:1.8,sc:2.2,si:450,acc:.06,dmg:11,bs:42,color:0x3355aa,
     attacks:['reflect','pulse','charge','fortress'],reflectCD:16000,lastReflect:0,pulseCD:8000,lastPulse:0,chargeCD:8000,lastCharge:0,fortressCD:25000,lastFortress:0,phase:1,shielded:false},
   omega:{name:'OMEGA UNIT',hp:4000,spd:1.4,sc:2.2,si:420,acc:.045,dmg:16,bs:42,color:0x880088,
@@ -1134,27 +1134,44 @@ function createBoss(type){
     bBody.add(mk(new THREE.SphereGeometry(.06*bsc,4,4),glowMat(0x88ff88),.3*bsc,.7*bsc,0));
   }
   if(type==='hivemind'){
-    // Golden crown — more elaborate
+    var chitinMat=new THREE.MeshStandardMaterial({color:0x887744,roughness:.35,metalness:.4});
+    var darkChitin=new THREE.MeshStandardMaterial({color:0x554422,roughness:.3,metalness:.5});
+    // Chitin armor overlay — segmented plates on torso
+    bBody.add(mk(new THREE.BoxGeometry(.42*bsc,.18*bsc,.06*bsc),chitinMat,0,.55*bsc,-.15*bsc));
+    bBody.add(mk(new THREE.BoxGeometry(.38*bsc,.16*bsc,.06*bsc),chitinMat,0,.38*bsc,-.14*bsc));
+    bBody.add(mk(new THREE.BoxGeometry(.34*bsc,.14*bsc,.05*bsc),darkChitin,0,.22*bsc,-.13*bsc));
+    // Golden crown — spines rising from head
     if(e.jHead){
       var crownMat=glowMat(0xffcc00);
-      for(var ci2=0;ci2<6;ci2++){var ca=ci2*Math.PI*2/6;
-        e.jHead.add(mk(new THREE.CylinderGeometry(0,.025*bsc,.14*bsc,3),crownMat,Math.sin(ca)*.16*bsc,.35*bsc,Math.cos(ca)*.16*bsc));
-        // Crown base ring
-        e.jHead.add(mk(new THREE.BoxGeometry(.04*bsc,.03*bsc,.04*bsc),crownMat,Math.sin(ca)*.16*bsc,.28*bsc,Math.cos(ca)*.16*bsc))}
-      // Compound eyes
-      e.jHead.add(mk(new THREE.SphereGeometry(.04*bsc,6,4),glowMat(0xffff00,.6),-.1*bsc,.2*bsc,-.16*bsc));
-      e.jHead.add(mk(new THREE.SphereGeometry(.04*bsc,6,4),glowMat(0xffff00,.6),.1*bsc,.2*bsc,-.16*bsc));
-      e.jHead.add(mk(new THREE.SphereGeometry(.025*bsc,4,4),glowMat(0xffff00,.4),-.05*bsc,.24*bsc,-.17*bsc));
-      e.jHead.add(mk(new THREE.SphereGeometry(.025*bsc,4,4),glowMat(0xffff00,.4),.05*bsc,.24*bsc,-.17*bsc));
+      for(var ci2=0;ci2<5;ci2++){var ca=ci2*Math.PI*2/5;
+        var spH=(.1+ci2*.015)*bsc;
+        e.jHead.add(mk(new THREE.CylinderGeometry(0,.02*bsc,spH,3),crownMat,Math.sin(ca)*.14*bsc,.3*bsc,Math.cos(ca)*.14*bsc))}
+      // Compound eyes — pair of large amber spheres
+      e.jHead.add(mk(new THREE.SphereGeometry(.055*bsc,6,5),glowMat(0xffdd00,.7),-.1*bsc,.2*bsc,-.14*bsc));
+      e.jHead.add(mk(new THREE.SphereGeometry(.055*bsc,6,5),glowMat(0xffdd00,.7),.1*bsc,.2*bsc,-.14*bsc));
+      // Mandibles — two curved pincers
+      e.jHead.add(mk(new THREE.CylinderGeometry(.012*bsc,.005*bsc,.12*bsc,3),chitinMat,-.06*bsc,.06*bsc,-.18*bsc));
+      e.jHead.add(mk(new THREE.CylinderGeometry(.012*bsc,.005*bsc,.12*bsc,3),chitinMat,.06*bsc,.06*bsc,-.18*bsc));
+      // Antennae
+      e.jHead.add(mk(new THREE.CylinderGeometry(.005*bsc,.003*bsc,.18*bsc,3),chitinMat,-.05*bsc,.38*bsc,-.05*bsc));
+      e.jHead.add(mk(new THREE.CylinderGeometry(.005*bsc,.003*bsc,.18*bsc,3),chitinMat,.05*bsc,.38*bsc,-.05*bsc));
     }
-    // Wing-like protrusions — insect-like, translucent
-    var wingMat=new THREE.MeshStandardMaterial({color:0xaaaa44,transparent:true,opacity:.35,side:THREE.DoubleSide});
-    bBody.add(mk(new THREE.PlaneGeometry(.3*bsc,.5*bsc),wingMat,-.35*bsc,.55*bsc,.1*bsc));
-    bBody.add(mk(new THREE.PlaneGeometry(.3*bsc,.5*bsc),wingMat,.35*bsc,.55*bsc,.1*bsc));
-    // Stinger tail
-    bBody.add(mk(new THREE.CylinderGeometry(.04*bsc,0,.2*bsc,4),glowMat(0xccaa00),0,-.1*bsc,.2*bsc));
-    // Chitin texture overlay
-    bBody.add(mk(new THREE.BoxGeometry(.4*bsc,.35*bsc,.04*bsc),new THREE.MeshStandardMaterial({color:0x887744,roughness:.4,metalness:.3}),0,.5*bsc,-.16*bsc));
+    // Folded wings — angled, semi-transparent, attached to upper back
+    var wingMat=new THREE.MeshBasicMaterial({color:0xbbaa55,transparent:true,opacity:.25,side:THREE.DoubleSide});
+    var wingL=mk(new THREE.PlaneGeometry(.35*bsc,.55*bsc),wingMat,-.28*bsc,.55*bsc,.14*bsc);
+    wingL.rotation.y=-.3;wingL.rotation.z=.25;bBody.add(wingL);
+    var wingR=mk(new THREE.PlaneGeometry(.35*bsc,.55*bsc),wingMat,.28*bsc,.55*bsc,.14*bsc);
+    wingR.rotation.y=.3;wingR.rotation.z=-.25;bBody.add(wingR);
+    e._hiveWings=[wingL,wingR];
+    // Abdomen — large segmented shape behind body
+    var abdMat=new THREE.MeshStandardMaterial({color:0x886633,roughness:.4,metalness:.3});
+    bBody.add(mk(new THREE.SphereGeometry(.2*bsc,6,5),abdMat,0,.1*bsc,.25*bsc));
+    bBody.add(mk(new THREE.SphereGeometry(.16*bsc,6,4),darkChitin,0,.05*bsc,.38*bsc));
+    // Stinger tip on abdomen
+    bBody.add(mk(new THREE.CylinderGeometry(.03*bsc,0,.12*bsc,4),glowMat(0xddaa00),0,-.05*bsc,.48*bsc));
+    // Shoulder chitin
+    bBody.add(mk(new THREE.SphereGeometry(.08*bsc,5,4),chitinMat,-.32*bsc,.7*bsc,0));
+    bBody.add(mk(new THREE.SphereGeometry(.08*bsc,5,4),chitinMat,.32*bsc,.7*bsc,0));
   }
   if(type==='shield'){
     // Blue energy shield ring around body — thicker, more prominent
@@ -1269,7 +1286,7 @@ function createBoss(type){
     e._archRings=[archRing,archRing2,archRing3];
     // Floating rune particles — small glowing orbs orbiting
     e._archOrbs=[];
-    for(var oi2=0;oi2<12;oi2++){
+    for(var oi2=0;oi2<6;oi2++){
       var orbMat=glowMat([0xaa00ff,0xff00ff,0xcc44ff,0x8800cc][oi2%4],.6);
       var orb=mk(new THREE.SphereGeometry(.015*bsc+Math.random()*.01*bsc,4,4),orbMat,0,0,0);
       bBody.add(orb);
@@ -1450,7 +1467,7 @@ function doBossAttack(e,now,dt){
         bossE.mesh.traverse(function(c){if(c.isMesh&&c.material){c.material.opacity=1}});
         // Backstab burst — 3 rapid shots
         for(var ci8=0;ci8<3;ci8++){(function(delay2){setTimeout(function(){if(bossE.hp<=0)return;fireEnemyBullet(bossE);bossE.shootFlash=1},delay2*100)})(ci8)}
-        spawnP(bossE.mesh.position.clone().setY(1),0xaa66ff,12);spawnRing(bossE.mesh.position,0x6644ff,6,400);
+        spawnP(bossE.mesh.position.clone().setY(1),0xaa66ff,6);spawnRing(bossE.mesh.position,0x6644ff,6,400);
         sfx('explode');G.shake=.04;showPM('cloak_end');
       },2500)})(e)}
     // SHADOW DASH — fast dash leaving a damaging trail of shadow projectiles
@@ -1515,7 +1532,7 @@ function doBossAttack(e,now,dt){
       if(!twinAlive){B.enraged=true;e.spd*=1.5;e.si=Math.max(200,e.si*.5);e.dmg*=1.5;sfx('boss');showPM('boss_rage');
         // Enrage visual — glowing red
         e.mesh.traverse(function(c){if(c.isMesh&&c.material){c.material=new THREE.MeshStandardMaterial({color:0x884400,emissive:0xff2200,emissiveIntensity:.5})}});
-        spawnP(e.mesh.position.clone().setY(1),0xff4400,15);spawnRing(e.mesh.position,0xff2200,12,800)}}
+        spawnP(e.mesh.position.clone().setY(1),0xff4400,6);spawnRing(e.mesh.position,0xff2200,12,800)}}
     // ENERGY TETHER — visible beam between twins, damages player if crossed
     var otherT=null;for(var tk=0;tk<G.enemies.length;tk++){if(G.enemies[tk]!==e&&G.enemies[tk].isBoss&&G.enemies[tk].bossType==='twins'&&G.enemies[tk].hp>0){otherT=G.enemies[tk];break}}
     if(otherT){
@@ -1597,65 +1614,47 @@ function doBossAttack(e,now,dt){
       for(var si3=0;si3<G.enemies.length;si3++){var se=G.enemies[si3];if(se.hp<=0||se.isBoss)continue;
         se.spd*=1.5;se.si=Math.max(300,se.si*.6);
         (function(en,os,oi){setTimeout(function(){if(en.hp>0){en.spd=os;en.si=oi}},4000)})(se,se.spd/1.5,se.si/.6)}}
-    // STINGER MISSILES — arcing projectiles that launch upward then dive at player
+    // STINGER BARRAGE — organic homing darts, visually distinct from mortar
     if(now-B.lastStinger>(B.stingerCD/B.phase)){B.lastStinger=now;
-      var stCount=1+B.phase;// 2-4 stingers based on phase
+      var stCount=1+B.phase;
       sfx('boss');showPM('stinger');
       for(var sti=0;sti<stCount;sti++){
-        // Target: player position + slight scatter
-        var stx=camera.position.x+(Math.random()-.5)*6;var stz=camera.position.z+(Math.random()-.5)*6;
-        var flightTime=1200+sti*200;// stagger arrivals
-        // Ground warning at impact point
-        spawnWarning(stx,stz,2,flightTime,0xccaa00);
-        // Create visible stinger projectile — elongated yellow-green shape
-        var stGeo=new THREE.CylinderGeometry(0,.06,.4,4);
-        var stMat=new THREE.MeshBasicMaterial({color:0xcccc00,transparent:true,opacity:.9});
+        var stx=camera.position.x+(Math.random()-.5)*5;var stz=camera.position.z+(Math.random()-.5)*5;
+        var flightTime=1000+sti*180;
+        // Green pulsing warning — distinct from orange mortar warnings
+        spawnWarning(stx,stz,1.8,flightTime,0x88cc00);
+        // Elongated green dart shape
+        var stGeo=new THREE.ConeGeometry(.04,.35,4);
+        var stMat=new THREE.MeshBasicMaterial({color:0xaacc00,transparent:true,opacity:.85});
         var stMesh=new THREE.Mesh(stGeo,stMat);
-        var startX=e.mesh.position.x;var startZ=e.mesh.position.z;var startY=1.5*e.sc;
+        var startX=e.mesh.position.x;var startZ=e.mesh.position.z;var startY=1.2*e.sc;
         stMesh.position.set(startX,startY,startZ);scene.add(stMesh);
-        // Animate the arc: up from boss, peak at midpoint, dive down to target
         (function(mesh,mat,sx,sy,sz,tx,tz,dur){
           var t0=performance.now();
-          var trail=[];
           var animSting=function(){
             var t=(performance.now()-t0)/dur;
             if(t>=1){
-              scene.remove(mesh);
-              // Remove trail particles
-              for(var tr=0;tr<trail.length;tr++)scene.remove(trail[tr]);
-              // Impact — damage + small acid pool
-              if(!G.on)return;
+              scene.remove(mesh);if(!G.on)return;
+              // Impact — acid splash, NO shockwave
               var impactDist=Math.hypot(camera.position.x-tx,camera.position.z-tz);
-              if(impactDist<2.5)takeDamage(15,new THREE.Vector3(tx,0,tz));
-              spawnP(new THREE.Vector3(tx,.5,tz),0xaaaa00,8);sfx('explode');G.shake=.02;
-              // Leave small acid pool
-              var aMesh=new THREE.Mesh(new THREE.CylinderGeometry(1.5,1.5,.08,6),new THREE.MeshBasicMaterial({color:0x88aa00,transparent:true,opacity:.3}));
+              if(impactDist<2.2)takeDamage(10,new THREE.Vector3(tx,0,tz));
+              spawnP(new THREE.Vector3(tx,.5,tz),0x88cc00,5);sfx('explode');
+              // Acid splash pool
+              var aMesh=new THREE.Mesh(new THREE.CylinderGeometry(1.2,1.2,.06,6),new THREE.MeshBasicMaterial({color:0x88aa00,transparent:true,opacity:.25}));
               aMesh.position.set(tx,.04,tz);scene.add(aMesh);
               G.acidZones.push({mesh:aMesh,x:tx,z:tz,end:performance.now()+3000,dmgCD:0});
-              return;
-            }
-            // Arc trajectory: parabolic Y, linear XZ
-            var px=sx+(tx-sx)*t;var pz=sz+(tz-sz)*t;
-            var arcH=8+Math.random()*.5;// peak height
-            var py=sy+(0-sy)*t+arcH*4*t*(1-t);// parabola: peaks at t=0.5
+              return}
+            // Arc with organic wobble
+            var wobble=Math.sin(t*12)*.3;
+            var px=sx+(tx-sx)*t+wobble*(1-t);var pz=sz+(tz-sz)*t+Math.cos(t*10)*.2*(1-t);
+            var arcH=6;var py=sy+(0-sy)*t+arcH*4*t*(1-t);
             mesh.position.set(px,py,pz);
-            // Point stinger nose toward travel direction
-            var nextT=Math.min(1,t+.05);
-            var nx=sx+(tx-sx)*nextT;var nz=sz+(tz-sz)*nextT;
-            var ny=sy+(0-sy)*nextT+arcH*4*nextT*(1-nextT);
-            mesh.lookAt(nx,ny,nz);
-            // Trail particles
-            if(Math.random()<.4){
-              var tp=new THREE.Mesh(pGeo2,getPMat(0xaaaa00));
-              tp.position.copy(mesh.position);scene.add(tp);trail.push(tp);
-              G.particles.push({m:tp,v:new THREE.Vector3((Math.random()-.5)*.5,-1,(Math.random()-.5)*.5),l:.4});
-              if(trail.length>8){scene.remove(trail.shift())}}
-            mat.opacity=.7+Math.sin(performance.now()*.02)*.3;
-            requestAnimationFrame(animSting);
-          };animSting();
-        })(stMesh,stMat,startX,startY,startZ,stx,stz,flightTime);
-      }
-    }
+            // Point dart forward
+            var nt2=Math.min(1,t+.05);
+            mesh.lookAt(sx+(tx-sx)*nt2,sy+(0-sy)*nt2+arcH*4*nt2*(1-nt2),sz+(tz-sz)*nt2);
+            mat.opacity=.7+Math.sin(performance.now()*.015)*.25;
+            requestAnimationFrame(animSting)};animSting();
+        })(stMesh,stMat,startX,startY,startZ,stx,stz,flightTime)}}
   }
   // Aegis Prime: shield reflect + energy pulse + charge + SHIELD WALL + FORTRESS MODE
   if(bt==='shield'){
@@ -1806,10 +1805,10 @@ function doBossAttack(e,now,dt){
   if(bt==='architect'){
     if(hpPct<.6&&B.phase===1){B.phase=2;showPM('boss_rage');scene.fog=new THREE.FogExp2(0x1a0033,0.005);sfx('boss');
       // Phase 2 visual burst — energy pulse
-      spawnP(e.mesh.position.clone().setY(12),0xff00ff,25);spawnRing(e.mesh.position,0xff00ff,30,1500);G.shake=.1}
+      spawnP(e.mesh.position.clone().setY(12),0xff00ff,10);spawnRing(e.mesh.position,0xff00ff,30,1500);G.shake=.1}
     if(hpPct<.25&&B.phase===2){B.phase=3;scene.fog=new THREE.FogExp2(0x220011,0.008);sfx('boss');
       // Phase 3 — reality fractures, massive visual event
-      spawnP(e.mesh.position.clone().setY(12),0xff44ff,40);spawnRing(e.mesh.position,0xaa00ff,40,2000);G.shake=.15;
+      spawnP(e.mesh.position.clone().setY(12),0xff44ff,12);spawnRing(e.mesh.position,0xaa00ff,40,2000);G.shake=.15;
       for(var p3i=0;p3i<5;p3i++){spawnRing(new THREE.Vector3((Math.random()-.5)*40,0,(Math.random()-.5)*40),0xff00ff,15,1000)}}
     // ── ANIMATE body elements — rings orbit, core pulses, orbs float ──
     if(e._archRings){var rt=now*.0004;
@@ -1844,7 +1843,7 @@ function doBossAttack(e,now,dt){
     if(!e._archDebrisTimer)e._archDebrisTimer=0;
     var debrisInterval=3000/B.phase;
     if(now-e._archDebrisTimer>debrisInterval){e._archDebrisTimer=now;
-      var debrisCount=1+B.phase;
+      var debrisCount=1;
       for(var dbi=0;dbi<debrisCount;dbi++){
         var dbx=camera.position.x+(Math.random()-.5)*30;var dbz=camera.position.z+(Math.random()-.5)*30;
         var dbSize=.15+Math.random()*.25;
@@ -1890,13 +1889,13 @@ function doBossAttack(e,now,dt){
       var crLife=1-cr.age/cr.maxAge;cr.mat.opacity=.5*crLife*(1+Math.sin(now*.003+cri)*.2);
       if(cr.age>cr.maxAge){scene.remove(cr.mesh);e._archCracks.splice(cri,1)}}
     // Phase 2+: ambient void particles rise from ground
-    if(B.phase>=2&&Math.random()<.08*B.phase){
+    if(B.phase>=2&&Math.random()<.03*B.phase){
       var vpx=camera.position.x+(Math.random()-.5)*20;var vpz=camera.position.z+(Math.random()-.5)*20;
       var vpM=new THREE.Mesh(pGeo2,getPMat([0x6600aa,0x8800ff,0xaa00ff,0xff00ff][Math.random()*4|0]));
       vpM.position.set(vpx,.1,vpz);scene.add(vpM);
       G.particles.push({m:vpM,v:new THREE.Vector3((Math.random()-.5)*1,3+Math.random()*3,(Math.random()-.5)*1),l:1.5+Math.random()})}
     // Phase 3: reality tears — brief bright flashes in random spots
-    if(B.phase>=3&&Math.random()<.04){
+    if(B.phase>=3&&Math.random()<.015){
       var rtx=camera.position.x+(Math.random()-.5)*15;var rtz=camera.position.z+(Math.random()-.5)*15;
       spawnRing(new THREE.Vector3(rtx,0,rtz),0xff44ff,4,300);G.shake=Math.max(G.shake,.008)}
     // ═══ ATTACKS ═══
@@ -2535,6 +2534,8 @@ function loop(){
       scene.remove(b.m);G.bullets.splice(i,1)}}
   // Particles
   for(var i2=G.particles.length-1;i2>=0;i2--){var p=G.particles[i2];p.v.y-=18*dt;p.m.position.addScaledVector(p.v,dt);if(p.spin){p.m.rotation.x+=dt*15;p.m.rotation.z+=dt*10}p.l-=dt;p.m.material.opacity=Math.max(0,p.l*2);if(p.l<=0){scene.remove(p.m);G.particles.splice(i2,1)}}
+  // Hard cap — cull oldest particles if too many
+  while(G.particles.length>100){var old=G.particles.shift();scene.remove(old.m)}
   // Dust
   var dp=dustPts.geometry.attributes.position.array;for(var di2=0;di2<dustN;di2++){dp[di2*3+1]+=Math.sin(now*.0003+di2)*.003;if(dp[di2*3+1]>8)dp[di2*3+1]=0;if(dp[di2*3+1]<0)dp[di2*3+1]=8}dustPts.geometry.attributes.position.needsUpdate=true;
   // Lights
@@ -2960,7 +2961,7 @@ function useSkill(){
 
   if(perk.id===0){// JUGGERNAUT — SHOCKWAVE: knockback + stun all nearby enemies
     spawnRing(camera.position,0xffaa00,sk.radius,800);
-    spawnP(camera.position.clone().setY(.5),0xff8800,20);
+    spawnP(camera.position.clone().setY(.5),0xff8800,8);
     // Ground crack effect
     for(var sci=0;sci<8;sci++){var sca=sci*Math.PI/4;
       spawnP(new THREE.Vector3(camera.position.x+Math.cos(sca)*4,.3,camera.position.z+Math.sin(sca)*4),0xffaa00,3)}
@@ -2985,13 +2986,13 @@ function useSkill(){
     showPM('skill_overdrive');
     // Gold aura burst + persistent particle stream
     var d=document.getElementById('damageOverlay');d.style.background='radial-gradient(ellipse at center,rgba(255,200,0,0.15),transparent 60%)';d.style.opacity='1';
-    spawnRing(camera.position,0xffcc00,8,500);spawnP(camera.position.clone().setY(1),0xffdd44,12);
+    spawnRing(camera.position,0xffcc00,8,500);spawnP(camera.position.clone().setY(1),0xffdd44,5);
     // Aura particle emitter during overdrive
     var odVfx=setInterval(function(){if(!G._overdrive||!G.on){clearInterval(odVfx);
       var d2=document.getElementById('damageOverlay');d2.style.opacity='0';return}
       var ap=new THREE.Mesh(pGeo2,getPMat([0xffcc00,0xffdd44,0xffaa00][Math.random()*3|0]));
       ap.position.set(camera.position.x+(Math.random()-.5)*1.5,camera.position.y-1+Math.random()*2,camera.position.z+(Math.random()-.5)*1.5);
-      scene.add(ap);G.particles.push({m:ap,v:new THREE.Vector3((Math.random()-.5)*2,3+Math.random()*2,(Math.random()-.5)*2),l:.3+Math.random()*.2})},60);
+      scene.add(ap);G.particles.push({m:ap,v:new THREE.Vector3((Math.random()-.5)*2,3+Math.random()*2,(Math.random()-.5)*2),l:.3+Math.random()*.2})},200);
   }
   else if(perk.id===2){// SCAVENGER — PULSE TRAP: slow all enemies in radius
     var trapX=camera.position.x;var trapZ=camera.position.z;
@@ -3006,7 +3007,7 @@ function useSkill(){
       // Expanding EMP wave — multiple rings
       spawnRing(new THREE.Vector3(tx,0,tz),0x44ff88,sk.radius,800);
       spawnRing(new THREE.Vector3(tx,0,tz),0x88ffaa,sk.radius*.7,600);
-      spawnP(new THREE.Vector3(tx,1.5,tz),0x44ff88,20);sfx('explode');G.shake=.05;
+      spawnP(new THREE.Vector3(tx,1.5,tz),0x44ff88,8);sfx('explode');G.shake=.05;
       for(var j=0;j<G.enemies.length;j++){var en2=G.enemies[j];if(en2.hp<=0)continue;
         var d2=Math.hypot(en2.mesh.position.x-tx,en2.mesh.position.z-tz);
         if(d2<sk.radius){
@@ -3022,7 +3023,7 @@ function useSkill(){
     G._vanish=true;G._vanishEnd=now+sk.dur;
     showPM('skill_vanish');
     // Blue stealth burst
-    spawnP(camera.position.clone().setY(1),0x4466ff,15);
+    spawnP(camera.position.clone().setY(1),0x4466ff,6);
     spawnRing(camera.position,0x4466ff,6,400);
     // Persistent stealth particle trail
     var d3=document.getElementById('damageOverlay');d3.style.background='radial-gradient(ellipse at center,rgba(50,100,255,0.12),transparent 60%)';d3.style.opacity='1';
@@ -3030,7 +3031,7 @@ function useSkill(){
       var d4=document.getElementById('damageOverlay');d4.style.opacity='0';return}
       var vp=new THREE.Mesh(pGeo2,getPMat([0x4466ff,0x3355dd,0x6688ff][Math.random()*3|0]));
       vp.position.set(camera.position.x+(Math.random()-.5)*1,camera.position.y-1+Math.random(),camera.position.z+(Math.random()-.5)*1);
-      scene.add(vp);G.particles.push({m:vp,v:new THREE.Vector3((Math.random()-.5),1+Math.random(),(Math.random()-.5)),l:.4+Math.random()*.3})},80);
+      scene.add(vp);G.particles.push({m:vp,v:new THREE.Vector3((Math.random()-.5),1+Math.random(),(Math.random()-.5)),l:.4+Math.random()*.3})},200);
     G._stimBoost=true;G._stimEnd=now+sk.dur;
   }
 }
