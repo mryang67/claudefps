@@ -926,7 +926,7 @@ var WAVE_DATA=[
   {name:'RECON TEAM',desc:'Scouts deployed',types:['soldier','scout'],count:6},
   {name:'REINFORCEMENTS',desc:'Heavy armor arrives',types:['soldier','scout','heavy'],count:8},
   {name:'NIGHT OPS',desc:'Reduced visibility',types:['scout','scout','soldier'],count:8,mod:'fog'},
-  {name:'BOSS: COMMANDER VOSS',desc:'Eliminate the Commander',boss:'commander',count:3},
+  {name:'BOSS: COMMANDER VOSS',desc:'Eliminate the Commander',boss:'commander',count:2},
   // ═══ ACT 2: ESCALATION (W6-10) ═══
   {name:'SANDSTORM',desc:'Low visibility, close quarters',types:['soldier','soldier','scout'],count:10,mod:'fog'},
   {name:'RAPID ASSAULT',desc:'Fast attack wave',types:['scout','scout','scout'],count:12},
@@ -956,7 +956,7 @@ var WAVE_DATA=[
   {name:'LAST STAND',desc:'Hold your ground',types:['soldier','soldier','soldier','heavy'],count:14,mod:'elite'},
   {name:'HEAVY ASSAULT',desc:'Armored division en masse',types:['heavy','heavy','heavy','soldier','soldier'],count:13,mod:'shield'},
   {name:'THE FINAL PUSH',desc:'All remaining hostiles',types:['soldier','heavy','scout','heavy','scout','scout'],count:18,mod:'elite'},
-  {name:'BOSS: WARLORD KAINE',desc:'End this war',boss:'warlord',count:5},
+  {name:'BOSS: WARLORD KAINE',desc:'End this war',boss:'warlord',count:3},
 ];
 
 // Boss definitions — balanced for 20-60s fights depending on stage
@@ -965,14 +965,14 @@ var BOSSES={
     attacks:['burst','summon','mortar','rally'],summonCD:10000,lastSummon:0,mortarCD:8000,lastMortar:0,rallyCD:14000,lastRally:0,phase:1},
   titan:{name:'TITAN MK-II',hp:2000,spd:3.5,sc:2.0,si:99999,acc:1,dmg:0,bs:45,color:0x444466,
     attacks:['slam'],stompCD:3200,lastStomp:0,leapCD:5500,lastLeap:0,phase:1},
-  phantom:{name:'THE PHANTOM',hp:900,spd:4.2,sc:1.0,si:450,acc:.04,dmg:10,bs:62,color:0x222244,
+  phantom:{name:'THE PHANTOM',hp:1000,spd:4.2,sc:1.0,si:450,acc:.04,dmg:10,bs:62,color:0x222244,
     attacks:['teleport','decoy','cloak','dash'],teleCD:5000,lastTele:0,decoyCD:15000,lastDecoy:0,cloakCD:14000,lastCloak:0,dashCD:9000,lastDash:0,phase:1},
-  warlord:{name:'WARLORD KAINE',hp:3200,spd:2.4,sc:1.8,si:380,acc:.04,dmg:14,bs:52,color:0x660000,
+  warlord:{name:'WARLORD KAINE',hp:3000,spd:2.2,sc:1.8,si:420,acc:.04,dmg:12,bs:52,color:0x660000,
     attacks:['rockets','summon','rage','hell'],summonCD:8000,lastSummon:0,rageCD:10000,lastRage:0,hellCD:8000,lastHell:0,phase:1},
   // ── BOSS RUSH EXCLUSIVES ──
   twins:{name:'THE TWINS',hp:750,spd:3.0,sc:1.1,si:550,acc:.05,dmg:9,bs:58,color:0x448844,
     attacks:['sync','tether','converge'],syncCD:7000,lastSync:0,tetherCD:10000,lastTether:0,convergeCD:12000,lastConverge:0,phase:1,twinLink:true},
-  hivemind:{name:'HIVE QUEEN',hp:1200,spd:2.0,sc:1.6,si:550,acc:.05,dmg:9,bs:50,color:0x886600,
+  hivemind:{name:'HIVE QUEEN',hp:1400,spd:2.0,sc:1.6,si:550,acc:.05,dmg:9,bs:50,color:0x886600,
     attacks:['swarm','burrow','acid','scream','stinger'],swarmCD:6500,lastSwarm:0,burrowCD:10000,lastBurrow:0,acidCD:5000,lastAcid:0,screamCD:12000,lastScream:0,stingerCD:8500,lastStinger:0,phase:1},
   shield:{name:'AEGIS PRIME',hp:1800,spd:1.8,sc:2.2,si:450,acc:.06,dmg:11,bs:42,color:0x3355aa,
     attacks:['reflect','pulse','charge','fortress'],reflectCD:16000,lastReflect:0,pulseCD:8000,lastPulse:0,chargeCD:8000,lastCharge:0,fortressCD:25000,lastFortress:0,phase:1,shielded:false},
@@ -984,7 +984,7 @@ var BOSSES={
     attacks:['reality'],warpCD:18000,lastWarp:0,voidCD:5500,lastVoid:0,
     spiralCD:5500,lastSpiral:0,pullCD:8000,lastPull:0,summonCD:99999,lastSummon:0,slamCD:4000,lastSlam:0,swipeCD:6500,lastSwipe:0,phase:1},
   // ── TRUE FINAL BOSS — THE ECHO ──
-  echo:{name:'THE ECHO',hp:2500,spd:4.0,sc:1.2,si:500,acc:.04,dmg:11,bs:60,color:0x00cccc,
+  echo:{name:'THE ECHO',hp:3200,spd:4.0,sc:1.2,si:500,acc:.04,dmg:11,bs:60,color:0x00cccc,
     attacks:['adaptive'],predictCD:4000,lastPredict:0,mirrorCD:12000,lastMirror:0,
     exploitCD:8000,lastExploit:0,adaptCD:6000,lastAdapt:0,phase:1},
 };
