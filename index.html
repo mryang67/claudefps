@@ -287,29 +287,56 @@ async function loadProgress(){
 loadProgress();
 var BUFFS=[
   {key:'maxhp',name:'+10 MAX HP',apply:function(){G.maxHP=(G.maxHP||100)+10;G.hp=Math.min(G.maxHP,G.hp+10);updateHP()}},
-  {key:'dmg',name:'+6% DAMAGE',apply:function(){G.buffs.dmg=Math.min(.50,G.buffs.dmg+.06)}},
-  {key:'rate',name:'+6% FIRE RATE',apply:function(){G.buffs.rate=Math.min(.40,G.buffs.rate+.06)}},
+  {key:'dmg',name:'+6% DAMAGE',apply:function(){G.buffs.dmg=Math.min(.60,G.buffs.dmg+.06)}},
+  {key:'rate',name:'+6% FIRE RATE',apply:function(){G.buffs.rate=Math.min(.45,G.buffs.rate+.06)}},
   {key:'armor',name:'+10 MAX ARMOR',apply:function(){G.maxArmor+=10;G.armor=Math.min(G.maxArmor,G.armor+10);updateArmor()}},
-  {key:'speed',name:'+5% SPEED',apply:function(){G.buffs.speed=Math.min(.30,G.buffs.speed+.05)}},
+  {key:'speed',name:'+5% SPEED',apply:function(){G.buffs.speed=Math.min(.35,G.buffs.speed+.05)}},
   {key:'spread',name:'+6% ACCURACY',apply:function(){G.buffs.spread=Math.min(.40,G.buffs.spread+.06)}},
-  {key:'regen',name:'+1 HP/S REGEN',apply:function(){G.buffs.regen=Math.min(4,G.buffs.regen+1)}},
-  {key:'reload',name:'+8% RELOAD',apply:function(){G.buffs.reload=Math.min(.40,G.buffs.reload+.08)}},
+  {key:'regen',name:'+0.5 HP/S REGEN',apply:function(){G.buffs.regen=Math.min(5,G.buffs.regen+.5)}},
+  {key:'reload',name:'+8% RELOAD',apply:function(){G.buffs.reload=Math.min(.45,G.buffs.reload+.08)}},
+  {key:'lifesteal',name:'+2% LIFESTEAL',apply:function(){G.buffs.lifesteal=Math.min(.12,G.buffs.lifesteal+.02)}},
 ];
-// Boss-kill guaranteed buffs
+// Campaign boss-kill guaranteed buffs
 var BOSS_BUFFS={
   5:  [{name:'+15 MAX HP',apply:function(){G.maxHP=(G.maxHP||100)+15;G.hp=Math.min(G.maxHP,G.hp+15);updateHP()}},
-       {name:'+8% DAMAGE',apply:function(){G.buffs.dmg=Math.min(.50,G.buffs.dmg+.08)}}],
+       {name:'+8% DAMAGE',apply:function(){G.buffs.dmg=Math.min(.60,G.buffs.dmg+.08)}}],
   10: [{name:'+15 MAX HP',apply:function(){G.maxHP=(G.maxHP||100)+15;G.hp=Math.min(G.maxHP,G.hp+15);updateHP()}},
-       {name:'+8% FIRE RATE',apply:function(){G.buffs.rate=Math.min(.40,G.buffs.rate+.08)}}],
+       {name:'+8% FIRE RATE',apply:function(){G.buffs.rate=Math.min(.45,G.buffs.rate+.08)}}],
   15: [{name:'+10 MAX ARMOR',apply:function(){G.maxArmor+=10;G.armor=Math.min(G.maxArmor,G.armor+10);updateArmor()}},
-       {name:'+8% DAMAGE',apply:function(){G.buffs.dmg=Math.min(.50,G.buffs.dmg+.08)}},
-       {name:'+1 HP/S REGEN',apply:function(){G.buffs.regen=Math.min(4,G.buffs.regen+1)}}],
+       {name:'+8% DAMAGE',apply:function(){G.buffs.dmg=Math.min(.60,G.buffs.dmg+.08)}},
+       {name:'+0.5 HP/S REGEN',apply:function(){G.buffs.regen=Math.min(5,G.buffs.regen+.5)}}],
   20: [{name:'+20 MAX HP',apply:function(){G.maxHP=(G.maxHP||100)+20;G.hp=Math.min(G.maxHP,G.hp+20);updateHP()}},
-       {name:'+8% FIRE RATE',apply:function(){G.buffs.rate=Math.min(.40,G.buffs.rate+.08)}},
-       {name:'+5% SPEED',apply:function(){G.buffs.speed=Math.min(.30,G.buffs.speed+.05)}}],
+       {name:'+8% FIRE RATE',apply:function(){G.buffs.rate=Math.min(.45,G.buffs.rate+.08)}},
+       {name:'+5% SPEED',apply:function(){G.buffs.speed=Math.min(.35,G.buffs.speed+.05)}}],
   25: [{name:'+15 MAX ARMOR',apply:function(){G.maxArmor+=15;G.armor=Math.min(G.maxArmor,G.armor+15);updateArmor()}},
-       {name:'+10% DAMAGE',apply:function(){G.buffs.dmg=Math.min(.50,G.buffs.dmg+.10)}},
-       {name:'+1.5 HP/S REGEN',apply:function(){G.buffs.regen=Math.min(4,G.buffs.regen+1.5)}}],
+       {name:'+10% DAMAGE',apply:function(){G.buffs.dmg=Math.min(.60,G.buffs.dmg+.10)}},
+       {name:'+1 HP/S REGEN',apply:function(){G.buffs.regen=Math.min(5,G.buffs.regen+1)}}],
+};
+// Boss Rush round-end guaranteed buffs — stronger, more variety
+var BOSS_RUSH_BUFFS={
+  1: [{name:'+15 MAX HP',apply:function(){G.maxHP=(G.maxHP||100)+15;G.hp=Math.min(G.maxHP,G.hp+15);updateHP()}},
+      {name:'+8% DAMAGE',apply:function(){G.buffs.dmg=Math.min(.60,G.buffs.dmg+.08)}}],
+  2: [{name:'+10 MAX ARMOR',apply:function(){G.maxArmor+=10;G.armor=Math.min(G.maxArmor,G.armor+10);updateArmor()}},
+      {name:'+8% FIRE RATE',apply:function(){G.buffs.rate=Math.min(.45,G.buffs.rate+.08)}}],
+  3: [{name:'+20 MAX HP',apply:function(){G.maxHP=(G.maxHP||100)+20;G.hp=Math.min(G.maxHP,G.hp+20);updateHP()}},
+      {name:'+5% SPEED',apply:function(){G.buffs.speed=Math.min(.35,G.buffs.speed+.05)}},
+      {name:'+3% LIFESTEAL',apply:function(){G.buffs.lifesteal=Math.min(.12,G.buffs.lifesteal+.03)}}],
+  4: [{name:'+15 MAX ARMOR',apply:function(){G.maxArmor+=15;G.armor=Math.min(G.maxArmor,G.armor+15);updateArmor()}},
+      {name:'+10% DAMAGE',apply:function(){G.buffs.dmg=Math.min(.60,G.buffs.dmg+.10)}},
+      {name:'+1 HP/S REGEN',apply:function(){G.buffs.regen=Math.min(5,G.buffs.regen+1)}}],
+  5: [{name:'+25 MAX HP',apply:function(){G.maxHP=(G.maxHP||100)+25;G.hp=Math.min(G.maxHP,G.hp+25);updateHP()}},
+      {name:'+10% FIRE RATE',apply:function(){G.buffs.rate=Math.min(.45,G.buffs.rate+.10)}},
+      {name:'+4% LIFESTEAL',apply:function(){G.buffs.lifesteal=Math.min(.12,G.buffs.lifesteal+.04)}}],
+  6: [{name:'+20 MAX ARMOR',apply:function(){G.maxArmor+=20;G.armor=Math.min(G.maxArmor,G.armor+20);updateArmor()}},
+      {name:'+12% DAMAGE',apply:function(){G.buffs.dmg=Math.min(.60,G.buffs.dmg+.12)}},
+      {name:'+8% ACCURACY',apply:function(){G.buffs.spread=Math.min(.40,G.buffs.spread+.08)}}],
+  7: [{name:'+30 MAX HP',apply:function(){G.maxHP=(G.maxHP||100)+30;G.hp=Math.min(G.maxHP,G.hp+30);updateHP()}},
+      {name:'+12% FIRE RATE',apply:function(){G.buffs.rate=Math.min(.45,G.buffs.rate+.12)}},
+      {name:'+1.5 HP/S REGEN',apply:function(){G.buffs.regen=Math.min(5,G.buffs.regen+1.5)}}],
+  8: [{name:'+25 MAX ARMOR',apply:function(){G.maxArmor+=25;G.armor=Math.min(G.maxArmor,G.armor+25);updateArmor()}},
+      {name:'+5% LIFESTEAL',apply:function(){G.buffs.lifesteal=Math.min(.12,G.buffs.lifesteal+.05)}},
+      {name:'+10% SPEED',apply:function(){G.buffs.speed=Math.min(.35,G.buffs.speed+.10)}},
+      {name:'+15% DAMAGE',apply:function(){G.buffs.dmg=Math.min(.60,G.buffs.dmg+.15)}}],
 };
 function grantBuff(){
   var b=BUFFS[Math.random()*BUFFS.length|0];
@@ -317,7 +344,10 @@ function grantBuff(){
   return b.name;
 }
 function grantBossBuffs(wave){
-  var bb=BOSS_BUFFS[wave];if(!bb)return[];
+  var bb=BOSS_BUFFS[wave];
+  // Boss rush: use round-specific buffs instead of campaign buffs
+  if(G.mode==='bossrush'){bb=BOSS_RUSH_BUFFS[wave]}
+  if(!bb)return[];
   var names=[];for(var i=0;i<bb.length;i++){bb[i].apply();names.push(bb[i].name)}
   return names;
 }
@@ -381,12 +411,12 @@ var WEAPONS=[
     desc:'Non-stop suppression.<br>3.25s continuous fire.'},
 ];
 var PERKS=[
-  {id:0,name:'JUGGERNAUT',icon:'&#9632;',desc:'+30 HP, +10 armor. Take 12% less damage.<br><b>SKILL: SHOCKWAVE</b> — Knockback + stun all nearby enemies.',hpBonus:30,armorBonus:10,dmgReduce:0.88,
-    skill:{name:'SHOCKWAVE',icon:'&#9632;',charge:500,radius:14,dmg:25,stunDur:2500}},
+  {id:0,name:'JUGGERNAUT',icon:'&#9632;',desc:'+30 HP, +10 armor. Take 12% less damage.<br><b>SKILL: SHOCKWAVE</b> — Massive knockback + stun in huge radius.',hpBonus:30,armorBonus:10,dmgReduce:0.88,
+    skill:{name:'SHOCKWAVE',icon:'&#9632;',charge:500,radius:22,dmg:25,stunDur:2500}},
   {id:1,name:'GUNSLINGER',icon:'&#9733;',desc:'25% faster reload. 12% faster fire rate.<br><b>SKILL: OVERDRIVE</b> — 3s of instant reload + double fire rate.',reloadMult:.75,rateMult:.88,
     skill:{name:'OVERDRIVE',icon:'&#9733;',charge:600,dur:3000}},
-  {id:2,name:'SCAVENGER',icon:'&#10010;',desc:'25% more loot drops. Pickups give 25% more.<br><b>SKILL: PULSE TRAP</b> — EMP slows all enemies in radius for 5s.',lootMult:1.25,pickupMult:1.25,
-    skill:{name:'PULSE TRAP',icon:'&#10010;',charge:350,radius:15,slowDur:5000,slowAmt:.35}},
+  {id:2,name:'SCAVENGER',icon:'&#10010;',desc:'25% more loot drops. Pickups give 25% more.<br><b>SKILL: PULSE TRAP</b> — EMP slows all enemies in massive radius for 5s.',lootMult:1.25,pickupMult:1.25,
+    skill:{name:'PULSE TRAP',icon:'&#10010;',charge:350,radius:22,slowDur:5000,slowAmt:.35}},
   {id:3,name:'GHOST',icon:'&#9830;',desc:'30% faster movement. Sprint costs 40% less.<br><b>SKILL: VANISH</b> — Go invisible for 4s + speed boost.',speedMult:1.30,sprintMult:0.60,
     skill:{name:'VANISH',icon:'&#9830;',charge:300,dur:4000}},
 ];
@@ -932,19 +962,19 @@ var WAVE_DATA=[
   {name:'RAPID ASSAULT',desc:'Fast attack wave',types:['scout','scout','scout'],count:12},
   {name:'SNIPERS',desc:'Long range engagement',types:['soldier','heavy'],count:7,mod:'accurate'},
   {name:'SWARM',desc:'Overwhelming numbers',types:['scout','scout','scout','scout'],count:14},
-  {name:'BOSS: TITAN MK-II',desc:'Destroy the Titan',boss:'titan',count:4},
+  {name:'BOSS: TITAN MK-II',desc:'Destroy the Titan',boss:'titan',count:2},
   // ═══ ACT 3: SHADOW OPS (W11-15) ═══
   {name:'EMP STRIKE',desc:'Electronics jammed',types:['soldier','heavy','scout'],count:10,mod:'nomap'},
   {name:'FLANKERS',desc:'Surrounded on all sides',types:['scout','scout','soldier'],count:12,mod:'flank'},
   {name:'ELITE SQUAD',desc:'Trained operatives',types:['soldier','soldier','heavy'],count:10,mod:'elite'},
   {name:'DARKNESS',desc:'Total blackout',types:['scout','soldier','heavy','scout'],count:12,mod:'dark'},
-  {name:'BOSS: THE PHANTOM',desc:'Hunt the Phantom',boss:'phantom',count:3},
+  {name:'BOSS: THE PHANTOM',desc:'Hunt the Phantom',boss:'phantom',count:2},
   // ═══ ACT 4: INFESTATION (W16-20) ═══
   {name:'FIRST SWARM',desc:'They\'re coming from everywhere',types:['scout','scout','scout','scout','scout'],count:16},
   {name:'TOXIC ZONE',desc:'Poisonous territory',types:['soldier','scout','heavy'],count:10,mod:'acid'},
   {name:'BURROWERS',desc:'They surface beneath you',types:['scout','scout','soldier','soldier'],count:14,mod:'flank'},
   {name:'HIVE APPROACH',desc:'The swarm thickens',types:['scout','scout','scout','heavy','heavy'],count:15,mod:'elite'},
-  {name:'BOSS: HIVE QUEEN',desc:'Destroy the Queen',boss:'hivemind',count:4},
+  {name:'BOSS: HIVE QUEEN',desc:'Destroy the Queen',boss:'hivemind',count:2},
   // ═══ ACT 5: FORTIFICATION (W21-25) ═══
   {name:'SHIELD WALL',desc:'Armored advance',types:['heavy','heavy','heavy','soldier'],count:12,mod:'shield'},
   {name:'IRONCLAD',desc:'Maximum armor deployment',types:['heavy','heavy','soldier'],count:10,mod:'elite'},
@@ -961,19 +991,19 @@ var WAVE_DATA=[
 
 // Boss definitions — balanced for 20-60s fights depending on stage
 var BOSSES={
-  commander:{name:'COMMANDER VOSS',hp:1000,spd:2.5,sc:1.5,si:600,acc:.05,dmg:10,bs:55,color:0x882200,
-    attacks:['burst','summon','mortar','rally'],summonCD:10000,lastSummon:0,mortarCD:8000,lastMortar:0,rallyCD:14000,lastRally:0,phase:1},
-  titan:{name:'TITAN MK-II',hp:2000,spd:3.5,sc:2.0,si:99999,acc:1,dmg:0,bs:45,color:0x444466,
+  commander:{name:'COMMANDER VOSS',hp:900,spd:2.5,sc:1.5,si:600,acc:.05,dmg:10,bs:55,color:0x882200,
+    attacks:['burst','summon','mortar','rally'],summonCD:14000,lastSummon:0,mortarCD:8000,lastMortar:0,rallyCD:14000,lastRally:0,phase:1},
+  titan:{name:'TITAN MK-II',hp:1700,spd:3.5,sc:2.0,si:99999,acc:1,dmg:0,bs:45,color:0x444466,
     attacks:['slam'],stompCD:3200,lastStomp:0,leapCD:5500,lastLeap:0,phase:1},
-  phantom:{name:'THE PHANTOM',hp:1000,spd:4.2,sc:1.0,si:450,acc:.04,dmg:10,bs:62,color:0x222244,
+  phantom:{name:'THE PHANTOM',hp:750,spd:5.0,sc:1.0,si:350,acc:.03,dmg:14,bs:70,color:0x222244,
     attacks:['teleport','decoy','cloak','dash'],teleCD:5000,lastTele:0,decoyCD:15000,lastDecoy:0,cloakCD:14000,lastCloak:0,dashCD:9000,lastDash:0,phase:1},
   warlord:{name:'WARLORD KAINE',hp:3000,spd:2.2,sc:1.8,si:420,acc:.04,dmg:12,bs:52,color:0x660000,
     attacks:['rockets','summon','rage','hell'],summonCD:8000,lastSummon:0,rageCD:10000,lastRage:0,hellCD:8000,lastHell:0,phase:1},
   // ── BOSS RUSH EXCLUSIVES ──
   twins:{name:'THE TWINS',hp:750,spd:3.0,sc:1.1,si:550,acc:.05,dmg:9,bs:58,color:0x448844,
     attacks:['sync','tether','converge'],syncCD:7000,lastSync:0,tetherCD:10000,lastTether:0,convergeCD:12000,lastConverge:0,phase:1,twinLink:true},
-  hivemind:{name:'HIVE QUEEN',hp:1400,spd:2.0,sc:1.6,si:550,acc:.05,dmg:9,bs:50,color:0x886600,
-    attacks:['swarm','burrow','acid','scream','stinger'],swarmCD:6500,lastSwarm:0,burrowCD:10000,lastBurrow:0,acidCD:5000,lastAcid:0,screamCD:12000,lastScream:0,stingerCD:8500,lastStinger:0,phase:1},
+  hivemind:{name:'HIVE QUEEN',hp:1500,spd:2.0,sc:1.6,si:550,acc:.05,dmg:9,bs:50,color:0x886600,
+    attacks:['swarm','burrow','acid','scream','stinger'],swarmCD:8000,lastSwarm:0,burrowCD:10000,lastBurrow:0,acidCD:5000,lastAcid:0,screamCD:12000,lastScream:0,stingerCD:8500,lastStinger:0,phase:1},
   shield:{name:'AEGIS PRIME',hp:1800,spd:1.8,sc:2.2,si:450,acc:.06,dmg:11,bs:42,color:0x3355aa,
     attacks:['reflect','pulse','charge','fortress'],reflectCD:16000,lastReflect:0,pulseCD:8000,lastPulse:0,chargeCD:8000,lastCharge:0,fortressCD:25000,lastFortress:0,phase:1,shielded:false},
   omega:{name:'OMEGA UNIT',hp:4000,spd:1.4,sc:2.2,si:420,acc:.045,dmg:16,bs:42,color:0x880088,
@@ -991,12 +1021,12 @@ var BOSSES={
 
 // Boss Rush sequence
 var BOSS_RUSH_WAVES=[
-  {boss:'commander',name:'ROUND 1: COMMANDER VOSS',adds:3},
+  {boss:'commander',name:'ROUND 1: COMMANDER VOSS',adds:1},
   {boss:'twins',name:'ROUND 2: THE TWINS',adds:0,spawnTwin:true},
-  {boss:'titan',name:'ROUND 3: TITAN MK-II',adds:2},
+  {boss:'titan',name:'ROUND 3: TITAN MK-II',adds:1},
   {boss:'hivemind',name:'ROUND 4: HIVE QUEEN',adds:0},
-  {boss:'phantom',name:'ROUND 5: THE PHANTOM',adds:3},
-  {boss:'shield',name:'ROUND 6: AEGIS PRIME',adds:3},
+  {boss:'phantom',name:'ROUND 5: THE PHANTOM',adds:2},
+  {boss:'shield',name:'ROUND 6: AEGIS PRIME',adds:2},
   {boss:'warlord',name:'ROUND 7: WARLORD KAINE',adds:4},
   {boss:'omega',name:'FINAL: OMEGA UNIT',adds:5},
 ];
@@ -1439,7 +1469,7 @@ function doBossAttack(e,now,dt){
         if(!checkWall(dx,dz,1)){
           // Create decoy as a full soldier-type enemy but override to match phantom exactly
           var decoy=createEnemy(new THREE.Vector3(dx,0,dz),'soldier');
-          decoy.hp=35;decoy.maxHp=35;// dies fast but not instant — 1-2 hits
+          decoy.hp=20;decoy.maxHp=20;// dies fast but not instant — 1-2 hits
           decoy.sc=e.sc;decoy.spd=e.spd*.9;decoy.si=e.si;decoy.dmg=e.dmg;decoy.acc=e.acc*1.5;
           decoy.bs=e.bs;decoy._isDecoy=true;
           // Match the real phantom's visual — same dark blue-gray colors, fully opaque
@@ -1489,7 +1519,7 @@ function doBossAttack(e,now,dt){
       if(!e._lastTrail||now-e._lastTrail>80){e._lastTrail=now;
         var tb=new THREE.Mesh(bGeo2,getPMat(0x4466ff));
         tb.position.copy(e.mesh.position);tb.position.y=1;scene.add(tb);
-        G.bullets.push({m:tb,d:new THREE.Vector3(0,0,0),s:0,l:1.2,p:false,dmg:5})}
+        G.bullets.push({m:tb,d:new THREE.Vector3(0,0,0),s:0,l:1.2,p:false,dmg:10})}
     }else{e._dashing=null}
   }
   // Warlord: rockets + summon + rage mode
@@ -2453,7 +2483,7 @@ function loop(){
   if(fireHeld)fireBullet();
 
   // Passive health regen — 3hp/sec after 6 seconds without damage (capped at 7/s with buffs)
-  var regenRate=Math.min(7,3+G.buffs.regen);
+  var regenRate=Math.min(8,3+G.buffs.regen);
   if(now-G.lastDmgTime>6000&&G.hp<(G.maxHP||100)){G.hp=Math.min(G.maxHP||100,G.hp+regenRate*dt);updateHP()}
   if(now-G.lastDmgTime>8000&&G.armor<G.maxArmor){G.armor=Math.min(G.maxArmor,G.armor+1.5*dt);updateArmor()}
   // Shockwave processing — jump to dodge!
@@ -2484,7 +2514,10 @@ function loop(){
   var skFill=document.getElementById('skillFill');
   var chargePct=Math.min(100,G.skillDmg/skDef.charge*100);
   skFill.style.height=chargePct+'%';
-  if(G.skillDmg>=skDef.charge){skb.className='ready';skb.querySelector('.cd-text').textContent=skDef.name}
+  // Check if on anti-spam cooldown
+  var onCD=G._skillCooldown&&now<G._skillCooldown;
+  if(onCD){var cdLeft=Math.ceil((G._skillCooldown-now)/1000);skb.className='charging';skb.querySelector('.cd-text').textContent=cdLeft+'s';skFill.style.height='0%'}
+  else if(G.skillDmg>=skDef.charge){skb.className='ready';skb.querySelector('.cd-text').textContent=skDef.name}
   else{var pctShow=Math.floor(chargePct);skb.className='charging';skb.querySelector('.cd-text').textContent=pctShow+'%'}
   // Overdrive effect — double fire rate active
   if(G._overdrive&&now>G._overdriveEnd){G._overdrive=false}
@@ -2513,7 +2546,10 @@ function loop(){
         _v.copy(e.mesh.position);_v.y+=1.78*e.sc;
         var hdR=.35*e.sc;var hdDist=(closestX-_v.x)*(closestX-_v.x)+(closestY-_v.y)*(closestY-_v.y)+(closestZ-_v.z)*(closestZ-_v.z);
         var hd=hdDist<hdR*hdR;var wDm=b.wDmg||1;var baseDmg=(24+Math.random()*14)*wDm;var dmg=hd?baseDmg*2.5:baseDmg;
-        e.hp-=dmg;e.ft=.15;G.shotsHit++;G.echo.totalHits++;G.skillDmg+=Math.round(dmg);showHit(hd);sfx(hd?'headshot':'hit');showDmgNum(b.m.position.clone(),dmg,hd);spawnP(b.m.position,0xff0000,3);
+        e.hp-=dmg;e.ft=.15;G.shotsHit++;G.echo.totalHits++;G.skillDmg+=Math.round(dmg);
+        // Lifesteal
+        if(G.buffs.lifesteal>0){var lsHeal=dmg*G.buffs.lifesteal;G.hp=Math.min(G.maxHP||100,G.hp+lsHeal);updateHP()}
+        showHit(hd);sfx(hd?'headshot':'hit');showDmgNum(b.m.position.clone(),dmg,hd);spawnP(b.m.position,0xff0000,3);
         // Aegis fortress mode — 60% damage reduction (no reflect)
         if(e.isBoss&&e.bossData&&e.bossData.fortress){dmg*=0.4;e.hp+=dmg*.6;spawnP(b.m.position,0xff8844,2)}
         // Omega siege mode — 70% damage reduction
@@ -2560,10 +2596,10 @@ function loop(){
     pk.mesh.rotation.y+=dt*1.8;
     pk.mesh.position.y=(pk.spawnY||.6)+Math.sin(now*.003+pi*2)*.12;
     if(pk.haloMat)pk.haloMat.opacity=.12+Math.sin(now*.005+pi)*.08;
-    // Pickup magnet — pull toward player when within 4 units
+    // Pickup magnet — pull toward player when within 8 units
     var pkDist=camera.position.distanceTo(pk.mesh.position);
-    if(pkDist<4&&pkDist>1.5){var pullStr=3*(1-pkDist/4);var pullDir=new THREE.Vector3();pullDir.subVectors(camera.position,pk.mesh.position).normalize();pk.mesh.position.addScaledVector(pullDir,pullStr*dt)}
-    if(pkDist<1.5){pk.got=true;scene.remove(pk.mesh);G.pickups.splice(pi,1);var cW=WEAPONS[curWeapon];var pm=G.perkPickupMult||1;if(pk.type==='health'){G.hp=Math.min(G.maxHP||100,G.hp+25*pm);updateHP()}else if(pk.type==='armor'){G.armor=Math.min(G.maxArmor,G.armor+20*pm);updateArmor()}else{G.ammo=Math.min(cW.mag,G.ammo+Math.ceil(cW.mag*.35*pm));updateAmmo()}sfx('pickup');showPM(pk.type)}}
+    if(pkDist<8&&pkDist>3){var pullStr=4*(1-pkDist/8);var pullDir=new THREE.Vector3();pullDir.subVectors(camera.position,pk.mesh.position).normalize();pk.mesh.position.addScaledVector(pullDir,pullStr*dt)}
+    if(pkDist<3){pk.got=true;scene.remove(pk.mesh);G.pickups.splice(pi,1);var cW=WEAPONS[curWeapon];var pm=G.perkPickupMult||1;if(pk.type==='health'){G.hp=Math.min(G.maxHP||100,G.hp+25*pm);updateHP()}else if(pk.type==='armor'){G.armor=Math.min(G.maxArmor,G.armor+20*pm);updateArmor()}else{G.ammo=Math.min(cW.mag,G.ammo+Math.ceil(cW.mag*.35*pm));updateAmmo()}sfx('pickup');showPM(pk.type)}}
 
   // Sprint FOV — smoothly widen when sprinting
   var targetFov=G.sprinting&&G.sprintStam>0&&mm>.2?82:72;
@@ -2955,7 +2991,10 @@ function useTactical(){
 function useSkill(){
   var perk=PERKS[curPerk];var sk=perk.skill;
   if(G.skillDmg<sk.charge||!G.on)return;
+  // Anti-spam: 10 second minimum cooldown between uses
+  if(G._skillCooldown&&performance.now()<G._skillCooldown)return;
   G.skillDmg=0;// Reset charge
+  G._skillCooldown=performance.now()+10000;
   var now=performance.now();
   sfx('boss');G.shake=.03;
 
@@ -3095,11 +3134,11 @@ function startGame(){
   G.perkLootMult=perk.lootMult||1;G.perkPickupMult=perk.pickupMult||1;
   G.perkSpeedMult=perk.speedMult||1;G.perkDmgReduce=perk.dmgReduce||1;G.perkSprintMult=perk.sprintMult||1;
   G.tacType=tac.type;
-  G.armor=20+(perk.armorBonus||0);G.medkitCD=0;G.grenadeCD=0;G.skillDmg=0;G.sprintStam=100;G.sprinting=false;G.lastDmgTime=0;
+  G.armor=20+(perk.armorBonus||0);G.medkitCD=0;G.grenadeCD=0;G.skillDmg=0;G._skillCooldown=0;G.sprintStam=100;G.sprinting=false;G.lastDmgTime=0;
   G.lives=(G.mode==='bossrush'||G.mode==='freeplay')?5:0;
   G.shotsFired=0;G.shotsHit=0;G.waveDmgTaken=0;G.waveKills=0;G.waveTime=0;
   G.ai={aggression:1,accuracy:1,flanking:1,speed:1,count:1,gen:0};
-  G.buffs={dmg:0,rate:0,maxhp:0,armor:0,speed:0,spread:0,regen:0,reload:0};
+  G.buffs={dmg:0,rate:0,maxhp:0,armor:0,speed:0,spread:0,regen:0,reload:0,lifesteal:0};
   G.reloading=false;G.vy=0;G.gnd=true;G.yaw=0;G.pitch=0;G.shake=0;G.lean=0;G._waveEnding=false;
   G._controlInvert=false;G._gravPull=null;
   G._supplyTimer=0;G._supplyIdx=0;G._bossDrops={};
