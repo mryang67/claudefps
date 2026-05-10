@@ -294,7 +294,7 @@ var BUFFS=[
   {key:'spread',name:'+6% ACCURACY',apply:function(){G.buffs.spread=Math.min(.40,G.buffs.spread+.06)}},
   {key:'regen',name:'+0.5 HP/S REGEN',apply:function(){G.buffs.regen=Math.min(5,G.buffs.regen+.5)}},
   {key:'reload',name:'+8% RELOAD',apply:function(){G.buffs.reload=Math.min(.45,G.buffs.reload+.08)}},
-  {key:'lifesteal',name:'+2% LIFESTEAL',apply:function(){G.buffs.lifesteal=Math.min(.12,G.buffs.lifesteal+.02)}},
+  {key:'lifesteal',name:'+2% LIFESTEAL',apply:function(){G.buffs.lifesteal=Math.min(.10,G.buffs.lifesteal+.02)}},
 ];
 // Campaign boss-kill guaranteed buffs
 var BOSS_BUFFS={
@@ -312,31 +312,27 @@ var BOSS_BUFFS={
        {name:'+10% DAMAGE',apply:function(){G.buffs.dmg=Math.min(.60,G.buffs.dmg+.10)}},
        {name:'+1 HP/S REGEN',apply:function(){G.buffs.regen=Math.min(5,G.buffs.regen+1)}}],
 };
-// Boss Rush round-end guaranteed buffs — stronger, more variety
+// Boss Rush round-end guaranteed buffs — paced progression
 var BOSS_RUSH_BUFFS={
-  1: [{name:'+15 MAX HP',apply:function(){G.maxHP=(G.maxHP||100)+15;G.hp=Math.min(G.maxHP,G.hp+15);updateHP()}},
-      {name:'+8% DAMAGE',apply:function(){G.buffs.dmg=Math.min(.60,G.buffs.dmg+.08)}}],
-  2: [{name:'+10 MAX ARMOR',apply:function(){G.maxArmor+=10;G.armor=Math.min(G.maxArmor,G.armor+10);updateArmor()}},
+  1: [{name:'+10 MAX HP',apply:function(){G.maxHP=(G.maxHP||100)+10;G.hp=Math.min(G.maxHP,G.hp+10);updateHP()}},
+      {name:'+6% DAMAGE',apply:function(){G.buffs.dmg=Math.min(.60,G.buffs.dmg+.06)}}],
+  2: [{name:'+8% FIRE RATE',apply:function(){G.buffs.rate=Math.min(.45,G.buffs.rate+.08)}},
+      {name:'+5 MAX ARMOR',apply:function(){G.maxArmor+=5;G.armor=Math.min(G.maxArmor,G.armor+5);updateArmor()}}],
+  3: [{name:'+15 MAX HP',apply:function(){G.maxHP=(G.maxHP||100)+15;G.hp=Math.min(G.maxHP,G.hp+15);updateHP()}},
+      {name:'+2% LIFESTEAL',apply:function(){G.buffs.lifesteal=Math.min(.10,G.buffs.lifesteal+.02)}}],
+  4: [{name:'+8% DAMAGE',apply:function(){G.buffs.dmg=Math.min(.60,G.buffs.dmg+.08)}},
+      {name:'+0.5 HP/S REGEN',apply:function(){G.buffs.regen=Math.min(5,G.buffs.regen+.5)}}],
+  5: [{name:'+10 MAX ARMOR',apply:function(){G.maxArmor+=10;G.armor=Math.min(G.maxArmor,G.armor+10);updateArmor()}},
       {name:'+8% FIRE RATE',apply:function(){G.buffs.rate=Math.min(.45,G.buffs.rate+.08)}}],
-  3: [{name:'+20 MAX HP',apply:function(){G.maxHP=(G.maxHP||100)+20;G.hp=Math.min(G.maxHP,G.hp+20);updateHP()}},
-      {name:'+5% SPEED',apply:function(){G.buffs.speed=Math.min(.35,G.buffs.speed+.05)}},
-      {name:'+3% LIFESTEAL',apply:function(){G.buffs.lifesteal=Math.min(.12,G.buffs.lifesteal+.03)}}],
-  4: [{name:'+15 MAX ARMOR',apply:function(){G.maxArmor+=15;G.armor=Math.min(G.maxArmor,G.armor+15);updateArmor()}},
-      {name:'+10% DAMAGE',apply:function(){G.buffs.dmg=Math.min(.60,G.buffs.dmg+.10)}},
-      {name:'+1 HP/S REGEN',apply:function(){G.buffs.regen=Math.min(5,G.buffs.regen+1)}}],
-  5: [{name:'+25 MAX HP',apply:function(){G.maxHP=(G.maxHP||100)+25;G.hp=Math.min(G.maxHP,G.hp+25);updateHP()}},
+  6: [{name:'+15 MAX HP',apply:function(){G.maxHP=(G.maxHP||100)+15;G.hp=Math.min(G.maxHP,G.hp+15);updateHP()}},
+      {name:'+8% DAMAGE',apply:function(){G.buffs.dmg=Math.min(.60,G.buffs.dmg+.08)}},
+      {name:'+3% LIFESTEAL',apply:function(){G.buffs.lifesteal=Math.min(.10,G.buffs.lifesteal+.03)}}],
+  7: [{name:'+10 MAX ARMOR',apply:function(){G.maxArmor+=10;G.armor=Math.min(G.maxArmor,G.armor+10);updateArmor()}},
       {name:'+10% FIRE RATE',apply:function(){G.buffs.rate=Math.min(.45,G.buffs.rate+.10)}},
-      {name:'+4% LIFESTEAL',apply:function(){G.buffs.lifesteal=Math.min(.12,G.buffs.lifesteal+.04)}}],
-  6: [{name:'+20 MAX ARMOR',apply:function(){G.maxArmor+=20;G.armor=Math.min(G.maxArmor,G.armor+20);updateArmor()}},
-      {name:'+12% DAMAGE',apply:function(){G.buffs.dmg=Math.min(.60,G.buffs.dmg+.12)}},
-      {name:'+8% ACCURACY',apply:function(){G.buffs.spread=Math.min(.40,G.buffs.spread+.08)}}],
-  7: [{name:'+30 MAX HP',apply:function(){G.maxHP=(G.maxHP||100)+30;G.hp=Math.min(G.maxHP,G.hp+30);updateHP()}},
-      {name:'+12% FIRE RATE',apply:function(){G.buffs.rate=Math.min(.45,G.buffs.rate+.12)}},
-      {name:'+1.5 HP/S REGEN',apply:function(){G.buffs.regen=Math.min(5,G.buffs.regen+1.5)}}],
-  8: [{name:'+25 MAX ARMOR',apply:function(){G.maxArmor+=25;G.armor=Math.min(G.maxArmor,G.armor+25);updateArmor()}},
-      {name:'+5% LIFESTEAL',apply:function(){G.buffs.lifesteal=Math.min(.12,G.buffs.lifesteal+.05)}},
-      {name:'+10% SPEED',apply:function(){G.buffs.speed=Math.min(.35,G.buffs.speed+.10)}},
-      {name:'+15% DAMAGE',apply:function(){G.buffs.dmg=Math.min(.60,G.buffs.dmg+.15)}}],
+      {name:'+0.5 HP/S REGEN',apply:function(){G.buffs.regen=Math.min(5,G.buffs.regen+.5)}}],
+  8: [{name:'+20 MAX HP',apply:function(){G.maxHP=(G.maxHP||100)+20;G.hp=Math.min(G.maxHP,G.hp+20);updateHP()}},
+      {name:'+10% DAMAGE',apply:function(){G.buffs.dmg=Math.min(.60,G.buffs.dmg+.10)}},
+      {name:'+5% SPEED',apply:function(){G.buffs.speed=Math.min(.35,G.buffs.speed+.05)}}],
 };
 function grantBuff(){
   var b=BUFFS[Math.random()*BUFFS.length|0];
@@ -506,10 +502,129 @@ var sbps=[[-15,-30],[15,30],[-35,10],[35,-10],[0,40],[0,-40]];
 for(var si=0;si<sbps.length;si++){var sp=sbps[si];for(var sr=0;sr<3;sr++)for(var sc2=0;sc2<3;sc2++){var sb=mk(sbg,sbm,sp[0]+sc2*.85-1.275,sr*.3+.15,sp[1]+(sr%2)*.1,true);scene.add(sb)}W.push({x:sp[0],z:sp[1],hw:1.5,hd:.5,maxY:.9})}
 // Rubble
 for(var ri=0;ri<10;ri++){var rs=.2+Math.random()*.4;var rb=mk(new THREE.DodecahedronGeometry(rs,0),new THREE.MeshStandardMaterial({color:0x555555,roughness:.9}),Math.random()*100-50,rs/2,Math.random()*100-50,true);rb.rotation.set(Math.random()*3,Math.random()*3,Math.random()*3);scene.add(rb)}
-// Pipes
+// Pipes along walls
 var piM=new THREE.MeshStandardMaterial({color:0x556655,metalness:.7,roughness:.3});
 var pi1=mk(new THREE.CylinderGeometry(.06,.06,S*1.5,8),piM,-S+1.5,2,0);pi1.rotation.z=Math.PI/2;scene.add(pi1);
 var pi2=mk(new THREE.CylinderGeometry(.06,.06,S*1.5,8),piM,S-1.5,3,0);pi2.rotation.z=Math.PI/2;scene.add(pi2);
+
+// ══════ ENVIRONMENT DETAILS ══════
+var rustM=new THREE.MeshStandardMaterial({color:0x6a4a30,roughness:.8,metalness:.3});
+var darkMetalM=new THREE.MeshStandardMaterial({color:0x333338,roughness:.4,metalness:.7});
+var concreteM=new THREE.MeshStandardMaterial({color:0x555550,roughness:.9});
+
+// ── SHIPPING CONTAINERS (2) — large cover objects ──
+var contM=new THREE.MeshStandardMaterial({color:0x884422,roughness:.6,metalness:.4});
+var contM2=new THREE.MeshStandardMaterial({color:0x335544,roughness:.6,metalness:.4});
+// Container 1 — tilted, partially open
+var cont1=mk(new THREE.BoxGeometry(3.5,2.8,7),contM,-30,1.4,28);cont1.rotation.y=.4;scene.add(cont1);
+W.push({x:-30,z:28,hw:2.2,hd:4,maxY:2.8});
+// Door (open, angled)
+var cd1=mk(new THREE.BoxGeometry(1.5,2.6,.1),contM,-28.3,1.3,31.5);cd1.rotation.y=1.2;scene.add(cd1);
+// Container 2
+var cont2=mk(new THREE.BoxGeometry(3.5,2.8,7),contM2,32,1.4,-28);cont2.rotation.y=-.6;scene.add(cont2);
+W.push({x:32,z:-28,hw:2.2,hd:4,maxY:2.8});
+// Rust streaks
+scene.add(mk(new THREE.BoxGeometry(3.3,.04,2),rustM,-30,2.7,28));
+scene.add(mk(new THREE.BoxGeometry(3.3,.04,2),rustM,32,2.7,-28));
+
+// ── DESTROYED VEHICLE — burned-out truck ──
+var vehM=new THREE.MeshStandardMaterial({color:0x3a3a3a,roughness:.7,metalness:.5});
+var burnM=new THREE.MeshStandardMaterial({color:0x222018,roughness:.9});
+// Truck body
+scene.add(mk(new THREE.BoxGeometry(2.5,1.8,5),vehM,20,0.9,15));
+W.push({x:20,z:15,hw:1.8,hd:3,maxY:1.8});
+// Cab
+scene.add(mk(new THREE.BoxGeometry(2.3,1.2,1.8),vehM,20,2.2,12.5));
+// Wheels (flat)
+scene.add(mk(new THREE.CylinderGeometry(.4,.4,.25,8),burnM,18.6,.4,13.5));
+scene.add(mk(new THREE.CylinderGeometry(.4,.4,.25,8),burnM,21.4,.4,13.5));
+scene.add(mk(new THREE.CylinderGeometry(.4,.4,.25,8),burnM,18.6,.4,16.5));
+scene.add(mk(new THREE.CylinderGeometry(.4,.4,.25,8),burnM,21.4,.4,16.5));
+// Burn marks
+scene.add(mk(new THREE.BoxGeometry(2.6,.02,3),burnM,20,.01,15));
+// Broken windshield frame
+scene.add(mk(new THREE.BoxGeometry(2,.06,.06),darkMetalM,20,2.8,11.7));
+
+// ── FUEL TANKS — industrial cylinders ──
+var tankM=new THREE.MeshStandardMaterial({color:0x445544,roughness:.5,metalness:.5});
+scene.add(mk(new THREE.CylinderGeometry(.8,.8,2.5,10),tankM,-35,1.25,-15));
+scene.add(mk(new THREE.CylinderGeometry(.8,.8,2.5,10),tankM,-33,1.25,-15));
+W.push({x:-34,z:-15,hw:2,hd:1,maxY:2.5});
+// Connecting pipe
+scene.add(mk(new THREE.CylinderGeometry(.05,.05,2.2,6),piM,-34,2.5,-15));
+scene.add(mk(new THREE.CylinderGeometry(.05,.05,1,6),piM,-34,2,-14));
+
+// ── WATCHTOWER — corner structure ──
+var towerM=new THREE.MeshStandardMaterial({color:0x444440,roughness:.8,metalness:.3});
+// Legs
+for(var twi=0;twi<4;twi++){var twx=twi%2*2-1;var twz=Math.floor(twi/2)*2-1;
+  scene.add(mk(new THREE.CylinderGeometry(.08,.1,6,6),darkMetalM,-38+twx*1.5,3,-38+twz*1.5))}
+// Platform
+scene.add(mk(new THREE.BoxGeometry(4.5,.2,4.5),towerM,-38,6,-38));
+// Railing
+scene.add(mk(new THREE.BoxGeometry(4.5,.06,.06),darkMetalM,-38,6.8,-36.2));
+scene.add(mk(new THREE.BoxGeometry(4.5,.06,.06),darkMetalM,-38,6.8,-39.8));
+scene.add(mk(new THREE.BoxGeometry(.06,.06,4.5),darkMetalM,-36.2,6.8,-38));
+// Searchlight on tower (visual only)
+var slMat=new THREE.MeshBasicMaterial({color:0xffffcc,transparent:true,opacity:.08});
+var slCone=new THREE.Mesh(new THREE.ConeGeometry(8,15,8,1,true),slMat);
+slCone.position.set(-38,0,-38);slCone.rotation.x=Math.PI;scene.add(slCone);
+
+// ── GROUND DETAILS — puddles, oil stains, grates ──
+var puddleMat=new THREE.MeshStandardMaterial({color:0x222244,roughness:.1,metalness:.8,transparent:true,opacity:.5});
+var stainMat=new THREE.MeshBasicMaterial({color:0x1a1a10,transparent:true,opacity:.2});
+// Oil stains and puddles
+for(var pi3=0;pi3<6;pi3++){
+  var ppx=(Math.random()-.5)*70;var ppz=(Math.random()-.5)*70;
+  if(!checkWall(ppx,ppz,.5)){
+    // Puddle — reflective dark surface
+    var pSize=.8+Math.random()*1.5;
+    scene.add(mk(new THREE.CircleGeometry(pSize,8),puddleMat,ppx,.02,ppz));
+    scene.children[scene.children.length-1].rotation.x=-Math.PI/2}}
+// Oil stains near vehicles and containers
+for(var oi2=0;oi2<4;oi2++){
+  var osx=[20,-30,32,-34][oi2];var osz=[14,27,-27,-16][oi2];
+  var osSize=1+Math.random()*2;
+  scene.add(mk(new THREE.CircleGeometry(osSize,6),stainMat,osx,.015,osz));
+  scene.children[scene.children.length-1].rotation.x=-Math.PI/2}
+// Drainage grates
+var grateM=new THREE.MeshStandardMaterial({color:0x333333,roughness:.3,metalness:.8});
+for(var gi4=0;gi4<3;gi4++){
+  var gx=[-10,15,0][gi4];var gz=[0,-25,30][gi4];
+  scene.add(mk(new THREE.BoxGeometry(.8,.04,.8),grateM,gx,.03,gz));
+  // Grate bars
+  for(var gb4=0;gb4<4;gb4++){scene.add(mk(new THREE.BoxGeometry(.8,.06,.04),grateM,gx,.05,gz-.3+gb4*.2))}}
+
+// ── HANGING LIGHTS — swinging from wires between structures ──
+var hangLights=[];
+var hlPositions=[[-10,4,0],[10,4,5],[0,3.5,-15],[5,4,20],[-20,3.5,10]];
+for(var hli=0;hli<hlPositions.length;hli++){
+  var hlp=hlPositions[hli];
+  // Wire
+  scene.add(mk(new THREE.CylinderGeometry(.008,.008,hlp[1]-.5,4),darkMetalM,hlp[0],hlp[1]/2+.25,hlp[2]));
+  // Bulb housing
+  var housing=mk(new THREE.CylinderGeometry(.08,.15,.12,6),darkMetalM,hlp[0],hlp[1]-.5,hlp[2]);
+  scene.add(housing);
+  // Light
+  var hl=new THREE.PointLight(0xffddaa,.4,12);hl.position.set(hlp[0],hlp[1]-.6,hlp[2]);scene.add(hl);
+  hangLights.push({light:hl,x:hlp[0],y:hlp[1]-.6,z:hlp[2],phase:Math.random()*10,speed:.5+Math.random()*1.5})}
+
+// ── RAZOR WIRE on perimeter walls ──
+var wireMat=new THREE.MeshStandardMaterial({color:0x666666,metalness:.8,roughness:.2});
+for(var rwi=0;rwi<8;rwi++){
+  var rwx,rwz,rwRot;
+  if(rwi<2){rwx=-S+rwi*S;rwz=-S;rwRot=0}
+  else if(rwi<4){rwx=-S+(rwi-2)*S;rwz=S;rwRot=0}
+  else if(rwi<6){rwx=-S;rwz=-S+(rwi-4)*S;rwRot=Math.PI/2}
+  else{rwx=S;rwz=-S+(rwi-6)*S;rwRot=Math.PI/2}
+  var rwMesh=mk(new THREE.TorusGeometry(.15,.03,4,16),wireMat,rwx,6.3,rwz);
+  rwMesh.rotation.y=rwRot;scene.add(rwMesh)}
+
+// ── SPARKING WIRE — broken electrical cable ──
+var sparkPos={x:-18,y:3.5,z:5};
+scene.add(mk(new THREE.CylinderGeometry(.015,.015,3.5,4),new THREE.MeshStandardMaterial({color:0x222222}),-18,1.75,5));
+// Spark emitter (handled in game loop)
+var sparkTimer=0;
 
 // ══════ DUST ══════
 var dustN=80;var dustG=new THREE.BufferGeometry();var dustP=new Float32Array(dustN*3);
@@ -931,7 +1046,7 @@ function showWave(w){var b=document.getElementById('waveBanner');var total=G.mod
   document.getElementById('bossHud').style.display='none';
   b.style.opacity='1';setTimeout(function(){b.style.opacity='0'},2500)}
 function showStreak(c){if(c<2)return;var names=['','','DOUBLE KILL','TRIPLE KILL','MULTI KILL','MEGA KILL','ULTRA KILL','UNSTOPPABLE'];var el=document.getElementById('streakHud');document.getElementById('streakText').textContent=names[Math.min(c,7)]||'GODLIKE';document.getElementById('streakSub').textContent='x'+c+' STREAK';el.style.opacity='1';setTimeout(function(){el.style.opacity='0'},1500)}
-function showPM(t){var el=document.createElement('div');el.className='pm';var msgs={health:'+ HEALTH RESTORED',ammo:'+ AMMO RESUPPLIED',armor:'+ ARMOR PLATED',medkit:'+ MEDKIT USED (+35 HP)',flash:'&#9788; FLASH DEPLOYED',weapon:'&#9658; '+WEAPONS[curWeapon].name,summon:'&#9888; REINFORCEMENTS INCOMING',stomp:'&#9888; GROUND SLAM — JUMP!',boss_rage:'&#9888; BOSS ENRAGED',shield_up:'&#9888; SHIELD CHARGING — STOP FIRING!',shield_down:'&#10004; SHIELD DOWN — FIRE!',supply:'&#11015; SUPPLY DROP INCOMING',mortar:'&#9888; MORTAR STRIKE INCOMING',rally:'&#9888; COMMANDER RALLYING TROOPS',decoy:'&#9888; PHANTOM DECOYS DEPLOYED',cloak_end:'&#9888; AMBUSH!',fortress:'&#9888; FORTRESS MODE ENGAGED',echo_adapt:'&#9888; PATTERN RECOGNIZED',echo_evolve:'&#9888; FULL ADAPTATION COMPLETE',echo_counter:'&#9888; HEALING PUNISHED',echo_mirror:'&#9888; MIRRORING YOUR POWER',stim_boost:'&#9889; STIM BOOST — SPEED UP',omega_mortar:'&#9888; MORTAR BARRAGE INCOMING',omega_siege:'&#9888; SIEGE MODE — TAKE COVER',stinger:'&#9888; STINGER MISSILES INCOMING',skill_shockwave:'&#9632; SHOCKWAVE — ENEMIES STUNNED',skill_overdrive:'&#9733; OVERDRIVE — UNLIMITED POWER',skill_trap:'&#10010; PULSE TRAP DEPLOYED',skill_vanish:'&#9830; VANISH — INVISIBLE'};el.innerHTML=msgs[t]||'+ PICKUP';
+function showPM(t){var el=document.createElement('div');el.className='pm';var msgs={health:'+ HEALTH RESTORED',ammo:'+ AMMO RESUPPLIED',armor:'+ ARMOR PLATED',medkit:'+ MEDKIT USED (+35 HP)',flash:'&#9788; FLASH DEPLOYED',weapon:'&#9658; '+WEAPONS[curWeapon].name,summon:'&#9888; REINFORCEMENTS INCOMING',stomp:'&#9888; SHOCKWAVE — JUMP!',boss_rage:'&#9888; BOSS ENRAGED',shield_up:'&#9888; SHIELD CHARGING — STOP FIRING!',shield_down:'&#10004; SHIELD DOWN — FIRE!',supply:'&#11015; SUPPLY DROP INCOMING',mortar:'&#9888; MORTAR INCOMING',rally:'&#9888; TROOPS RALLIED',decoy:'&#9888; DECOYS DEPLOYED',cloak_end:'&#9888; AMBUSH!',fortress:'&#9888; FORTRESS MODE',echo_adapt:'&#9888; PATTERN RECOGNIZED',echo_evolve:'&#9888; FULL ADAPTATION',echo_counter:'&#9888; HEALING PUNISHED',echo_mirror:'&#9888; MIRRORING POWER',stim_boost:'&#9889; SPEED BOOST',omega_beam:'&#9888; BEAM LOCKED',omega_cluster:'&#9888; CLUSTER BOMBS',omega_siege:'&#9888; SIEGE MODE',aegis_beam:'&#9888; ENERGY BEAM CHARGING',echo_predict:'&#9888; MOVEMENT PREDICTED',echo_trap:'&#9888; TRAP SET',stinger:'&#9888; STINGER MISSILES INCOMING',warlord_rockets:'&#9888; ROCKETS INCOMING',warlord_hellfire:'&#9888; HELLFIRE — MOVE!',warlord_berserk:'&#9760; BERSERKER MODE',skill_shockwave:'&#9632; SHOCKWAVE — ENEMIES STUNNED',skill_overdrive:'&#9733; OVERDRIVE — UNLIMITED POWER',skill_trap:'&#10010; PULSE TRAP DEPLOYED',skill_vanish:'&#9830; VANISH — INVISIBLE'};el.innerHTML=msgs[t]||'+ PICKUP';
   // Stack notifications — offset each active PM upward
   var existingPMs=document.querySelectorAll('.pm');var offset=existingPMs.length*24;
   el.style.bottom='calc(35% + '+offset+'px)';
@@ -946,7 +1061,7 @@ function drawMM(){var cv=document.getElementById('minimap');var ctx=cv.getContex
   ctx.fillRect(-bPulse,-bPulse,bPulse*2,bPulse*2);
   ctx.strokeRect(-bPulse,-bPulse,bPulse*2,bPulse*2);
   ctx.restore();
-}else{ctx.fillStyle=e.type==='heavy'?'#ff0000':e.type==='scout'?'#ffaa00':'#ff3300';ctx.beginPath();ctx.arc(ex,ez,e.type==='heavy'?4:2.5,0,Math.PI*2);ctx.fill()}}}ctx.save();ctx.translate(cx,cy);ctx.rotate(-G.yaw);ctx.fillStyle='#00ff88';ctx.beginPath();ctx.moveTo(0,-5);ctx.lineTo(-3.5,4);ctx.lineTo(3.5,4);ctx.closePath();ctx.fill();ctx.restore()}
+}else{ctx.fillStyle=e._echoPossessed?'#00ccaa':e.type==='heavy'?'#ff0000':e.type==='scout'?'#ffaa00':'#ff3300';ctx.beginPath();ctx.arc(ex,ez,e._echoPossessed?3.5:e.type==='heavy'?4:2.5,0,Math.PI*2);ctx.fill()}}}ctx.save();ctx.translate(cx,cy);ctx.rotate(-G.yaw);ctx.fillStyle='#00ff88';ctx.beginPath();ctx.moveTo(0,-5);ctx.lineTo(-3.5,4);ctx.lineTo(3.5,4);ctx.closePath();ctx.fill();ctx.restore()}
 
 // ══════ WAVE CONTENT ══════
 var WAVE_DATA=[
@@ -980,7 +1095,7 @@ var WAVE_DATA=[
   {name:'IRONCLAD',desc:'Maximum armor deployment',types:['heavy','heavy','soldier'],count:10,mod:'elite'},
   {name:'NIGHT SIEGE',desc:'Darkness + flanking assault',types:['soldier','scout','heavy','scout'],count:14,mod:'dark'},
   {name:'FULL ASSAULT',desc:'Everything they have',types:['soldier','heavy','scout','heavy','scout'],count:16,mod:'elite'},
-  {name:'BOSS: AEGIS PRIME',desc:'Breach the fortress',boss:'shield',count:4},
+  {name:'BOSS: AEGIS PRIME',desc:'Breach the fortress',boss:'shield',count:3},
   // ═══ ACT 6: FINAL WAR (W26-30) ═══
   {name:'BLITZKRIEG',desc:'Lightning fast assault',types:['scout','scout','soldier','scout'],count:16,mod:'rush'},
   {name:'LAST STAND',desc:'Hold your ground',types:['soldier','soldier','soldier','heavy'],count:14,mod:'elite'},
@@ -991,22 +1106,22 @@ var WAVE_DATA=[
 
 // Boss definitions — balanced for 20-60s fights depending on stage
 var BOSSES={
-  commander:{name:'COMMANDER VOSS',hp:900,spd:2.5,sc:1.5,si:600,acc:.05,dmg:10,bs:55,color:0x882200,
+  commander:{name:'COMMANDER VOSS',hp:900,spd:2.5,sc:1.5,si:700,acc:.05,dmg:10,bs:55,color:0x882200,
     attacks:['burst','summon','mortar','rally'],summonCD:14000,lastSummon:0,mortarCD:8000,lastMortar:0,rallyCD:14000,lastRally:0,phase:1},
   titan:{name:'TITAN MK-II',hp:1700,spd:3.5,sc:2.0,si:99999,acc:1,dmg:0,bs:45,color:0x444466,
     attacks:['slam'],stompCD:3200,lastStomp:0,leapCD:5500,lastLeap:0,phase:1},
   phantom:{name:'THE PHANTOM',hp:750,spd:5.0,sc:1.0,si:350,acc:.03,dmg:14,bs:70,color:0x222244,
     attacks:['teleport','decoy','cloak','dash'],teleCD:5000,lastTele:0,decoyCD:15000,lastDecoy:0,cloakCD:14000,lastCloak:0,dashCD:9000,lastDash:0,phase:1},
   warlord:{name:'WARLORD KAINE',hp:3000,spd:2.2,sc:1.8,si:420,acc:.04,dmg:12,bs:52,color:0x660000,
-    attacks:['rockets','summon','rage','hell'],summonCD:8000,lastSummon:0,rageCD:10000,lastRage:0,hellCD:8000,lastHell:0,phase:1},
+    attacks:['rockets','summon','rage','hell'],summonCD:12000,lastSummon:0,rageCD:10000,lastRage:0,hellCD:8000,lastHell:0,phase:1},
   // ── BOSS RUSH EXCLUSIVES ──
   twins:{name:'THE TWINS',hp:750,spd:3.0,sc:1.1,si:550,acc:.05,dmg:9,bs:58,color:0x448844,
     attacks:['sync','tether','converge'],syncCD:7000,lastSync:0,tetherCD:10000,lastTether:0,convergeCD:12000,lastConverge:0,phase:1,twinLink:true},
   hivemind:{name:'HIVE QUEEN',hp:1500,spd:2.0,sc:1.6,si:550,acc:.05,dmg:9,bs:50,color:0x886600,
     attacks:['swarm','burrow','acid','scream','stinger'],swarmCD:8000,lastSwarm:0,burrowCD:10000,lastBurrow:0,acidCD:5000,lastAcid:0,screamCD:12000,lastScream:0,stingerCD:8500,lastStinger:0,phase:1},
   shield:{name:'AEGIS PRIME',hp:1800,spd:1.8,sc:2.2,si:450,acc:.06,dmg:11,bs:42,color:0x3355aa,
-    attacks:['reflect','pulse','charge','fortress'],reflectCD:16000,lastReflect:0,pulseCD:8000,lastPulse:0,chargeCD:8000,lastCharge:0,fortressCD:25000,lastFortress:0,phase:1,shielded:false},
-  omega:{name:'OMEGA UNIT',hp:4000,spd:1.4,sc:2.2,si:420,acc:.045,dmg:16,bs:42,color:0x880088,
+    attacks:['reflect','pulse','charge','fortress','beam'],reflectCD:16000,lastReflect:0,pulseCD:8000,lastPulse:0,chargeCD:8000,lastCharge:0,fortressCD:25000,lastFortress:0,beamCD:22000,lastBeam:0,phase:1,shielded:false},
+  omega:{name:'OMEGA UNIT',hp:3500,spd:1.4,sc:2.2,si:420,acc:.045,dmg:16,bs:42,color:0x880088,
     attacks:['artillery'],overloadCD:7000,lastOverload:0,hackCD:14000,lastHack:0,
     mortarCD:5000,lastMortar:0,siegeCD:16000,lastSiege:0,mineCD:10000,lastMine:0,phase:1},
   // ── SECRET BOSS ──
@@ -1014,7 +1129,7 @@ var BOSSES={
     attacks:['reality'],warpCD:18000,lastWarp:0,voidCD:5500,lastVoid:0,
     spiralCD:5500,lastSpiral:0,pullCD:8000,lastPull:0,summonCD:99999,lastSummon:0,slamCD:4000,lastSlam:0,swipeCD:6500,lastSwipe:0,phase:1},
   // ── TRUE FINAL BOSS — THE ECHO ──
-  echo:{name:'THE ECHO',hp:3200,spd:4.0,sc:1.2,si:500,acc:.04,dmg:11,bs:60,color:0x00cccc,
+  echo:{name:'THE ECHO',hp:2800,spd:4.0,sc:1.2,si:500,acc:.04,dmg:11,bs:60,color:0x00cccc,
     attacks:['adaptive'],predictCD:4000,lastPredict:0,mirrorCD:12000,lastMirror:0,
     exploitCD:8000,lastExploit:0,adaptCD:6000,lastAdapt:0,phase:1},
 };
@@ -1058,7 +1173,7 @@ function createBoss(type){
   e.bossData.lastReflect=nt;e.bossData.lastPulse=nt;e.bossData.lastCharge=nt;
   e.bossData.lastOverload=nt;e.bossData.lastHack=nt;e.bossData.lastSlam=nt;e.bossData.lastSwipe=nt;
   e.bossData.lastMortar=nt;e.bossData.lastRally=nt;e.bossData.lastDecoy=nt;e.bossData.lastCloak=nt;e.bossData.lastDash=nt;
-  e.bossData.lastTether=nt;e.bossData.lastConverge=nt;e.bossData.lastFortress=nt;
+  e.bossData.lastTether=nt;e.bossData.lastConverge=nt;e.bossData.lastFortress=nt;e.bossData.lastBeam=nt;
   e.bossData.lastPredict=nt;e.bossData.lastMirror=nt;e.bossData.lastExploit=nt;e.bossData.lastAdapt=nt;
   e.bossData.lastSiege=nt;e.bossData.lastMine=nt;
   // Architect-specific CDs
@@ -1524,30 +1639,73 @@ function doBossAttack(e,now,dt){
   }
   // Warlord: rockets + summon + rage mode
   if(bt==='warlord'){
-    if(now-B.lastSummon>(B.summonCD/B.phase)){B.lastSummon=now;
+    // SUMMON — reinforcements
+    if(now-B.lastSummon>(B.summonCD/B.phase)&&!B._berserker){B.lastSummon=now;
       var types2=['soldier','scout','heavy'];
-      for(var wi=0;wi<B.phase+1;wi++){var wa2=Math.random()*6.28;var wd=10+Math.random()*8;
+      for(var wi=0;wi<B.phase;wi++){var wa2=Math.random()*6.28;var wd=10+Math.random()*8;
         var wpos=new THREE.Vector3(e.mesh.position.x+Math.cos(wa2)*wd,0,e.mesh.position.z+Math.sin(wa2)*wd);
         if(!checkWall(wpos.x,wpos.z,1)){var we=createEnemy(wpos,types2[wi%3]);G.enemies.push(we);G.alive++}}
       showPM('summon')}
-    if(now-B.lastRage>(B.rageCD/B.phase)&&B.phase>=2){B.lastRage=now;
-      for(var ri=0;ri<6;ri++){var ra=ri*Math.PI/3;var rd=new THREE.Vector3(Math.sin(ra),0,Math.cos(ra));
-        var rb=new THREE.Mesh(bGeo2,getPMat(0xff0000));
-        rb.position.copy(e.mesh.position);rb.position.y=1.3*e.sc;scene.add(rb);
-        G.bullets.push({m:rb,d:rd,s:40,l:4,p:false,dmg:16})}
-      G.shake=.05;sfx('explode');spawnP(e.mesh.position.clone().setY(1),0xff0000,10);spawnRing(e.mesh.position,0xff2200,10,600)}
-    // BULLET HELL — rotating spiral waves
+    // ROCKET SALVO — 3-5 homing rockets that arc through the air
+    if(now-B.lastRage>(B.rageCD/B.phase)){B.lastRage=now;
+      var rktCount=2+B.phase;sfx('boss');showPM('warlord_rockets');
+      for(var ri8=0;ri8<rktCount;ri8++){
+        var rktDelay=ri8*250;
+        (function(idx,bossRef){setTimeout(function(){if(bossRef.hp<=0||!G.on)return;
+          // Lock target at launch
+          var tx4=camera.position.x+(Math.random()-.5)*4;var tz4=camera.position.z+(Math.random()-.5)*4;
+          spawnWarning(tx4,tz4,2,800,0xff4400);
+          sfx('explode');
+          // After delay, impact
+          setTimeout(function(){if(bossRef.hp<=0||!G.on)return;
+            var impDist=Math.hypot(camera.position.x-tx4,camera.position.z-tz4);
+            if(impDist<3)takeDamage(18,new THREE.Vector3(tx4,0,tz4));
+            spawnP(new THREE.Vector3(tx4,1,tz4),0xff4400,6);
+            spawnRing(new THREE.Vector3(tx4,0,tz4),0xff2200,5,400);
+            sfx('explode');G.shake=.04;
+            // Leave brief fire zone
+            var fireMesh=new THREE.Mesh(new THREE.CylinderGeometry(2,2,.08,6),new THREE.MeshBasicMaterial({color:0xff4400,transparent:true,opacity:.3}));
+            fireMesh.position.set(tx4,.04,tz4);scene.add(fireMesh);
+            G.acidZones.push({mesh:fireMesh,x:tx4,z:tz4,end:performance.now()+3000,dmgCD:0});
+          },800);
+        },rktDelay)})(ri8,e)}}
+    // HELLFIRE RAIN — carpet bombs a wide area (phase 2+)
     if(now-B.lastHell>(B.hellCD/B.phase)&&B.phase>=2){B.lastHell=now;
-      var waves=3;var bPerWave=6;
-      for(var hw=0;hw<waves;hw++){(function(wave){setTimeout(function(){if(e.hp<=0)return;
-        var baseAng=now*.002+wave*.4;
-        for(var hb=0;hb<bPerWave;hb++){var ha2=baseAng+hb*(Math.PI*2/bPerWave);
-          var hd3=new THREE.Vector3(Math.sin(ha2),0,Math.cos(ha2));
-          var hb2=new THREE.Mesh(bGeo2,getPMat(0xff4400));
-          hb2.position.copy(e.mesh.position);hb2.position.y=1.3*e.sc;scene.add(hb2);
-          G.bullets.push({m:hb2,d:hd3,s:18,l:5,p:false,dmg:10})}
-        sfx('explode')},wave*300)})(hw)}
-      G.shake=.04}}
+      sfx('boss');showPM('warlord_hellfire');G.shake=.03;
+      var hfCount=6+B.phase*2;
+      for(var hfi=0;hfi<hfCount;hfi++){
+        var hfx=camera.position.x+(Math.random()-.5)*24;
+        var hfz=camera.position.z+(Math.random()-.5)*24;
+        var hfDelay=200+hfi*100;
+        spawnWarning(hfx,hfz,1.5,hfDelay,0xff2200);
+        (function(fx,fz,del){setTimeout(function(){if(e.hp<=0||!G.on)return;
+          var fd2=Math.hypot(camera.position.x-fx,camera.position.z-fz);
+          if(fd2<2)takeDamage(10,new THREE.Vector3(fx,0,fz));
+          spawnP(new THREE.Vector3(fx,.5,fz),0xff4400,3);
+          sfx('explode');
+        },del)})(hfx,hfz,hfDelay)}}
+    // ═══ BERSERKER MODE — 30% HP, despawns adds, 1v1 transformation ═══
+    if(hpPct<.30&&!B._berserker){B._berserker=true;B.phase=3;
+      B._preBerserkSpd=e.spd;B._preBerserkSI=e.si;B._preBerserkDmg=e.dmg;B._preBerserkAcc=e.acc;
+      sfx('boss');G.shake=.08;showPM('warlord_berserk');
+      // Despawn all adds — it's personal now
+      for(var wdi=G.enemies.length-1;wdi>=0;wdi--){
+        if(G.enemies[wdi]!==e&&!G.enemies[wdi].isBoss){
+          scene.remove(G.enemies[wdi].mesh);G.enemies.splice(wdi,1);G.alive--}}
+      // Transform — faster, stronger, red aura
+      e.spd*=1.6;e.si=Math.max(200,e.si*.5);e.dmg=Math.round(e.dmg*1.5);e.acc*=.7;
+      // Visual transformation — glowing red
+      e.mesh.traverse(function(c){if(c.isMesh&&c.material&&!c.material._isGlow){
+        c.material=new THREE.MeshStandardMaterial({color:0x660000,emissive:0xff2200,emissiveIntensity:.4,roughness:.5})}});
+      spawnRing(e.mesh.position,0xff0000,20,1200);spawnP(e.mesh.position.clone().setY(1),0xff4400,12);
+      // War cry — radial shockwave
+      G.shockwaves.push({x:e.mesh.position.x,z:e.mesh.position.z,start:now,speed:20,maxR:30,dmg:15,hit:false})}
+    // Berserker ambient — fire particles stream off the boss
+    if(B._berserker&&Math.random()<.06){
+      var fp2=new THREE.Mesh(pGeo2,getPMat([0xff2200,0xff4400,0xff6600][Math.random()*3|0]));
+      fp2.position.set(e.mesh.position.x+(Math.random()-.5)*1,.5+Math.random()*2,e.mesh.position.z+(Math.random()-.5)*1);
+      scene.add(fp2);G.particles.push({m:fp2,v:new THREE.Vector3((Math.random()-.5)*2,3+Math.random()*2,(Math.random()-.5)*2),l:.3})}
+  }
   // ── BOSS RUSH EXCLUSIVE ATTACKS ──
   // Twins: synchronized burst + ENERGY TETHER + CONVERGENCE RUSH
   if(bt==='twins'){
@@ -1621,17 +1779,56 @@ function doBossAttack(e,now,dt){
         var hpos=new THREE.Vector3(e.mesh.position.x+Math.cos(ha)*hd2,0,e.mesh.position.z+Math.sin(ha)*hd2);
         if(!checkWall(hpos.x,hpos.z,1)){var he=createEnemy(hpos,'scout');G.enemies.push(he);G.alive++}}
       spawnRing(e.mesh.position,0xaaaa00,6,400)}
-    // BURROW — teleport behind player, leave toxic zone at departure
+    // BURROW — submerge, trail underground, erupt behind player
     if(now-B.lastBurrow>(B.burrowCD/B.phase)){B.lastBurrow=now;
       var depX=e.mesh.position.x;var depZ=e.mesh.position.z;
-      // Leave acid zone at departure point
+      // Departure — dirt erupts upward as queen digs down
+      for(var di3=0;di3<8;di3++){
+        var dp3=new THREE.Mesh(pGeo2,getPMat([0x8B7355,0x6B5B3A,0x9B8565,0x554433][di3%4]));
+        dp3.position.set(depX+(Math.random()-.5)*2,.2,depZ+(Math.random()-.5)*2);scene.add(dp3);
+        G.particles.push({m:dp3,v:new THREE.Vector3((Math.random()-.5)*4,5+Math.random()*4,(Math.random()-.5)*4),l:.6+Math.random()*.3})}
+      // Acid zone at departure
       var acidMesh=new THREE.Mesh(new THREE.CylinderGeometry(3,3,.1,8),new THREE.MeshBasicMaterial({color:0x88aa00,transparent:true,opacity:.4}));
       acidMesh.position.set(depX,.05,depZ);scene.add(acidMesh);
       G.acidZones.push({mesh:acidMesh,x:depX,z:depZ,end:now+5000,dmgCD:0});
-      spawnP(e.mesh.position.clone().setY(1),0xaaaa00,6);
+      sfx('boss');G.shake=.03;
+      // Brief underground travel — ground crack trail toward player
       var behindAng=G.yaw+Math.PI;
       var bd2=6+Math.random()*4;var bx=camera.position.x+Math.sin(behindAng)*bd2;var bz=camera.position.z-Math.cos(behindAng)*bd2;
-      if(!checkWall(bx,bz,1.5)){e.mesh.position.set(bx,0,bz);spawnP(e.mesh.position.clone().setY(1),0xffff00,8);sfx('explode');G.shake=.04}}
+      if(checkWall(bx,bz,1.5)){bx=depX+Math.sin(behindAng)*5;bz=depZ+Math.cos(behindAng)*5}
+      // Hide boss briefly
+      e.mesh.visible=false;
+      var trailSteps=5;
+      for(var ts=0;ts<trailSteps;ts++){(function(step,sx,sz,tx,tz,bossRef){
+        setTimeout(function(){if(!G.on)return;
+          var t2=step/trailSteps;
+          var cx2=sx+(tx-sx)*t2;var cz2=sz+(tz-sz)*t2;
+          // Ground crack at each step
+          var crack=new THREE.Mesh(new THREE.PlaneGeometry(.6+Math.random()*.4,.06),
+            new THREE.MeshBasicMaterial({color:0x887744,transparent:true,opacity:.5,side:THREE.DoubleSide}));
+          crack.rotation.x=-Math.PI/2;crack.rotation.z=Math.random()*Math.PI;
+          crack.position.set(cx2,.04,cz2);scene.add(crack);
+          setTimeout(function(){scene.remove(crack)},2000);
+          // Dirt puffs along trail
+          var tp2=new THREE.Mesh(pGeo2,getPMat(0x8B7355));
+          tp2.position.set(cx2,.1,cz2);scene.add(tp2);
+          G.particles.push({m:tp2,v:new THREE.Vector3((Math.random()-.5)*2,3+Math.random()*2,(Math.random()-.5)*2),l:.4});
+          G.shake=.015;
+        },step*120);
+      })(ts,depX,depZ,bx,bz,e)}
+      // Emerge after trail completes
+      (function(bossRef,ex2,ez2){setTimeout(function(){
+        if(bossRef.hp<=0||!G.on){bossRef.mesh.visible=true;return}
+        bossRef.mesh.visible=true;
+        bossRef.mesh.position.set(ex2,0,ez2);
+        // Emergence — big dirt eruption + screen shake
+        for(var ei3=0;ei3<10;ei3++){
+          var ep2=new THREE.Mesh(pGeo2,getPMat([0x8B7355,0x6B5B3A,0xaaaa00,0x9B8565][ei3%4]));
+          ep2.position.set(ex2+(Math.random()-.5)*2,.1,ez2+(Math.random()-.5)*2);scene.add(ep2);
+          G.particles.push({m:ep2,v:new THREE.Vector3((Math.random()-.5)*6,6+Math.random()*5,(Math.random()-.5)*6),l:.5+Math.random()*.3})}
+        spawnRing(new THREE.Vector3(ex2,0,ez2),0xaaaa00,5,500);
+        sfx('explode');G.shake=.06;
+      },trailSteps*120+200)})(e,bx,bz)}
     // ACID SPIT — slow projectile that creates ground hazard on impact
     if(now-B.lastAcid>(B.acidCD/B.phase)){B.lastAcid=now;
       var acidDir=new THREE.Vector3();acidDir.subVectors(camera.position,e.mesh.position).normalize();
@@ -1771,42 +1968,158 @@ function doBossAttack(e,now,dt){
       if(now>B.fortressEnd){B.fortress=false;e.spd=e._fortressSpd||1.8;
         if(e._fortressPlates){for(var fpk=0;fpk<e._fortressPlates.length;fpk++){e.mesh.remove(e._fortressPlates[fpk].mesh)}e._fortressPlates=null}
         spawnRing(e.mesh.position,0xff6622,8,500)}}
+    // ═══ KAMEHAMEHA BEAM — single devastating beam, Aegis fully vulnerable ═══
+    if(now-B.lastBeam>(B.beamCD/B.phase)&&!B.fortress&&!B.shielded&&!B._shieldCharging&&!B._beamActive){
+      B.lastBeam=now;B._beamActive=true;B._beamPhase='charge';B._beamStart=now;
+      e._beamSpd=e.spd;e.spd=0;
+      B._beamVulnerable=true;// FULLY VULNERABLE during beam
+      var beamAng=Math.atan2(camera.position.x-e.mesh.position.x,camera.position.z-e.mesh.position.z);
+      B._beamAng=beamAng;
+      sfx('boss');showPM('aegis_beam');G.shake=.02;
+      // Charge orb
+      var coreGeo=new THREE.SphereGeometry(.12*e.sc,10,8);
+      var coreMat=new THREE.MeshBasicMaterial({color:0x66bbff,transparent:true,opacity:.3});
+      var coreMesh=new THREE.Mesh(coreGeo,coreMat);
+      coreMesh.position.set(0,.6*e.sc,-.22*e.sc);e.mesh.add(coreMesh);
+      B._beamCore=coreMesh;B._beamCoreMat=coreMat;
+      // Outer glow
+      var shellMat=new THREE.MeshBasicMaterial({color:0x4488ff,transparent:true,opacity:.06,side:THREE.DoubleSide});
+      var shellMesh=new THREE.Mesh(new THREE.SphereGeometry(.25*e.sc,8,6),shellMat);
+      shellMesh.position.set(0,.6*e.sc,-.22*e.sc);e.mesh.add(shellMesh);
+      B._beamShell=shellMesh;B._beamShellMat=shellMat;
+      // Warning line
+      var lineLen=40;
+      var lineMat=new THREE.MeshBasicMaterial({color:0x4488ff,transparent:true,opacity:.08,side:THREE.DoubleSide});
+      var lineMesh=new THREE.Mesh(new THREE.PlaneGeometry(.6,lineLen),lineMat);
+      lineMesh.rotation.x=-Math.PI/2;
+      lineMesh.position.set(e.mesh.position.x+Math.sin(beamAng)*lineLen/2,.06,e.mesh.position.z+Math.cos(beamAng)*lineLen/2);
+      lineMesh.rotation.z=-beamAng;scene.add(lineMesh);
+      B._beamLine=lineMesh;B._beamLineMat=lineMat;
+    }
+    // CHARGE (2.5s)
+    if(B._beamActive&&B._beamPhase==='charge'){
+      var chT=(now-B._beamStart)/2500;
+      if(chT>=1){B._beamPhase='fire';B._beamFireStart=now;
+        // Create the beam cylinder mesh
+        var beamLen=40;var beamRad=.8;
+        var beamGeo=new THREE.CylinderGeometry(beamRad,beamRad,beamLen,8,1,true);
+        var beamMat=new THREE.MeshBasicMaterial({color:0x88ccff,transparent:true,opacity:.6,side:THREE.DoubleSide});
+        var beamMesh=new THREE.Mesh(beamGeo,beamMat);
+        // Position: starts at boss chest, extends along beam angle
+        var bOriginX=e.mesh.position.x;var bOriginZ=e.mesh.position.z;var bOriginY=.6*e.sc;
+        beamMesh.position.set(bOriginX+Math.sin(B._beamAng)*beamLen/2,bOriginY,bOriginZ+Math.cos(B._beamAng)*beamLen/2);
+        beamMesh.rotation.z=Math.PI/2;beamMesh.rotation.y=-B._beamAng;
+        scene.add(beamMesh);B._beamMesh=beamMesh;B._beamMeshMat=beamMat;
+        // Inner core beam — brighter, thinner
+        var innerGeo=new THREE.CylinderGeometry(beamRad*.4,beamRad*.4,beamLen,6,1,true);
+        var innerMat=new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.8,side:THREE.DoubleSide});
+        var innerMesh=new THREE.Mesh(innerGeo,innerMat);
+        innerMesh.position.copy(beamMesh.position);innerMesh.rotation.copy(beamMesh.rotation);
+        scene.add(innerMesh);B._beamInner=innerMesh;B._beamInnerMat=innerMat;
+        sfx('explode');G.shake=.08;
+      }else{
+        var coreScale=.5+chT*2.5;
+        if(B._beamCore){B._beamCore.scale.set(coreScale,coreScale,coreScale);
+          B._beamCoreMat.opacity=.2+chT*.7;B._beamCoreMat.color.setRGB(.3+chT*.7,.5+chT*.4,1)}
+        if(B._beamShell){var sp2=1+Math.sin(now*.015*(1+chT*6))*.2;
+          B._beamShell.scale.set(coreScale*1.3*sp2,coreScale*1.3*sp2,coreScale*1.3*sp2);
+          B._beamShellMat.opacity=.04+chT*.1}
+        if(B._beamLineMat)B._beamLineMat.opacity=.06+chT*.2;
+        // Converging particles
+        if(Math.random()<.04+chT*.12){var cpAng=Math.random()*6.28;var cpDist=3+Math.random()*5;
+          var cp=new THREE.Mesh(pGeo2,getPMat([0x44aaff,0x88ddff,0xaaeeff][Math.random()*3|0]));
+          cp.position.set(e.mesh.position.x+Math.cos(cpAng)*cpDist,.6*e.sc+Math.random()*1.5,e.mesh.position.z+Math.sin(cpAng)*cpDist);
+          scene.add(cp);var cpd=new THREE.Vector3(e.mesh.position.x-cp.position.x,0,e.mesh.position.z-cp.position.z).normalize();
+          G.particles.push({m:cp,v:cpd.multiplyScalar(6+chT*10),l:.25+Math.random()*.15})}
+        G.shake=Math.max(G.shake,.008+chT*.035);
+      }
+    }
+    // FIRE (1.5s — beam visible, continuous damage via line check)
+    if(B._beamActive&&B._beamPhase==='fire'){
+      var fT=(now-B._beamFireStart)/1500;
+      if(fT>=1){
+        B._beamActive=false;B._beamPhase=null;B._beamVulnerable=false;e.spd=e._beamSpd||1.8;
+        if(B._beamCore){e.mesh.remove(B._beamCore);B._beamCore=null}
+        if(B._beamShell){e.mesh.remove(B._beamShell);B._beamShell=null}
+        if(B._beamLine){scene.remove(B._beamLine);B._beamLine=null}
+        if(B._beamMesh){scene.remove(B._beamMesh);B._beamMesh=null}
+        if(B._beamInner){scene.remove(B._beamInner);B._beamInner=null}
+        spawnRing(e.mesh.position,0x4488ff,8,600);
+      }else{
+        // Check if player is inside the beam — point-to-line distance
+        var bx1=e.mesh.position.x;var bz1=e.mesh.position.z;
+        var bx2=bx1+Math.sin(B._beamAng)*40;var bz2=bz1+Math.cos(B._beamAng)*40;
+        var dx7=bx2-bx1;var dz7=bz2-bz1;var len7=dx7*dx7+dz7*dz7;
+        var t7=Math.max(0,Math.min(1,((camera.position.x-bx1)*dx7+(camera.position.z-bz1)*dz7)/len7));
+        var nearX=bx1+t7*dx7;var nearZ=bz1+t7*dz7;
+        var beamDist=Math.hypot(camera.position.x-nearX,camera.position.z-nearZ);
+        // Damage + stun if inside beam radius (1.2 units)
+        if(beamDist<1.2&&now-(B._lastBeamHit||0)>200){B._lastBeamHit=now;
+          takeDamage(12,new THREE.Vector3(nearX,1,nearZ));
+          G._slowEnd=now+500;// brief stun/slow
+          G.shake=.06}
+        // Beam visual — pulse width and brightness
+        if(B._beamMesh){var bPulse=1+Math.sin(now*.025)*.15;
+          B._beamMesh.scale.x=bPulse;B._beamMesh.scale.z=bPulse;
+          B._beamMeshMat.opacity=.5+Math.sin(now*.04)*.15}
+        if(B._beamInner){B._beamInnerMat.opacity=.7+Math.random()*.3;
+          var iPulse=1+Math.sin(now*.035)*.2;B._beamInner.scale.x=iPulse;B._beamInner.scale.z=iPulse}
+        // Core stays bright white
+        if(B._beamCore){B._beamCoreMat.color.setRGB(1,1,1);B._beamCoreMat.opacity=.9;
+          B._beamCore.scale.set(3,3,3)}
+        // Warning line bright
+        if(B._beamLineMat){B._beamLineMat.opacity=.3;B._beamLineMat.color.setRGB(.6,.9,1)}
+        G.shake=Math.max(G.shake,.03);
+        if(Math.random()<.08)sfx('explode');
+      }
+    }
   }
   if(bt==='omega'){
-    // OVERLOAD — 4-directional cross beam
+    // TRACKING BEAM — locks position, fires a burst of fast shots along the line
     if(now-B.lastOverload>(B.overloadCD/B.phase)){B.lastOverload=now;
-      var oAngle=Math.atan2(camera.position.x-e.mesh.position.x,camera.position.z-e.mesh.position.z);
-      for(var ow=0;ow<4;ow++){for(var ob=0;ob<5;ob++){var bAng=oAngle+ow*Math.PI/2+(ob-2)*.06;
-        var bd3=new THREE.Vector3(Math.sin(bAng),0,Math.cos(bAng));
-        var bb2=new THREE.Mesh(bGeo2,getPMat(0xff44ff));
-        bb2.position.copy(e.mesh.position);bb2.position.y=1.3*e.sc;scene.add(bb2);
-        G.bullets.push({m:bb2,d:bd3,s:22,l:5,p:false,dmg:12})}}
-      sfx('explode');G.shake=.05;spawnRing(e.mesh.position,0xff44ff,15,600)}
+      sfx('boss');showPM('omega_beam');
+      // Lock player's current position
+      var lockX=camera.position.x;var lockZ=camera.position.z;
+      spawnWarning(lockX,lockZ,2,800,0xff44ff);
+      (function(tx3,tz3){setTimeout(function(){if(e.hp<=0||!G.on)return;
+        // Fire rapid shots from boss toward locked position
+        var beamDir=new THREE.Vector3(tx3-e.mesh.position.x,0,tz3-e.mesh.position.z).normalize();
+        for(var bi3=0;bi3<8;bi3++){(function(delay4){setTimeout(function(){if(e.hp<=0)return;
+          var jitter=(Math.random()-.5)*.06;
+          var bd4=beamDir.clone();bd4.x+=jitter;bd4.normalize();
+          var bb3=new THREE.Mesh(bGeo2,getPMat(0xff44ff));
+          bb3.position.copy(e.mesh.position);bb3.position.y=1.3*e.sc;scene.add(bb3);
+          G.bullets.push({m:bb3,d:bd4,s:40,l:5,p:false,dmg:10});sfx('explode')
+        },delay4*60)})(bi3)}
+        spawnRing(e.mesh.position,0xff44ff,10,400);G.shake=.04;
+      },800)})(lockX,lockZ)}
     // SYSTEM HACK — disable minimap + glitch screen
     if(now-B.lastHack>(B.hackCD/B.phase)){B.lastHack=now;
       document.getElementById('minimap').style.display='none';
       document.body.classList.add('warp-glitch');sfx('boss');
       setTimeout(function(){document.getElementById('minimap').style.display='block';document.body.classList.remove('warp-glitch')},4000)}
-    // MORTAR BARRAGE — heavy arcing shells with big warnings
+    // CLUSTER BOMBS — arcing projectiles that split into 4 on impact (no shockwave)
     if(now-B.lastMortar>(B.mortarCD/B.phase)){B.lastMortar=now;
-      var omCount=3+B.phase;sfx('boss');showPM('omega_mortar');
-      for(var omi=0;omi<omCount;omi++){
-        var omx=camera.position.x+(Math.random()-.5)*16;var omz=camera.position.z+(Math.random()-.5)*16;
-        var omDelay=800+omi*250;
-        spawnWarning(omx,omz,3,omDelay,0xaa44ff);
-        (function(px2,pz2,delay2){setTimeout(function(){if(e.hp<=0||!G.on)return;
-          G.shockwaves.push({x:px2,z:pz2,start:performance.now(),speed:16,maxR:10,dmg:20,hit:false});
-          spawnRing(new THREE.Vector3(px2,0,pz2),0xaa44ff,10,600);spawnP(new THREE.Vector3(px2,2,pz2),0xff44ff,10);
-          sfx('explode');G.shake=.05;
-        },delay2)})(omx,omz,omDelay)}}
+      var cbCount=2+B.phase;sfx('boss');showPM('omega_cluster');
+      for(var cbi=0;cbi<cbCount;cbi++){
+        var cbx=camera.position.x+(Math.random()-.5)*14;var cbz=camera.position.z+(Math.random()-.5)*14;
+        var cbDelay=600+cbi*200;
+        spawnWarning(cbx,cbz,2,cbDelay,0xcc44ff);
+        (function(px3,pz3,del3){setTimeout(function(){if(e.hp<=0||!G.on)return;
+          spawnP(new THREE.Vector3(px3,1,pz3),0xff44ff,5);sfx('explode');
+          // Split into 4 ground-level projectiles spreading outward
+          for(var sp3=0;sp3<4;sp3++){var sa3=sp3*Math.PI/2+Math.random()*.3;
+            var sd5=new THREE.Vector3(Math.sin(sa3),0,Math.cos(sa3));
+            var sb4=new THREE.Mesh(bGeo2,getPMat(0xcc66ff));
+            sb4.position.set(px3,.5,pz3);scene.add(sb4);
+            G.bullets.push({m:sb4,d:sd5,s:15,l:3,p:false,dmg:8})}
+        },del3)})(cbx,cbz,cbDelay)}}
     // SIEGE MODE — plants, gains 70% DR, fires heavy aimed bursts
     if(now-B.lastSiege>(B.siegeCD/B.phase)&&!B._siege){B.lastSiege=now;B._siege=true;B._siegeEnd=now+4000;
       e._siegeSpd=e.spd;e.spd=0;sfx('boss');showPM('omega_siege');G.shake=.04;
-      // Visual: orange glow + ground crack ring
       spawnRing(e.mesh.position,0xaa44ff,10,800);
-      spawnP(e.mesh.position.clone().setY(1),0xff44ff,10)}
+      spawnP(e.mesh.position.clone().setY(1),0xff44ff,6)}
     if(B._siege){
-      // Heavy aimed burst every 500ms
       if(now-(e._lastSiegeShot||0)>500){e._lastSiegeShot=now;
         var sDir=new THREE.Vector3().subVectors(camera.position,e.mesh.position).normalize();
         for(var sbi=0;sbi<3;sbi++){
@@ -1817,7 +2130,7 @@ function doBossAttack(e,now,dt){
         sfx('explode')}
       if(now>B._siegeEnd){B._siege=false;e.spd=e._siegeSpd||1.4;
         spawnRing(e.mesh.position,0x8822ff,6,400)}}
-    // EMP MINES — deploys 3 proximity mines on the ground
+    // EMP MINES
     if(now-B.lastMine>(B.mineCD/B.phase)){B.lastMine=now;sfx('boss');
       for(var mi2=0;mi2<3;mi2++){
         var mAng=Math.random()*6.28;var mDist=5+Math.random()*12;
@@ -1826,7 +2139,6 @@ function doBossAttack(e,now,dt){
         var mineMat=new THREE.MeshBasicMaterial({color:0xaa44ff,transparent:true,opacity:.6});
         var mineMesh=new THREE.Mesh(new THREE.SphereGeometry(.25,6,6),mineMat);
         mineMesh.position.set(mx2,.25,mz2);scene.add(mineMesh);
-        // Pulsing glow ring under mine
         var mineRing=new THREE.Mesh(new THREE.RingGeometry(.5,1,12),new THREE.MeshBasicMaterial({color:0x8844ff,transparent:true,opacity:.3,side:THREE.DoubleSide}));
         mineRing.rotation.x=-Math.PI/2;mineRing.position.set(mx2,.05,mz2);scene.add(mineRing);
         G.pickups.push({mesh:mineMesh,type:'mine',got:false,spawnY:.25,x:mx2,z:mz2,ring:mineRing,ringMat:mineRing.material,end:performance.now()+12000,owner:e})}}
@@ -2025,120 +2337,267 @@ function doBossAttack(e,now,dt){
         G.shake=.05;spawnRing(camera.position,0x8800ff,18,1200);
       },plDelay)})(e)}
   }
-  // ═══ THE ECHO — ADAPTIVE INTELLIGENCE ═══
+  // ═══ THE ECHO — NEUROEVOLVED AI ═══
   if(bt==='echo'){
-    var prof=e._echoProfile||{dodgeBias:'right',dodgeLR:.5,prefersJump:false,avgRange:15,weakDir:'back',accuracy:.3,healFreq:0,avgHP:70,burstFirer:false};
-    // Phase transitions with analysis messages
+    var prof=e._echoProfile||{dodgeLR:.5,prefersJump:false,avgRange:15,weakDir:'back',accuracy:.3,spd:8.5};
+    var Q=e._Q;var encSt=e._encodeState;
+    var GN=e._genome||{aimLead:.5,aimSpread:.12,burstSize:3,burstDelay:80,engageRange:12,aggression:.5,
+      strafeAmp:2,strafeFreq:1.5,strafeChaos:.3,dodgeReact:.4,dodgeSpeed:6,reloadExploit:.5,
+      lowHPExploit:.5,healPunish:.5,jumpCounter:.5,trapWeight:.5,flankPref:.5,retreatHP:.25,
+      mirrorTiming:.5,unpredictability:.15};
+    if(!e._rl){e._rl={
+      moveLog:[],lastPlayerX:camera.position.x,lastPlayerZ:camera.position.z,
+      onlineLR:0.08,lastAction:-1,lastState:-1,lastActionTime:0,
+      totalReward:0,actionCounts:[0,0,0,0,0],strafeT:0,lastDodge:0,
+    }}
+    var rl=e._rl;
+    // Phase transitions
     if(hpPct<.65&&B.phase===1){B.phase=2;showPM('echo_adapt');sfx('boss');e.spd+=.5;e.si=Math.max(300,e.si-50);
       spawnRing(e.mesh.position,0x00ffcc,12,800);G.shake=.04}
     if(hpPct<.30&&B.phase===2){B.phase=3;showPM('echo_evolve');sfx('boss');e.spd+=.5;e.si=Math.max(200,e.si-50);
       spawnRing(e.mesh.position,0x00ffff,15,1000);G.shake=.06}
-    // ── Animate holographic elements ──
-    if(e._echoScan){var scanT=now*.004;e._echoScan.position.x=Math.sin(scanT)*.12*e.sc}
+    // Animate holographic elements
+    if(e._echoScan){e._echoScan.position.x=Math.sin(now*.004)*.12*e.sc}
     if(e._echoRing){e._echoRing.rotation.z=now*.002}
     if(e._echoFrags){for(var efi2=0;efi2<e._echoFrags.length;efi2++){var ef=e._echoFrags[efi2];
       var eft=now*.001*ef.spd+ef.phase;
       ef.mesh.position.set(Math.sin(eft)*ef.rad*e.sc,ef.yOff*e.sc,Math.cos(eft)*ef.rad*e.sc);
-      ef.mesh.rotation.y=eft*2;ef.mesh.rotation.x=eft}}
-    // Periodic analysis particles
-    if(Math.random()<.04*B.phase){var apx=e.mesh.position.x+(Math.random()-.5)*2;var apz=e.mesh.position.z+(Math.random()-.5)*2;
-      var apm=new THREE.Mesh(pGeo2,getPMat(0x00ffcc));apm.position.set(apx,.5+Math.random()*2,apz);scene.add(apm);
-      G.particles.push({m:apm,v:new THREE.Vector3(0,2+Math.random(),0),l:.5+Math.random()*.3})}
-    // ── ADAPTIVE MOVEMENT — counter player's tendencies ──
-    // Move toward player's weak side
-    if(!e._echoMoveTick)e._echoMoveTick=0;
-    if(now-e._echoMoveTick>2000){e._echoMoveTick=now;
-      // Position to attack from player's most vulnerable direction
-      var targetAng=G.yaw;
-      if(prof.weakDir==='back')targetAng+=Math.PI;
-      else if(prof.weakDir==='left')targetAng+=Math.PI/2;
-      else if(prof.weakDir==='right')targetAng-=Math.PI/2;
-      targetAng+=(Math.random()-.5)*.8;// some randomness
-      var tDist=prof.avgRange*.8;// stay at slightly less than player's comfort range
-      var tgtX=camera.position.x+Math.sin(targetAng)*tDist;
-      var tgtZ=camera.position.z-Math.cos(targetAng)*tDist;
-      tgtX=Math.max(-G.sz+3,Math.min(G.sz-3,tgtX));tgtZ=Math.max(-G.sz+3,Math.min(G.sz-3,tgtZ));
-      e._echoTarget={x:tgtX,z:tgtZ}}
-    if(e._echoTarget){var etx=e._echoTarget.x-e.mesh.position.x;var etz=e._echoTarget.z-e.mesh.position.z;
-      var etd=Math.hypot(etx,etz);if(etd>2)e._flankTarget={x:e._echoTarget.x,z:e._echoTarget.z}}
-    // ── PREDICTIVE FIRE — shoots where player WILL be ──
-    if(now-B.lastPredict>(B.predictCD/B.phase)){B.lastPredict=now;
-      // Calculate predicted position based on current movement direction
-      var predT=.4;// predict 400ms ahead
-      var predX=camera.position.x+Math.sin(G.yaw)*(-G.my)*G.spd*predT;
-      var predZ=camera.position.z-Math.cos(G.yaw)*(-G.my)*G.spd*predT;
-      // Offset prediction toward player's dominant dodge direction
-      var dodgeOff=prof.dodgeLR>.55?-.5:.5;// counter their bias
-      predX+=Math.cos(G.yaw)*dodgeOff*3;predZ+=Math.sin(G.yaw)*dodgeOff*3;
-      // Fire spread of bullets at predicted position
-      var predDir=new THREE.Vector3(predX-e.mesh.position.x,0,predZ-e.mesh.position.z).normalize();
-      var shotCount=2+B.phase;
-      for(var pi4=0;pi4<shotCount;pi4++){var pOff=(pi4-shotCount/2)*.08;
-        var pd3=predDir.clone();pd3.x+=pOff;pd3.normalize();
-        var pb2=new THREE.Mesh(bGeo2,getPMat(0x00ffcc));
-        pb2.position.copy(e.mesh.position);pb2.position.y=1.3*e.sc;scene.add(pb2);
-        G.bullets.push({m:pb2,d:pd3,s:55,l:3,p:false,dmg:10})}
-      sfx('explode');spawnP(e.mesh.position.clone().setY(1.3),0x00ffcc,4)}
-    // ── EXPLOIT — attacks from blind spot, counters healing ──
-    if(now-B.lastExploit>(B.exploitCD/B.phase)){B.lastExploit=now;
-      // If player just healed recently, punish with aggressive rush
-      if(G.echo.healTime&&now-G.echo.healTime<3000){
-        // Dash to player and burst fire
-        var rushDir=new THREE.Vector3().subVectors(camera.position,e.mesh.position).normalize();
-        e._charging={dir:rushDir,end:now+500,spd:22};
-        sfx('boss');showPM('echo_counter');spawnRing(e.mesh.position,0x00ffcc,5,300);
-      }else{
-        // Teleport to weak side
-        var expAng=G.yaw+(prof.weakDir==='back'?Math.PI:prof.weakDir==='left'?Math.PI/2:-Math.PI/2);
-        var expD=5+Math.random()*4;
-        var expX=camera.position.x+Math.sin(expAng)*expD;var expZ=camera.position.z-Math.cos(expAng)*expD;
-        if(!checkWall(expX,expZ,1)){
-          spawnP(e.mesh.position.clone().setY(1),0x00aaaa,5);
-          e.mesh.position.set(expX,0,expZ);
-          spawnP(e.mesh.position.clone().setY(1),0x00ffcc,6);sfx('explode');
-          // Immediate burst from new position
-          for(var ei2=0;ei2<3;ei2++){(function(delay3){setTimeout(function(){if(e.hp<=0)return;fireEnemyBullet(e);e.shootFlash=1},delay3*100)})(ei2)}
-        }
-      }
+      ef.mesh.rotation.y=eft*2}}
+    if(Math.random()<.015*B.phase){var apm=new THREE.Mesh(pGeo2,getPMat(0x00ffcc));
+      apm.position.set(e.mesh.position.x+(Math.random()-.5)*2,.5+Math.random()*2,e.mesh.position.z+(Math.random()-.5)*2);
+      scene.add(apm);G.particles.push({m:apm,v:new THREE.Vector3(0,2,0),l:.3})}
+    // ── LIVE DATA + ACCELERATION TRACKING ──
+    var pdx2=camera.position.x-rl.lastPlayerX;var pdz2=camera.position.z-rl.lastPlayerZ;
+    // Track acceleration (change in velocity)
+    if(!rl.lastVx)rl.lastVx=0;if(!rl.lastVz)rl.lastVz=0;
+    var accX=pdx2-rl.lastVx;var accZ=pdz2-rl.lastVz;
+    rl.lastVx=pdx2;rl.lastVz=pdz2;
+    rl.lastPlayerX=camera.position.x;rl.lastPlayerZ=camera.position.z;
+    rl.moveLog.push({dx:pdx2,dz:pdz2,ax:accX,az:accZ,t:now});if(rl.moveLog.length>60)rl.moveLog.shift();
+    // ── REAL-TIME PATTERN MINING — detect strafe rhythm ──
+    if(!rl._rhythmCheck)rl._rhythmCheck=0;
+    if(now-rl._rhythmCheck>500&&rl.moveLog.length>20){rl._rhythmCheck=now;
+      // Detect direction change frequency
+      var changes=0;for(var rc2=1;rc2<rl.moveLog.length;rc2++){
+        if(rl.moveLog[rc2].dx*rl.moveLog[rc2-1].dx<0)changes++}
+      rl._strafeFreqDetected=changes/rl.moveLog.length;// 0=linear, 1=constant reversals
+      // Detect dominant direction
+      var sumDx=0;for(var sd2=0;sd2<rl.moveLog.length;sd2++)sumDx+=rl.moveLog[sd2].dx;
+      rl._dominantDir=sumDx>0?1:-1;// which way player tends to go
     }
-    // ── MIRROR — briefly copies player's damage output ──
-    if(now-B.lastMirror>(B.mirrorCD/B.phase)&&B.phase>=2){B.lastMirror=now;
+    // ── GENOME-DRIVEN MOVEMENT — evolved strafe pattern ──
+    rl.strafeT+=dt*GN.strafeFreq;
+    if(Math.random()<GN.strafeChaos*.03)rl.strafeT+=Math.random()*2;// chaos injection
+    var strafeDir=Math.sin(rl.strafeT)*GN.strafeAmp;
+    // Evolved engagement range
+    var rangeDiff2=dp2-GN.engageRange;
+    var approach=rangeDiff2>3?GN.aggression*.15:rangeDiff2<-3?-(1-GN.aggression)*.12:0;
+    // Flank toward evolved preference (0=front, 1=behind)
+    var flankAng2=G.yaw+GN.flankPref*Math.PI;
+    flankAng2+=(Math.random()-.5)*.3;
+    var tgtX2=camera.position.x+Math.sin(flankAng2)*(GN.engageRange)+Math.cos(flankAng2)*strafeDir;
+    var tgtZ2=camera.position.z-Math.cos(flankAng2)*(GN.engageRange)-Math.sin(flankAng2)*strafeDir;
+    tgtX2=Math.max(-G.sz+3,Math.min(G.sz-3,tgtX2));tgtZ2=Math.max(-G.sz+3,Math.min(G.sz-3,tgtZ2));
+    e._flankTarget={x:tgtX2,z:tgtZ2};
+    // Low HP retreat mode — genome controls threshold
+    if(hpPct<GN.retreatHP){e.spd=Math.min(7,e.spd+dt*2);// speed up when hurt
+      var awayDir=new THREE.Vector3().subVectors(e.mesh.position,camera.position).normalize();
+      e._flankTarget={x:e.mesh.position.x+awayDir.x*8,z:e.mesh.position.z+awayDir.z*8}}
+    // ── PRESSURE MODE — when player HP drops below genome threshold, speed up attacks ──
+    var playerHPPct=G.hp/(G.maxHP||100);
+    if(playerHPPct<GN.pressureThresh&&!rl._pressureActive){
+      rl._pressureActive=true;rl._origPredCD=B.predictCD;rl._origExplCD=B.exploitCD;
+      B.predictCD=Math.max(2000,B.predictCD*.75);B.exploitCD=Math.max(2500,B.exploitCD*.75)}
+    if(playerHPPct>=GN.pressureThresh+.1&&rl._pressureActive){
+      rl._pressureActive=false;B.predictCD=rl._origPredCD||4000;B.exploitCD=rl._origExplCD||5000}
+    // ── GENOME-DRIVEN DODGING — predict bullet trajectory, dodge perpendicular ──
+    if(now-rl.lastDodge>400){
+      var closestThreat=null,closestDist=8;
+      for(var dbi3=0;dbi3<G.bullets.length;dbi3++){var db2=G.bullets[dbi3];
+        if(db2.p)continue;
+        var toBoss=new THREE.Vector3().subVectors(e.mesh.position,db2.m.position);
+        var bDist=toBoss.length();
+        if(bDist<closestDist&&toBoss.dot(db2.d)>0){closestDist=bDist;closestThreat=db2}}
+      if(closestThreat&&Math.random()<GN.dodgeReact+B.phase*.08){
+        // Calculate optimal perpendicular dodge direction
+        var perpDodge=new THREE.Vector3(-closestThreat.d.z,0,closestThreat.d.x);
+        // Choose direction away from arena center for more space
+        var toCenter=new THREE.Vector3(-e.mesh.position.x,0,-e.mesh.position.z).normalize();
+        if(perpDodge.dot(toCenter)>0)perpDodge.multiplyScalar(-1);
+        var nx3=e.mesh.position.x+perpDodge.x*GN.dodgeSpeed*.5;
+        var nz3=e.mesh.position.z+perpDodge.z*GN.dodgeSpeed*.5;
+        if(!checkWall(nx3,nz3,.5)){e.mesh.position.x=nx3;e.mesh.position.z=nz3}
+        rl.lastDodge=now}}
+    // ── ONLINE Q-LEARNING — evaluate + update ──
+    if(rl.lastAction>=0&&now-rl.lastActionTime>1500&&Q){
+      var wasHit2=G.lastDmgTime>rl.lastActionTime;
+      var reward2=0;
+      if(wasHit2)reward2+=1.5;else reward2-=.2;
+      var echoTookDmg=e.hp<(rl._preActionEHP||e.hp);
+      if(!echoTookDmg)reward2+=.5;else reward2-=.8;
+      rl._preActionEHP=e.hp;
+      if(rl._exploitedReload&&wasHit2)reward2+=2;
+      else if(rl._exploitedReload&&!wasHit2)reward2-=.5;
+      if(rl._exploitedLowHP&&wasHit2)reward2+=1.5;
+      var pHPNow=G.hp/(G.maxHP||100);
+      if(pHPNow<.4)reward2+=.3;if(pHPNow<.2)reward2+=.5;
+      if(rl.lastAction===2&&!G.reloading&&G.hp>60)reward2-=.5;
+      if(rl.lastAction===3&&!prof.prefersJump)reward2-=.3;
+      if(rl.lastAction===5&&wasHit2)reward2+=1;// combo success
+      if(rl.lastAction===7)reward2+=.2;// area denial always useful
+      rl._exploitedReload=false;rl._exploitedLowHP=false;
+      var cDist2=dp2;var cAng2=Math.atan2(camera.position.x-e.mesh.position.x,camera.position.z-e.mesh.position.z);
+      if(cAng2<0)cAng2+=Math.PI*2;var cMove2=pdx2>0.01?2:pdx2<-0.01?0:1;
+      var cHP2=G.hp/(G.maxHP||100);var cEHP=e.hp/e.maxHp;var cAir=!G.gnd;
+      var cSt2=encSt(cDist2,cAng2,cMove2,cHP2,G.reloading?1:0,cEHP,cAir);
+      var NA=8;var mNQ=-999;for(var nqa2=0;nqa2<NA;nqa2++){if(Q[cSt2*NA+nqa2]>mNQ)mNQ=Q[cSt2*NA+nqa2]}
+      Q[rl.lastState*NA+rl.lastAction]+=rl.onlineLR*(reward2+.9*mNQ-Q[rl.lastState*NA+rl.lastAction]);
+      rl.lastAction=-1}
+    // ── Q-TABLE DECISION — picks best action for this state ──
+    if(now-B.lastPredict>(B.predictCD/B.phase)&&Q){B.lastPredict=now;
+      var qDist2=dp2;var qAng2=Math.atan2(camera.position.x-e.mesh.position.x,camera.position.z-e.mesh.position.z);
+      if(qAng2<0)qAng2+=Math.PI*2;var qMove2=pdx2>0.01?2:pdx2<-0.01?0:1;
+      var qHP2=G.hp/(G.maxHP||100);var qEHP=e.hp/e.maxHp;var qAir=!G.gnd;
+      var qSt2=encSt(qDist2,qAng2,qMove2,qHP2,G.reloading?1:0,qEHP,qAir);
+      var NA2=8;var eps2=Math.max(.03,GN.unpredictability-.02*B.phase);
+      var qAct2;
+      if(Math.random()<eps2){qAct2=Math.random()*NA2|0}
+      else{var bV2=-999;qAct2=0;for(var qa2=0;qa2<NA2;qa2++){if(Q[qSt2*NA2+qa2]>bV2){bV2=Q[qSt2*NA2+qa2];qAct2=qa2}}}
+      rl.lastAction=qAct2;rl.lastState=qSt2;rl.lastActionTime=now;rl.actionCounts[qAct2]=(rl.actionCounts[qAct2]||0)+1;
+      rl._preActionEHP=e.hp;
+      // ── EXECUTE with genome-tuned parameters ──
+      if(qAct2===0){// PREDICTIVE FIRE — velocity + acceleration extrapolation
+        var vx3=0,vz3=0,ax3=0,az3=0,vc3=0;
+        for(var vl3=Math.max(0,rl.moveLog.length-10);vl3<rl.moveLog.length;vl3++){
+          vx3+=rl.moveLog[vl3].dx;vz3+=rl.moveLog[vl3].dz;
+          ax3+=(rl.moveLog[vl3].ax||0);az3+=(rl.moveLog[vl3].az||0);vc3++}
+        if(vc3>0){vx3/=vc3;vz3/=vc3;ax3/=vc3;az3/=vc3}
+        var leadT=GN.aimLead*40;
+        // Use acceleration for curved trajectory prediction
+        var accelWeight=GN.velocityRead||.5;
+        var predX2=camera.position.x+vx3*leadT+ax3*leadT*leadT*.5*accelWeight;
+        var predZ2=camera.position.z+vz3*leadT+az3*leadT*leadT*.5*accelWeight;
+        // Counter detected strafe rhythm
+        if(rl._strafeFreqDetected>.4){// player strafes back and forth
+          predX2+=rl._dominantDir*vx3*leadT*-.3}// aim opposite their trend
+        var pDir3=new THREE.Vector3(predX2-e.mesh.position.x,0,predZ2-e.mesh.position.z).normalize();
+        for(var bi4=0;bi4<GN.burstSize;bi4++){(function(d5,bIdx){setTimeout(function(){if(e.hp<=0)return;
+          var pd5=pDir3.clone();pd5.x+=(Math.random()-.5)*GN.aimSpread;pd5.normalize();
+          var pb4=new THREE.Mesh(bGeo2,getPMat(0x00ffcc));
+          pb4.position.copy(e.mesh.position);pb4.position.y=1.3*e.sc;scene.add(pb4);
+          G.bullets.push({m:pb4,d:pd5,s:55,l:3,p:false,dmg:10});e.shootFlash=1;
+        },d5)})(bi4*GN.burstDelay,bi4)}
+        sfx('explode')}
+      else if(qAct2===1){// FLANK BURST — teleport + burst
+        var fAng3=G.yaw+(prof.weakDir==='back'?Math.PI:prof.weakDir==='left'?Math.PI/2:-Math.PI/2);
+        var fD3=4+Math.random()*5;
+        var fX3=camera.position.x+Math.sin(fAng3)*fD3;var fZ3=camera.position.z-Math.cos(fAng3)*fD3;
+        if(!checkWall(fX3,fZ3,1)){spawnP(e.mesh.position.clone().setY(1),0x00aaaa,3);
+          e.mesh.position.set(fX3,0,fZ3);spawnP(e.mesh.position.clone().setY(1),0x00ffcc,4);sfx('explode');
+          for(var fb3=0;fb3<GN.burstSize;fb3++){(function(d6){setTimeout(function(){if(e.hp<=0)return;
+            fireEnemyBullet(e);e.shootFlash=1},d6*GN.burstDelay)})(fb3)}}}
+      else if(qAct2===2){// RUSH — charge
+        rl._exploitedReload=G.reloading;rl._exploitedLowHP=G.hp<40;
+        var rushSpd=18+GN.aggression*8;
+        if(G.hp<40)rushSpd+=GN.lowHPExploit*6;// faster rush when player is weak
+        var rDir5=new THREE.Vector3().subVectors(camera.position,e.mesh.position).normalize();
+        e._charging={dir:rDir5,end:now+500,spd:rushSpd};
+        sfx('boss');showPM('echo_counter');spawnRing(e.mesh.position,0x00ffcc,5,300)}
+      else if(qAct2===3){// GROUND SPREAD
+        var gCount=4+Math.round(GN.jumpCounter*4);
+        for(var gi3=0;gi3<gCount;gi3++){var ga3=gi3*Math.PI*2/gCount+now*.001;
+          var gd3=new THREE.Vector3(Math.sin(ga3),0,Math.cos(ga3));
+          var gb3=new THREE.Mesh(bGeo2,getPMat(0x44ffaa));
+          gb3.position.copy(e.mesh.position);gb3.position.y=.3;scene.add(gb3);
+          G.bullets.push({m:gb3,d:gd3,s:16+GN.jumpCounter*6,l:4,p:false,dmg:8})}
+        sfx('explode');spawnRing(e.mesh.position,0x44ffaa,10,500)}
+      else if(qAct2===4){// DODGE TRAP — fire at predicted dodge location
+        var dBias2=prof.dodgeLR>.55?1:-1;
+        var tAng4=G.yaw+dBias2*Math.PI*(.3+GN.trapWeight*.4);
+        var tX5=camera.position.x+Math.sin(tAng4)*(3+GN.trapWeight*4);
+        var tZ5=camera.position.z-Math.cos(tAng4)*(3+GN.trapWeight*4);
+        var tDir4=new THREE.Vector3(tX5-e.mesh.position.x,0,tZ5-e.mesh.position.z).normalize();
+        for(var ti6=0;ti6<GN.burstSize;ti6++){
+          var tb4=new THREE.Mesh(bGeo2,getPMat(0x00ffcc));tb4.position.copy(e.mesh.position);tb4.position.y=1;scene.add(tb4);
+          var tOff3=(ti6-GN.burstSize/2)*.04;var td4=tDir4.clone();td4.x+=tOff3;td4.normalize();
+          G.bullets.push({m:tb4,d:td4,s:35+GN.trapWeight*15,l:3.5,p:false,dmg:9})}
+        sfx('explode');showPM('echo_trap')}
+      // ── ACTION 5: COMBO — predict shot, then instant flank ──
+      else if(qAct2===5){
+        // Fire predictive shot first
+        var cvx=0,cvz=0,cvc=0;
+        for(var cvl=Math.max(0,rl.moveLog.length-8);cvl<rl.moveLog.length;cvl++){cvx+=rl.moveLog[cvl].dx;cvz+=rl.moveLog[cvl].dz;cvc++}
+        if(cvc>0){cvx/=cvc;cvz/=cvc}
+        var cpX=camera.position.x+cvx*GN.aimLead*35;var cpZ=camera.position.z+cvz*GN.aimLead*35;
+        var cpD=new THREE.Vector3(cpX-e.mesh.position.x,0,cpZ-e.mesh.position.z).normalize();
+        for(var ci8=0;ci8<GN.burstSize;ci8++){var cpB=new THREE.Mesh(bGeo2,getPMat(0x00ffcc));
+          cpB.position.copy(e.mesh.position);cpB.position.y=1.3*e.sc;scene.add(cpB);
+          var cpOff=(ci8-GN.burstSize/2)*.04;var cpD2=cpD.clone();cpD2.x+=cpOff;cpD2.normalize();
+          G.bullets.push({m:cpB,d:cpD2,s:55,l:3,p:false,dmg:9})}
+        sfx('explode');
+        // Then instant teleport flank after 300ms
+        (function(bossRef){setTimeout(function(){if(bossRef.hp<=0)return;
+          var cfA=G.yaw+(prof.weakDir==='back'?Math.PI:Math.PI/2);
+          var cfX=camera.position.x+Math.sin(cfA)*5;var cfZ=camera.position.z-Math.cos(cfA)*5;
+          if(!checkWall(cfX,cfZ,1)){spawnP(bossRef.mesh.position.clone().setY(1),0x00aaaa,3);
+            bossRef.mesh.position.set(cfX,0,cfZ);spawnP(bossRef.mesh.position.clone().setY(1),0x00ffcc,4);sfx('explode');
+            for(var cf2=0;cf2<2;cf2++){(function(d8){setTimeout(function(){if(bossRef.hp<=0)return;
+              fireEnemyBullet(bossRef);bossRef.shootFlash=1},d8*80)})(cf2)}}
+        },300)})(e)}
+      // ── ACTION 6: FEINT — fake rush, stop short, shoot when player dodges ──
+      else if(qAct2===6){
+        var feintDir=new THREE.Vector3().subVectors(camera.position,e.mesh.position).normalize();
+        // Short dash toward player (not full rush)
+        e._charging={dir:feintDir,end:now+200,spd:GN.feintDistance*3};
+        sfx('boss');
+        // After feint, fire at where player dodged
+        (function(bossRef){setTimeout(function(){if(bossRef.hp<=0)return;
+          bossRef._charging=null;
+          // Player has reacted — shoot at their new position
+          var fDir2=new THREE.Vector3().subVectors(camera.position,bossRef.mesh.position).normalize();
+          for(var fi8=0;fi8<GN.burstSize+1;fi8++){(function(d9){setTimeout(function(){if(bossRef.hp<=0)return;
+            fireEnemyBullet(bossRef);bossRef.shootFlash=1},d9*GN.burstDelay)})(fi8)}
+          spawnP(bossRef.mesh.position.clone().setY(1),0x00ffcc,3);sfx('explode');
+        },250)})(e)}
+      // ── ACTION 7: AREA DENIAL — ring of slow bullets that close inward ──
+      else if(qAct2===7){
+        var adCount=Math.round(GN.areaDensity)+2;
+        var adDist=8+Math.random()*4;// spawn ring around player
+        for(var adi=0;adi<adCount;adi++){var adA=adi*Math.PI*2/adCount;
+          var adX=camera.position.x+Math.cos(adA)*adDist;
+          var adZ=camera.position.z+Math.sin(adA)*adDist;
+          var adDir=new THREE.Vector3(camera.position.x-adX,0,camera.position.z-adZ).normalize();
+          var adB=new THREE.Mesh(bGeo2,getPMat(0x44ffaa));
+          adB.position.set(adX,.8,adZ);scene.add(adB);
+          G.bullets.push({m:adB,d:adDir,s:8,l:5,p:false,dmg:7})}
+        sfx('explode');spawnRing(camera.position,0x44ffaa,adDist,600)}
+    }
+    // ── EXPLOIT — genome-weighted reload/heal punish ──
+    if(now-B.lastExploit>(B.exploitCD/B.phase)){B.lastExploit=now;
+      if(G.reloading&&Math.random()<GN.reloadExploit){
+        var rDir6=new THREE.Vector3().subVectors(camera.position,e.mesh.position).normalize();
+        e._charging={dir:rDir6,end:now+400,spd:24};rl._exploitedReload=true;
+        sfx('boss');showPM('echo_adapt')}
+      else if(G.echo.healTime&&now-G.echo.healTime<3000&&Math.random()<GN.healPunish){
+        var rDir7=new THREE.Vector3().subVectors(camera.position,e.mesh.position).normalize();
+        e._charging={dir:rDir7,end:now+500,spd:22};
+        sfx('boss');showPM('echo_counter');spawnRing(e.mesh.position,0x00ffcc,5,300)}}
+    // ── MIRROR (genome controls timing) ──
+    if(now-B.lastMirror>(B.mirrorCD/B.phase)&&hpPct<(.4+GN.mirrorTiming*.4)){B.lastMirror=now;
       showPM('echo_mirror');sfx('boss');G.shake=.03;
-      e._mirrorEnd=now+4000;
-      // During mirror: fire rate doubles, damage matches player weapon
       e._preMirrorSI=e.si;e.si=Math.max(150,e.si*.4);
-      e.dmg=Math.round(14*(1+G.buffs.dmg));// match player's buffed damage
+      e.dmg=Math.min(20,Math.round(14*(1+G.buffs.dmg*.5)));// half player's buff, capped at 20
       spawnRing(e.mesh.position,0x00ffff,8,600);
-      // Glow brighter during mirror
       e.mesh.traverse(function(c){if(c.isMesh&&c.material&&c.material.opacity){c.material.opacity=1}});
       (function(bRef){setTimeout(function(){if(bRef.hp<=0)return;
         bRef.si=bRef._preMirrorSI||500;bRef.dmg=11;
         bRef.mesh.traverse(function(c){if(c.isMesh&&c.material&&c.material.opacity){c.material.opacity=.7}});
       },4000)})(e)}
-    // ── ADAPT — learns from THIS fight in real-time ──
-    if(now-B.lastAdapt>(B.adaptCD/B.phase)){B.lastAdapt=now;
-      // Sample current player behavior and adjust
-      if(Math.abs(G.mx)>.5){// player is strafing a lot — lead shots more
-        e.acc=Math.max(.02,e.acc-.005)}
-      if(G.echo.totalHits>e._lastHitCount){// player is hitting a lot — dodge more
-        e.spd=Math.min(7,e.spd+.15);
-        if(!e._lastHitCount)e._lastHitCount=0}
-      e._lastHitCount=G.echo.totalHits;
-      // If player prefers jumping, use ground attacks
-      if(prof.prefersJump&&Math.random()<.5){
-        // Ground-level spread shot that's hard to jump over
-        for(var gi=0;gi<6;gi++){var ga=gi*Math.PI/3+now*.001;
-          var gd=new THREE.Vector3(Math.sin(ga),0,Math.cos(ga));
-          var gb=new THREE.Mesh(bGeo2,getPMat(0x44ffaa));
-          gb.position.copy(e.mesh.position);gb.position.y=.3;scene.add(gb);
-          G.bullets.push({m:gb,d:gd,s:18,l:4,p:false,dmg:8})}
-        sfx('explode');spawnRing(e.mesh.position,0x44ffaa,10,500)}
-    }
-    // Process Echo charging (exploit rush)
+    // Process charging
     if(e._charging&&now<e._charging.end){
-      var ecx=e.mesh.position.x+e._charging.dir.x*e._charging.spd*dt;
-      var ecz=e.mesh.position.z+e._charging.dir.z*e._charging.spd*dt;
-      if(!checkWall(ecx,ecz,.5)){e.mesh.position.x=ecx;e.mesh.position.z=ecz}
+      var ecx3=e.mesh.position.x+e._charging.dir.x*e._charging.spd*dt;
+      var ecz3=e.mesh.position.z+e._charging.dir.z*e._charging.spd*dt;
+      if(!checkWall(ecx3,ecz3,.5)){e.mesh.position.x=ecx3;e.mesh.position.z=ecz3}
       if(camera.position.distanceTo(e.mesh.position)<2.5){takeDamage(15*B.phase);G.shake=.05;e._charging=null;sfx('explode');
         spawnRing(e.mesh.position,0x00ffcc,6,300)}
     }else{e._charging=null}
@@ -2213,29 +2672,338 @@ function startWave(){
         },2600);
         G.toSpawn=0;G.alive=1;
         var echoBoss=createBoss('echo');
-        // ── ADAPTIVE STATS — scale based on player profile ──
-        var ep=G.echo;var playerSkill=ep.totalHits/(Math.max(1,ep.totalShots));// accuracy 0-1
+        // ═══ NEUROEVOLUTION — Genetic Algorithm + Q-Learning Hybrid ═══
+        var ep=G.echo;var playerSkill=ep.totalHits/(Math.max(1,ep.totalShots));
         var avgHp=ep.avgHP||70;var healFreq=ep.medkitUses/Math.max(1,G.wave);
-        // Better players get a tougher Echo
-        var skillMult=.7+playerSkill*.8;// 0.7 to 1.5
-        echoBoss.hp=Math.round(echoBoss.hp*skillMult);echoBoss.maxHp=echoBoss.hp;
-        // If player heals a lot, Echo gets more HP to outlast them
-        if(healFreq>.5)echoBoss.hp=Math.round(echoBoss.hp*1.2);echoBoss.maxHp=echoBoss.hp;
-        // If player is very accurate, Echo moves faster
-        if(playerSkill>.45)echoBoss.spd+=playerSkill*2;
-        // Store profile snapshot on the boss for real-time AI use
-        echoBoss._echoProfile={
-          dodgeBias:ep.dodgeL>ep.dodgeR?'left':'right',
+        // ── PLAYER MODEL — built from all collected data ──
+        var PM={
+          spd:G.spd*(G.perkSpeedMult||1)*(1+G.buffs.speed),
           dodgeLR:ep.dodgeL/(Math.max(1,ep.dodgeL+ep.dodgeR)),
+          dodgeFB:ep.dodgeFwd/(Math.max(1,ep.dodgeFwd+ep.dodgeBack)),
           prefersJump:ep.jumpDodges>ep.strafeDodges,
+          jumpRate:ep.jumpDodges/Math.max(1,ep.jumpDodges+ep.strafeDodges),
           avgRange:ep.avgRange||15,
-          weakDir:(ep.dmgFromB>=ep.dmgFromF&&ep.dmgFromB>=ep.dmgFromL&&ep.dmgFromB>=ep.dmgFromR)?'back':
-                  (ep.dmgFromL>=ep.dmgFromR)?'left':'right',
           accuracy:playerSkill,
-          healFreq:healFreq,
-          avgHP:avgHp,
+          reloadFreq:ep.totalShots>0?Math.min(1,30/ep.totalShots):0.1,
+          healThresh:avgHp/100,
           burstFirer:ep.burstPatterns>ep.sustainedFire,
+          weakDir:(ep.dmgFromB>=ep.dmgFromF&&ep.dmgFromB>=ep.dmgFromL&&ep.dmgFromB>=ep.dmgFromR)?'back':(ep.dmgFromL>=ep.dmgFromR)?'left':'right',
+          dmgDirs:{f:ep.dmgFromF,b:ep.dmgFromB,l:ep.dmgFromL,r:ep.dmgFromR},
+          moveBias:{l:ep.dodgeL,r:ep.dodgeR,f:ep.dodgeFwd,b:ep.dodgeBack},
         };
+        // ── GENOME — 20 genes controlling all combat behavior ──
+        // Each gene is 0-1, interpreted contextually
+        function randomGenome(){return{
+          aimLead:Math.random(),// 0=current pos, 1=heavy prediction
+          aimSpread:.1+Math.random()*.15,// bullet spread angle
+          burstSize:2+Math.random()*4|0,// shots per burst
+          burstDelay:60+Math.random()*100,// ms between burst shots
+          engageRange:6+Math.random()*18,// preferred fight distance
+          aggression:Math.random(),// 0=kite, 1=rush
+          strafeAmp:.5+Math.random()*4,// strafe width
+          strafeFreq:.5+Math.random()*3,// strafe speed
+          strafeChaos:Math.random(),// 0=predictable, 1=random direction changes
+          dodgeReact:.2+Math.random()*.6,// dodge-on-incoming-fire threshold
+          dodgeSpeed:4+Math.random()*6,// dodge burst speed
+          reloadExploit:Math.random(),// weight for punishing reloads
+          lowHPExploit:Math.random(),// weight for punishing low HP
+          healPunish:Math.random(),// weight for rushing after heal
+          jumpCounter:Math.random(),// weight for ground-spread vs jumpers
+          trapWeight:Math.random(),// weight for dodge-trap shots
+          flankPref:Math.random(),// 0=front, 1=behind
+          retreatHP:.15+Math.random()*.3,// HP% to start dodging more
+          mirrorTiming:Math.random(),// when to mirror (early vs late)
+          unpredictability:Math.random(),// random action injection rate
+          comboChain:Math.random(),// weight for chaining attacks
+          feintDistance:3+Math.random()*6,// how far to fake-rush before shooting
+          areaDensity:4+Math.random()*6|0,// bullets in area denial ring
+          velocityRead:Math.random(),// weight for using acceleration vs velocity
+          pressureThresh:.3+Math.random()*.4,// HP% to start aggressive pressure
+        }}
+        // ── FITNESS FUNCTION — simulates full fight, scores genome ──
+        function evalGenome(genome,pm,Q,encSt){
+          var fitness=0;var px=0,pz=0,php=1,pReload=false,pAmmo=30;
+          var ex=pm.avgRange,ez=0,ehp=1;var pVx=0,pVz=0;
+          var consecutiveHits=0,totalDmgDealt=0,totalDmgTaken=0;
+          var shotsAttempted=0,shotsLanded=0;// accuracy tracking
+          var killTick=-1;// when did we kill the player
+          for(var t=0;t<80;t++){
+            // ── Simulate player ──
+            var pDir=Math.random()<pm.dodgeLR?-1:1;if(Math.random()<.25)pDir=0;
+            pVx=pVx*.7+pDir*pm.spd*.12;pVz=pVz*.7+(Math.random()-.5)*pm.spd*.06;
+            if(pm.prefersJump&&Math.random()<pm.jumpRate*.3)pVz+=.5;
+            px+=pVx;pz+=pVz;
+            pAmmo--;if(pAmmo<=0){pReload=true;pAmmo=30}else{pReload=false}
+            if(!pReload){var pAimErr=(1-pm.accuracy)*.5;
+              var aimOff=Math.hypot(px-ex+pAimErr*(Math.random()-.5)*5,pz-ez+pAimErr*(Math.random()-.5)*5);
+              var playerHits=aimOff<2+pm.accuracy*3;
+              if(playerHits){ehp-=.025;totalDmgTaken+=.025}}
+            // ── Simulate Echo ──
+            var dist=Math.hypot(px-ex,pz-ez);var ang=Math.atan2(px-ex,pz-ez);if(ang<0)ang+=Math.PI*2;
+            var stT=t*genome.strafeFreq;
+            if(Math.random()<genome.strafeChaos*.15)stT+=Math.random()*3;
+            var strafeX=Math.sin(stT)*genome.strafeAmp*.15;
+            var rangeDiff=dist-genome.engageRange;
+            var moveToward=rangeDiff>2?genome.aggression*.2:rangeDiff<-2?-genome.aggression*.15:0;
+            ex+=Math.sin(ang)*moveToward+Math.cos(ang)*strafeX;
+            ez+=Math.cos(ang)*moveToward-Math.sin(ang)*strafeX;
+            if(!pReload&&Math.random()<genome.dodgeReact){
+              ex+=(Math.random()-.5)*genome.dodgeSpeed*.3;
+              ez+=(Math.random()-.5)*genome.dodgeSpeed*.3}
+            var leadX=px+pVx*genome.aimLead*8;var leadZ=pz+pVz*genome.aimLead*8;
+            var aimDist=Math.hypot(leadX-ex,leadZ-ez);
+            var hitChance=Math.max(0,1-aimDist*.03-genome.aimSpread*2);
+            var moving=pVx>0.1?2:pVx<-0.1?0:1;
+            var isAir=pm.prefersJump&&Math.random()<pm.jumpRate*.2;
+            var st=encSt(dist,ang,moving,php,pReload?1:0,ehp,isAir);
+            var bestA=0,bestV=-999;for(var a=0;a<NACTIONS;a++){if(Q[st*NACTIONS+a]>bestV){bestV=Q[st*NACTIONS+a];bestA=a}}
+            if(bestA===2&&pReload)hitChance+=genome.reloadExploit*.3;
+            if(bestA===2&&php<.3)hitChance+=genome.lowHPExploit*.2;
+            if(bestA===4&&Math.abs(pm.dodgeLR-.5)>.15)hitChance+=genome.trapWeight*.2;
+            if(bestA===3&&pm.prefersJump)hitChance+=genome.jumpCounter*.15;
+            if(bestA===5)hitChance+=genome.comboChain*.15;
+            if(bestA===6)hitChance+=.1;// feint always has some chance
+            if(bestA===7)hitChance+=genome.areaDensity*.015;// area denial chip
+            var echoHits=Math.random()<hitChance;
+            shotsAttempted++;
+            // ═══ OPTIMAL REWARD SHAPING ═══
+            if(echoHits){
+              shotsLanded++;
+              php-=.06;totalDmgDealt+=.06;
+              consecutiveHits++;
+              fitness+=1.5+consecutiveHits*.4;// streak bonus
+              fitness+=pm.accuracy;// harder targets = more reward
+              // AIM REWARDS — hitting is the primary skill
+              fitness+=.8;// flat per-hit reward
+              if(consecutiveHits>=3)fitness+=1;// burst accuracy bonus
+              // Kill zone — finishing damage worth much more
+              if(php<.3)fitness+=2;
+              if(php<.15)fitness+=3;
+            }else{consecutiveHits=0;fitness-=.05}// tiny miss penalty — don't over-penalize
+            // Dodge reward — scaled by how accurate the player is
+            if(!playerHits)fitness+=.5+pm.accuracy;// dodging an accurate player is more impressive
+            if(playerHits)fitness-=1.5;
+            // ── Situational awareness rewards ──
+            // Exploit reload — huge reward for attacking during vulnerability
+            if(pReload&&bestA===2)fitness+=4;
+            if(pReload&&echoHits)fitness+=3;// hitting during reload = free damage
+            // Punish bad decisions — rushing a non-reloading player at full HP
+            if(bestA===2&&!pReload&&php>.6)fitness-=1.5;
+            // Range management — reward staying at preferred distance
+            var rangePenalty=Math.abs(dist-genome.engageRange);
+            if(rangePenalty<3)fitness+=.3;// in sweet spot
+            // Pressure reward — keeping player HP below 50%
+            if(php<.5)fitness+=.5;
+            // Efficiency — reward damage dealt without taking damage
+            if(echoHits&&!playerHits)fitness+=2;// hit without being hit = perfect exchange
+            // Counter-specific rewards
+            if(bestA===3&&pm.prefersJump&&echoHits)fitness+=2;// ground spread hit jumper
+            if(bestA===4&&Math.abs(pm.dodgeLR-.5)>.15&&echoHits)fitness+=2.5;// trap caught biased dodger
+            // Terminal states
+            if(ehp<=0){fitness-=12;break}
+            if(php<=0){fitness+=30;killTick=t;break}
+            php=Math.max(0,Math.min(1,php));ehp=Math.max(0,Math.min(1,ehp));
+          }
+          // ── End-of-fight scoring ──
+          var dmgRatio=totalDmgDealt/Math.max(.01,totalDmgTaken);
+          fitness+=Math.min(10,dmgRatio*2);
+          fitness+=php<.5?8*(1-php):0;
+          fitness+=ehp>.3?3*ehp:0;
+          // AIM ACCURACY BONUS
+          var aimAcc=shotsAttempted>0?shotsLanded/shotsAttempted:0;
+          fitness+=aimAcc*8;// up to +8 for perfect aim
+          if(aimAcc>.5)fitness+=3;
+          // KILL SPEED BONUS — faster kills = much more fitness
+          if(killTick>=0)fitness+=Math.max(0,20-killTick*.3);
+          if(totalDmgDealt<.05)fitness-=10;
+          return fitness;
+        }
+        // ── CROSSOVER + MUTATION ──
+        function crossover(a,b){var child={};for(var k in a){child[k]=Math.random()<.5?a[k]:b[k]}return child}
+        function mutate(g,rate){var m={};for(var k in g){m[k]=Math.random()<rate?
+          (typeof g[k]==='number'?Math.max(0,Math.min(g[k]+(Math.random()-.5)*.4,
+          k==='burstSize'?8:k==='burstDelay'?200:k==='engageRange'?24:k==='dodgeSpeed'?10:k==='strafeAmp'?5:k==='strafeFreq'?4:k==='feintDistance'?10:k==='areaDensity'?10:1
+          )):g[k]):g[k]}return m}
+        // ── Q-TABLE — expanded state space ──
+        // State: [dist(3), dir(4), moving(3), hp(3), reloading(2), echoHP(3), airborne(2)] = 1296 states × 8 actions
+        function encodeState(dist,dir,moving,hp,reloading,echoHP,airborne){
+          var d=dist<8?0:dist<20?1:2;
+          var r=dir<0?0:dir<Math.PI/2?1:dir<Math.PI?2:3;
+          var m=moving<-.3?0:moving>.3?2:1;
+          var h=hp<.3?0:hp<.6?1:2;
+          var rl2=reloading?1:0;
+          var eh=echoHP===undefined?2:(echoHP<.3?0:echoHP<.6?1:2);
+          var ab=airborne?1:0;
+          return (((((d*4+r)*3+m)*3+h)*2+rl2)*3+eh)*2+ab;
+        }
+        var NSTATES=1296,NACTIONS=8;
+        var Q=new Float32Array(NSTATES*NACTIONS);
+        // ═══ PHASE 1: NPC 1v1 TRAINING — learn general combat vs different enemy types ═══
+        var npcTypes=[
+          {name:'scout',spd:.5,hp:.6,acc:.3,dodgeLR:.5,jumpRate:0,reloadFreq:.08,si:1050},
+          {name:'soldier',spd:.4,hp:1,acc:.35,dodgeLR:.5,jumpRate:0,reloadFreq:.06,si:1200},
+          {name:'heavy',spd:.25,hp:2,acc:.4,dodgeLR:.45,jumpRate:0,reloadFreq:.05,si:900},
+          {name:'scout_fast',spd:.65,hp:.5,acc:.25,dodgeLR:.7,jumpRate:.1,reloadFreq:.1,si:800},
+          {name:'heavy_tank',spd:.2,hp:2.5,acc:.45,dodgeLR:.4,jumpRate:0,reloadFreq:.04,si:750},
+        ];
+        var lr=0.12,gamma=0.92,eps=0.4;
+        for(var npcSim=0;npcSim<400;npcSim++){
+          var npc=npcTypes[npcSim%npcTypes.length];
+          var npx=0,npz=0,nVx=0,nph=npc.hp,nRl=false,neX=10,neZ=0,neHP=1;
+          for(var ns=0;ns<20;ns++){
+            // NPC moves
+            var nDir2=Math.random()<npc.dodgeLR?-1:1;if(Math.random()<.3)nDir2=0;
+            nVx=nVx*.6+nDir2*npc.spd*.15;npx+=nVx;
+            nRl=Math.random()<npc.reloadFreq;
+            var nAir=Math.random()<npc.jumpRate;
+            // NPC shoots at Echo
+            if(!nRl&&Math.random()<npc.acc)neHP-=.02;
+            var nAng=Math.atan2(npx-neX,npz-neZ);if(nAng<0)nAng+=Math.PI*2;
+            var nSt=encodeState(10,nAng,nDir2,nph,nRl?1:0,neHP,nAir);
+            var nAc;if(Math.random()<eps){nAc=Math.random()*NACTIONS|0}
+            else{var nbv=-999;nAc=0;for(var na3=0;na3<NACTIONS;na3++){if(Q[nSt*NACTIONS+na3]>nbv){nbv=Q[nSt*NACTIONS+na3];nAc=na3}}}
+            // Reward — emphasize AIM: hitting matters most
+            var nRw=0;var nHit=Math.random()>.35;
+            if(nAc===0&&nHit){nRw=1.5;nph-=.06}// predict hit
+            else if(nAc===0){nRw=-.1}// predict miss — small penalty
+            else if(nAc===1&&nHit){nRw=1.2;nph-=.05}
+            else if(nAc===2){if(nRl){nRw=2;nph-=.1}else{nRw=-.8;neHP-=.04}}
+            else if(nAc===3){nRw=.4;nph-=.03}
+            else if(nAc===4&&nHit){nRw=.8;nph-=.04}
+            else if(nAc===5&&nHit){nRw=1.5;nph-=.08}// combo
+            else if(nAc===6){nRw=.5;nph-=.04}// feint
+            else if(nAc===7){nRw=.3;nph-=.02}// area denial
+            else{nRw=-.1}
+            // AIM BONUSES — extra reward for consistent hitting
+            if(nHit)nRw+=.5;// flat aim reward on every hit
+            if(!nRl&&nHit&&npc.spd>.4)nRw+=.3;// hitting fast targets is harder
+            // KILL SPEED — bonus for finishing quickly
+            if(nph<=0){nRw+=15+Math.max(0,15-ns);break}// faster kill = more reward
+            if(neHP<=0){nRw-=10;break}
+            nph=Math.max(0,nph);neHP=Math.max(0,neHP);
+            var nnAng=Math.atan2(npx-neX,npz-neZ);if(nnAng<0)nnAng+=Math.PI*2;
+            var nnSt=encodeState(10,nnAng,nDir2,nph,nRl?1:0,neHP,nAir);
+            var nnQ=-999;for(var nna=0;nna<NACTIONS;nna++){if(Q[nnSt*NACTIONS+nna]>nnQ)nnQ=Q[nnSt*NACTIONS+nna]}
+            Q[nSt*NACTIONS+nAc]+=lr*(nRw+gamma*nnQ-Q[nSt*NACTIONS+nAc])}
+          eps=Math.max(.1,eps*.993)}
+        // ═══ PHASE 2: PLAYER-SPECIFIC TRAINING — fine-tune against collected profile ═══
+        eps=0.25;
+        for(var qs=0;qs<800;qs++){var spx2=0,spz2=0,sph2=1,sRl=false,seX2=10,seZ2=0,seHP2=1;
+          var sVx=0,sAirborne=false;
+          for(var qst=0;qst<25;qst++){var pMd=Math.random()<PM.dodgeLR?-1:1;if(Math.random()<.25)pMd=0;
+            sVx=sVx*.7+pMd*PM.spd*.12;spx2+=sVx;sRl=Math.random()<PM.reloadFreq;
+            sAirborne=PM.prefersJump&&Math.random()<PM.jumpRate*.25;
+            if(!sRl&&Math.random()<PM.accuracy)seHP2-=.025;
+            var qa=Math.atan2(spx2-seX2,spz2-seZ2);if(qa<0)qa+=Math.PI*2;
+            var qs2=encodeState(10,qa,pMd,sph2,sRl?1:0,seHP2,sAirborne);var ac2;
+            if(Math.random()<eps){ac2=Math.random()*NACTIONS|0}else{var bv=-999;ac2=0;for(var a2=0;a2<NACTIONS;a2++){if(Q[qs2*NACTIONS+a2]>bv){bv=Q[qs2*NACTIONS+a2];ac2=a2}}}
+            var rw=0;var ph2=Math.random()>.4+PM.accuracy*.3;
+            if(ac2===0){if(ph2){rw=1+PM.accuracy;sph2-=.08}else rw=-.15}
+            else if(ac2===1){var goodRange=Math.abs(10-Math.abs(spx2-seX2))<6;
+              if(goodRange&&Math.random()>.45){rw=1;sph2-=.06}else rw=goodRange?-.1:-.4}
+            else if(ac2===2){if(sRl){rw=2;sph2-=.12}else if(sph2<.25){rw=1.2;sph2-=.1}else{rw=-1;seHP2-=.05}}
+            else if(ac2===3){if(sAirborne){rw=1+PM.jumpRate;sph2-=.07}else rw=-.4}
+            else if(ac2===4){var bias3=Math.abs(PM.dodgeLR-.5)*2;
+              if(bias3>.3){rw=.6+bias3;sph2-=.05+bias3*.04}else rw=-.4}
+            else if(ac2===5){// Combo — predict then flank: highest reward but risky
+              if(ph2&&goodRange){rw=1.8;sph2-=.12}else rw=-.3}
+            else if(ac2===6){// Feint — fake rush, shoot when they dodge
+              var fakeReact=Math.random()<.5+PM.accuracy*.2;// good players react to feints
+              if(fakeReact){rw=1.2;sph2-=.08}else rw=0}
+            else if(ac2===7){// Area denial — ring of slow bullets
+              rw=.5;sph2-=.03;// always does some chip damage
+              if(sph2<.4)rw+=.4}// better when player is hurt (limits escape)
+            sph2=Math.max(0,Math.min(1,sph2));seHP2=Math.max(0,Math.min(1,seHP2));
+            var nqa=Math.atan2(spx2-seX2,spz2-seZ2);if(nqa<0)nqa+=Math.PI*2;
+            var ns2=encodeState(10,nqa,pMd,sph2,sRl?1:0,seHP2,sAirborne);var mnq=-999;
+            for(var na2=0;na2<NACTIONS;na2++){if(Q[ns2*NACTIONS+na2]>mnq)mnq=Q[ns2*NACTIONS+na2]}
+            Q[qs2*NACTIONS+ac2]+=lr*(rw+gamma*mnq-Q[qs2*NACTIONS+ac2]);
+            if(seHP2<=0||sph2<=0)break}eps=Math.max(.03,eps*.994)}
+        // ═══ GENETIC EVOLUTION — 30 agents × 20 generations ═══
+        var POP=30,GENS=20,ELITE=6,MUTRATE=.2;
+        var pop=[];for(var pi6=0;pi6<POP;pi6++)pop.push(randomGenome());
+        var bestGenome=pop[0],bestFitness=-999,genLog=[];
+        // ── Genome vs Genome fight simulator ──
+        function fightGenomes(g1,g2){
+          // Two genomes fight each other — returns score for g1 (positive = g1 wins)
+          var x1=0,z1=0,hp1=1,x2=12,z2=0,hp2=1;
+          var v1x=0,v1z=0,v2x=0,v2z=0;
+          var score1=0;
+          for(var ft=0;ft<60;ft++){
+            // g1 moves
+            var st1=ft*g1.strafeFreq;if(Math.random()<g1.strafeChaos*.1)st1+=Math.random()*2;
+            v1x=Math.sin(st1)*g1.strafeAmp*.12;
+            var d12=Math.hypot(x2-x1,z2-z1);var rangeDiff1=d12-g1.engageRange;
+            var ang1=Math.atan2(x2-x1,z2-z1);
+            x1+=Math.sin(ang1)*(rangeDiff1>2?g1.aggression*.15:rangeDiff1<-2?-g1.aggression*.1:0)+Math.cos(ang1)*v1x;
+            z1+=Math.cos(ang1)*(rangeDiff1>2?g1.aggression*.15:0)-Math.sin(ang1)*v1x;
+            // g2 moves
+            var st2=ft*g2.strafeFreq;if(Math.random()<g2.strafeChaos*.1)st2+=Math.random()*2;
+            v2x=Math.sin(st2)*g2.strafeAmp*.12;
+            var d21=d12;var rangeDiff2=d21-g2.engageRange;
+            var ang2=Math.atan2(x1-x2,z1-z2);
+            x2+=Math.sin(ang2)*(rangeDiff2>2?g2.aggression*.15:rangeDiff2<-2?-g2.aggression*.1:0)+Math.cos(ang2)*v2x;
+            z2+=Math.cos(ang2)*(rangeDiff2>2?g2.aggression*.15:0)-Math.sin(ang2)*v2x;
+            // g1 shoots at g2 with lead
+            var lead1X=x2+v2x*g1.aimLead*6;var lead1Z=z2+v2x*g1.aimLead*2;
+            var aDist1=Math.hypot(lead1X-x1,lead1Z-z1);
+            var hit1=Math.random()<Math.max(0,1-aDist1*.025-g1.aimSpread*1.5);
+            if(hit1){hp2-=.05;score1+=2}
+            // g1 dodges g2's shots
+            if(Math.random()<g1.dodgeReact){x1+=(Math.random()-.5)*g1.dodgeSpeed*.2;z1+=(Math.random()-.5)*g1.dodgeSpeed*.2}
+            // g2 shoots at g1 with lead
+            var lead2X=x1+v1x*g2.aimLead*6;var lead2Z=z1+v1x*g2.aimLead*2;
+            var aDist2=Math.hypot(lead2X-x2,lead2Z-z2);
+            var hit2=Math.random()<Math.max(0,1-aDist2*.025-g2.aimSpread*1.5);
+            if(hit2){hp1-=.05;score1-=1.5}
+            if(Math.random()<g2.dodgeReact){x2+=(Math.random()-.5)*g2.dodgeSpeed*.2;z2+=(Math.random()-.5)*g2.dodgeSpeed*.2}
+            if(hp1<=0){score1-=10;break}
+            if(hp2<=0){score1+=15;break}
+          }
+          score1+=hp1*5-hp2*3;// survival bonus
+          return score1;
+        }
+        for(var gen=0;gen<GENS;gen++){
+          var scored=[];
+          for(var ag=0;ag<pop.length;ag++){
+            // Score = player-model fitness + gen-vs-gen tournament
+            var fPlayer=0;for(var tr=0;tr<3;tr++)fPlayer+=evalGenome(pop[ag],PM,Q,encodeState);
+            fPlayer/=3;
+            // Fight 4 random opponents from the population
+            var fPvP=0;
+            for(var opp=0;opp<4;opp++){
+              var oppIdx=(ag+1+Math.random()*(pop.length-1)|0)%pop.length;
+              fPvP+=fightGenomes(pop[ag],pop[oppIdx])}
+            fPvP/=4;
+            // Combined score: 70% player-model, 30% PvP
+            var totalF=fPlayer*.7+fPvP*.3;
+            scored.push({genome:pop[ag],fitness:totalF})}
+          scored.sort(function(a,b){return b.fitness-a.fitness});
+          genLog.push({gen:gen,best:scored[0].fitness,avg:scored.reduce(function(s,v){return s+v.fitness},0)/scored.length});
+          if(scored[0].fitness>bestFitness){bestFitness=scored[0].fitness;bestGenome=scored[0].genome}
+          // Selection + breeding
+          var newPop=[];
+          for(var el=0;el<ELITE;el++)newPop.push(scored[el].genome);
+          while(newPop.length<POP){
+            var p1=scored[Math.random()*ELITE*2|0].genome;
+            var p2=scored[Math.random()*ELITE*2|0].genome;
+            var child=crossover(p1,p2);
+            child=mutate(child,MUTRATE);
+            newPop.push(child)}
+          pop=newPop;
+          MUTRATE=Math.max(.05,MUTRATE*.9);
+        }
+        // ── Apply evolved genome to Echo ──
+        // Scale Echo stats — capped to prevent OP
+        var skillMult=.8+playerSkill*.5;// 0.8 to 1.3 (was 0.7 to 1.5)
+        echoBoss.hp=Math.round(echoBoss.hp*skillMult);echoBoss.maxHp=echoBoss.hp;
+        if(healFreq>.5){echoBoss.hp=Math.round(echoBoss.hp*1.08);echoBoss.maxHp=echoBoss.hp}// 8% not 15%
+        if(playerSkill>.45)echoBoss.spd+=playerSkill*.8;// halved from 1.5
+        echoBoss._echoProfile=PM;
+        echoBoss._Q=Q;
+        echoBoss._encodeState=encodeState;
+        echoBoss._genome=bestGenome;
+        echoBoss._genLog=genLog;
         G.enemies.push(echoBoss);
         // Spawn in dramatically
         var sp2=safeSpawn(0,-20,1);echoBoss.mesh.position.set(sp2.x,0,sp2.z);
@@ -2283,6 +3051,17 @@ function startWave(){
       twin.mesh.position.set(boss.mesh.position.x+5,0,boss.mesh.position.z+5)}
     // Spawn adds
     if(br.adds>0){spawnBatchTyped(br.adds,['soldier','scout','heavy'])}
+    // ── ECHO INFILTRATION — possess one add with Echo AI ──
+    if(G.mode==='bossrush'&&brIdx<BOSS_RUSH_WAVES.length){
+      for(var epi=G.enemies.length-1;epi>=0;epi--){
+        if(!G.enemies[epi].isBoss&&G.enemies[epi].hp>0&&!G.enemies[epi]._echoPossessed){
+          G.enemies[epi]._echoPossessed=true;
+          G.enemies[epi].spd*=1.25;G.enemies[epi].acc*=.7;G.enemies[epi].si=Math.max(500,G.enemies[epi].si*.7);
+          G.enemies[epi]._echoLog=[];// movement log for this possessed unit
+          // Visual: cyan glow
+          G.enemies[epi].mesh.traverse(function(c){if(c.isMesh&&c.material&&!c.material._isGlow){
+            c.material=new THREE.MeshStandardMaterial({color:0x115544,emissive:0x00ccaa,emissiveIntensity:.3,roughness:.5})}});
+          break}}}
     // Pickups
     var pa=Math.random()*6.28;var pd=10+Math.random()*20;
     spawnPickup(Math.cos(pa)*pd,Math.sin(pa)*pd,'health');
@@ -2493,7 +3272,7 @@ function loop(){
     if(!sw.hit){var swDist=Math.hypot(camera.position.x-sw.x,camera.position.z-sw.z);
       // Wave hits when it passes through player position (within 2 unit tolerance)
       if(Math.abs(swDist-swRadius)<1.2){
-        if(G.gnd){takeDamage(sw.dmg);showPM('stomp');sw.hit=true}// grounded = hit
+        if(G.gnd){takeDamage(sw.dmg);sw.hit=true}// grounded = hit
         else{sw.hit=true}// jumping = dodged!
       }}
   }
@@ -2552,6 +3331,8 @@ function loop(){
         showHit(hd);sfx(hd?'headshot':'hit');showDmgNum(b.m.position.clone(),dmg,hd);spawnP(b.m.position,0xff0000,3);
         // Aegis fortress mode — 60% damage reduction (no reflect)
         if(e.isBoss&&e.bossData&&e.bossData.fortress){dmg*=0.4;e.hp+=dmg*.6;spawnP(b.m.position,0xff8844,2)}
+        // Aegis beam — VULNERABLE, takes 50% extra damage
+        if(e.isBoss&&e.bossData&&e.bossData._beamVulnerable){dmg*=1.5;spawnP(b.m.position,0x44aaff,2)}
         // Omega siege mode — 70% damage reduction
         if(e.isBoss&&e.bossData&&e.bossData._siege){dmg*=0.3;e.hp+=dmg*.7;spawnP(b.m.position,0xaa44ff,2)}
         // Aegis shield reflect — bullets bounce back
@@ -2576,6 +3357,15 @@ function loop(){
   var dp=dustPts.geometry.attributes.position.array;for(var di2=0;di2<dustN;di2++){dp[di2*3+1]+=Math.sin(now*.0003+di2)*.003;if(dp[di2*3+1]>8)dp[di2*3+1]=0;if(dp[di2*3+1]<0)dp[di2*3+1]=8}dustPts.geometry.attributes.position.needsUpdate=true;
   // Lights
   for(var fl=0;fl<fLights.length;fl++){var f=fLights[fl];f.light.intensity=f.base*(.8+Math.sin(now*.001*f.spd+f.ph)*.2+Math.random()*.05)}
+  // Hanging light sway
+  if(typeof hangLights!=='undefined')for(var hli2=0;hli2<hangLights.length;hli2++){var hl2=hangLights[hli2];
+    hl2.light.position.x=hl2.x+Math.sin(now*.0008*hl2.speed+hl2.phase)*.3;
+    hl2.light.intensity=.3+Math.sin(now*.003+hl2.phase)*.15}
+  // Sparking wire
+  if(typeof sparkTimer!=='undefined'){sparkTimer-=dt;if(sparkTimer<=0){sparkTimer=2+Math.random()*4;
+    for(var si4=0;si4<2;si4++){var sp4=new THREE.Mesh(pGeo2,getPMat([0xffff44,0xffaa00][si4]));
+      sp4.position.set(sparkPos.x+(Math.random()-.5)*.2,sparkPos.y,sparkPos.z+(Math.random()-.5)*.2);scene.add(sp4);
+      G.particles.push({m:sp4,v:new THREE.Vector3((Math.random()-.5)*3,-2-Math.random()*2,(Math.random()-.5)*3),l:.2})}}}
   // Pickups
   for(var pi=G.pickups.length-1;pi>=0;pi--){var pk=G.pickups[pi];if(pk.got){G.pickups.splice(pi,1);continue}pk.mesh.rotation.y+=dt*2;pk.mesh.position.y=.4+Math.sin(now*.003+pi)*.1;
     // Pickup hover + spin animation
@@ -2638,6 +3428,51 @@ function loop(){
     var mv=new THREE.Vector3();
     var canSee=hasLOS(e2.mesh.position.x,e2.mesh.position.z,camera.position.x,camera.position.z);
     if(G._vanish)canSee=false;// Vanish skill — player is invisible
+    var spdMult=1;
+    if(e2._echoPossessed&&canSee){
+      // Track player movement for Echo profiling
+      if(!e2._echoLog)e2._echoLog=[];
+      e2._echoLog.push({x:camera.position.x,z:camera.position.z,t:now});
+      if(e2._echoLog.length>40)e2._echoLog.shift();
+      // Predictive aiming — lead the player based on velocity
+      var epVx=0,epVz=0;
+      if(e2._echoLog.length>3){
+        var el=e2._echoLog;var eLen=el.length;
+        epVx=(el[eLen-1].x-el[eLen-3].x)/2;epVz=(el[eLen-1].z-el[eLen-3].z)/2}
+      // Smart movement — strafe unpredictably, maintain mid-range
+      var epTargetDist=10+Math.random()*5;
+      var epRangeDiff=dp2-epTargetDist;
+      if(!e2._echoStrafeT)e2._echoStrafeT=Math.random()*10;
+      e2._echoStrafeT+=dt*(1.5+Math.random());
+      if(Math.random()<.02)e2.ss*=-1;// random direction flip
+      var epStrafe=Math.sin(e2._echoStrafeT)*e2.ss;
+      var epPerp=new THREE.Vector3(-_v.z,0,_v.x);
+      mv.copy(_v).multiplyScalar(epRangeDiff>.5?.3:epRangeDiff<-.5?-.2:0);
+      mv.add(epPerp.multiplyScalar(epStrafe*.6));
+      // Dodge incoming player bullets
+      for(var epb=0;epb<G.bullets.length;epb++){var epBul=G.bullets[epb];
+        if(!epBul.p)continue;// only dodge player bullets
+        var epToBoss=new THREE.Vector3().subVectors(e2.mesh.position,epBul.m.position);
+        if(epToBoss.length()<5&&epToBoss.dot(epBul.d)>0){
+          var epDodge=new THREE.Vector3(-epBul.d.z,0,epBul.d.x);
+          mv.add(epDodge.multiplyScalar(2));break}}
+      // Shoot with prediction
+      if(now-e2.lastShot>e2.si){e2.lastShot=now;e2.shootFlash=1;
+        var epLeadX=camera.position.x+epVx*6;var epLeadZ=camera.position.z+epVz*6;
+        var epDir=new THREE.Vector3(epLeadX-e2.mesh.position.x,0,epLeadZ-e2.mesh.position.z).normalize();
+        epDir.x+=(Math.random()-.5)*e2.acc;epDir.normalize();
+        var epBul2=new THREE.Mesh(bGeo2,getPMat(0x00ccaa));
+        epBul2.position.copy(e2.mesh.position);epBul2.position.y=1.3*e2.sc;scene.add(epBul2);
+        G.bullets.push({m:epBul2,d:epDir,s:e2.bs*1.1,l:4,p:false,dmg:e2.dmg});sfx('shoot')}
+      // Feed profiling data
+      G.echo.totalShots++;
+      // Cyan particle trail
+      if(Math.random()<.04){var ecP=new THREE.Mesh(pGeo2,getPMat(0x00ccaa));
+        ecP.position.set(e2.mesh.position.x,.5+Math.random(),e2.mesh.position.z);scene.add(ecP);
+        G.particles.push({m:ecP,v:new THREE.Vector3(0,2,0),l:.3})}
+    }
+    // Normal AI for non-possessed enemies
+    else {
     var hpPct=e2.hp/e2.maxHp;var isLowHP=hpPct<0.3;
     var tooClose=false;
     for(var ej=0;ej<G.enemies.length;ej++){if(ej===ei||G.enemies[ej].hp<=0)continue;if(e2.mesh.position.distanceTo(G.enemies[ej].mesh.position)<2.5){tooClose=true;break}}
@@ -2678,7 +3513,8 @@ function loop(){
       else if(dp2>8){e2.st-=dt;if(e2.st<=0){e2.ss*=-1;e2.st=1+Math.random()*1.5}var ss3=new THREE.Vector3(-_v.z,0,_v.x).multiplyScalar(e2.ss);mv.copy(_v).multiplyScalar(.3).add(ss3.multiplyScalar(.7))}
       else{e2.st-=dt;if(e2.st<=0){e2.ss*=-1;e2.st=.8+Math.random()*1}var ss4=new THREE.Vector3(-_v.z,0,_v.x).multiplyScalar(e2.ss);mv.copy(_v).multiplyScalar(-.2).add(ss4.multiplyScalar(.8))}
     }
-    var spdMult=isShooting?0.15:1;
+    spdMult=isShooting?0.15:1;
+    }// end normal AI else block
     // Twin flanking override — move toward flank position instead of normal AI
     if(e2._flankTarget){
       var ftx=e2._flankTarget.x-e2.mesh.position.x;var ftz=e2._flankTarget.z-e2.mesh.position.z;
@@ -2924,6 +3760,21 @@ function killE(e,hd){G.kills++;if(hd)G.hs++;G.score+=(hd?200:100)+G.wave*10;G.al
     var aMesh=new THREE.Mesh(new THREE.CylinderGeometry(1.5,1.5,.08,6),new THREE.MeshBasicMaterial({color:0x88aa00,transparent:true,opacity:.3}));
     aMesh.position.set(ax,.04,az);scene.add(aMesh);
     G.acidZones.push({mesh:aMesh,x:ax,z:az,end:performance.now()+4000,dmgCD:0})}
+  // Echo possession transfer — if possessed enemy dies, possess another
+  if(e._echoPossessed&&G.mode==='bossrush'){
+    e._echoPossessed=false;
+    // Find another non-boss living enemy to possess
+    for(var etr=0;etr<G.enemies.length;etr++){
+      var cand=G.enemies[etr];
+      if(cand!==e&&!cand.isBoss&&cand.hp>0&&!cand._echoPossessed){
+        cand._echoPossessed=true;
+        cand.spd*=1.25;cand.acc*=.7;cand.si=Math.max(500,cand.si*.7);
+        cand._echoLog=[];
+        // Cyan glow
+        cand.mesh.traverse(function(c){if(c.isMesh&&c.material&&!c.material._isGlow){
+          c.material=new THREE.MeshStandardMaterial({color:0x115544,emissive:0x00ccaa,emissiveIntensity:.3,roughness:.5})}});
+        spawnP(cand.mesh.position.clone().setY(1),0x00ccaa,4);
+        break}}}
   var pr=0;var fi=setInterval(function(){pr+=.06;e.mesh.rotation.x=pr*Math.PI/2;e.mesh.position.y-=.025;if(pr>=1){clearInterval(fi);setTimeout(function(){scene.remove(e.mesh)},3000)}},16)}
 
 function useMedkit(){
@@ -3095,7 +3946,23 @@ function gameOver(){
     }
     updateHP();updateArmor();updateAmmo();
     // Reset boss HP and phase
-    for(var rb2=0;rb2<G.enemies.length;rb2++){if(G.enemies[rb2].isBoss&&G.enemies[rb2].hp>0){G.enemies[rb2].hp=G.enemies[rb2].maxHp;if(G.enemies[rb2].bossData)G.enemies[rb2].bossData.phase=1}}
+    for(var rb2=0;rb2<G.enemies.length;rb2++){if(G.enemies[rb2].isBoss&&G.enemies[rb2].hp>0){
+      G.enemies[rb2].hp=G.enemies[rb2].maxHp;
+      if(G.enemies[rb2].bossData){G.enemies[rb2].bossData.phase=1;
+        // Clean up active beam visuals
+        var bd3=G.enemies[rb2].bossData;
+        if(bd3._beamCore){G.enemies[rb2].mesh.remove(bd3._beamCore);bd3._beamCore=null}
+        if(bd3._beamShell){G.enemies[rb2].mesh.remove(bd3._beamShell);bd3._beamShell=null}
+        if(bd3._beamLine){scene.remove(bd3._beamLine);bd3._beamLine=null}
+        if(bd3._beamMesh){scene.remove(bd3._beamMesh);bd3._beamMesh=null}
+        if(bd3._beamInner){scene.remove(bd3._beamInner);bd3._beamInner=null}
+        bd3._beamActive=false;bd3._beamPhase=null;bd3._beamVulnerable=false;
+        bd3.fortress=false;bd3._siege=false;bd3.shielded=false;bd3._shieldCharging=false;
+        // Reset berserker state
+        if(bd3._berserker){bd3._berserker=false;
+          var be=G.enemies[rb2];
+          if(bd3._preBerserkSpd){be.spd=bd3._preBerserkSpd;be.si=bd3._preBerserkSI;be.dmg=bd3._preBerserkDmg;be.acc=bd3._preBerserkAcc}}
+      }}}
     // DESPAWN ALL NON-BOSS ENEMIES (adds, summons, decoys)
     var bossCount=0;
     for(var rc=G.enemies.length-1;rc>=0;rc--){
